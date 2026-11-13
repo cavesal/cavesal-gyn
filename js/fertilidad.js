@@ -16,7 +16,7 @@
   //   rango[0] ≤ folículo ≤ rango[1]     → rango
   //   rango[1] < folículo ≤ tolerancia   → tolerancia (si existe)
   //   por encima del último límite       → encima
-  // VALIDAR CON CARLOS: propuesta basada en la literatura, pendiente de confirmación.
+  // Umbrales según ASRM 2013 y literatura (aprobado por el autor el 13/11/2026).
   //   Letrozol: 19-23 mm (cohortes de IIU con letrozol 2024-2025: 19,1-21 y 19-23 mm);
   //             tolerancia hasta 28 mm (Palatnik 2012: 23-28 mm con clomifeno o letrozol).
   //   Clomifeno: 20-28 mm (Shalom-Paz 2014: concepción con 20,4 ± 1,2 mm; Palatnik 2012: 23-28 mm).

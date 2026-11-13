@@ -129,7 +129,7 @@
         'Clomifeno: 50 mg/día por 5 días desde el día 2 a 5; luego 100 mg y máximo habitual 150 mg; límite de 6 ciclos ovulatorios.',
         'Gonadotropinas, protocolo low-dose step-up: inicio 37,5 a 75 UI/día desde el día 2 a 3, dosis fija 7 a 14 días; si a los 14 días no hay folículo de 10 mm o más, aumentar 50% semanal.'
       ],
-      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: ASRM Practice Committee 2020 · ESHRE 2023 · MSPyBS Paraguay Res. S.G. N.º 050/2025 · Palatnik A et al. Fertil Steril 2012;97:1089-1094 · Shalom-Paz E et al. Gynecol Endocrinol 2014 · estudios de cohorte 2024-2026 sobre tamaño folicular en IIU'
+      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: ASRM Practice Committee, Fertil Steril 2013;100:341-348 y 2020;113:66-70 · ESHRE 2023 y 2025 · MSPyBS Paraguay Res. S.G. N.º 050/2025 · Palatnik A et al. Fertil Steril 2012;97:1089-1094 · Shalom-Paz E et al. Gynecol Endocrinol 2014;30:107-110 · Ling L et al. Eur J Med Res 2024;29:184 · Van Oirschot M et al. Fertil Steril 2025'
     },
 
     preconcepcional: {

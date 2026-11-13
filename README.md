@@ -27,7 +27,7 @@ js/cvs-lic.js         persistencia y reactivación de la clave
 js/app.js             rutas, filtros y pantallas
 tests.html            pruebas obligatorias
 boceto/               boceto original de referencia
-assets/               logo (pendiente)
+assets/               logo del landing e ícono
 ```
 
 ## Probar localmente
@@ -44,11 +44,11 @@ Abrir `http://localhost:8000/` y `http://localhost:8000/tests.html` (debe decir 
 2. Confirmar la URL del script de licencias y agregar el producto `gyn` en el backend.
 3. Activar GitHub Pages y el dominio.
 4. Manifest y PWA, si se quieren.
-5. Colocar el logo en `assets/logo-gyn.png`.
+5. Logo: `assets/logo-gyn.jpg` (el del landing) y `assets/logo-gyn-icono.png` (recorte para encabezado e ícono).
 
 ## Pendiente de validación clínica (VALIDAR CON CARLOS)
 
-- `js/fertilidad.js`: ventana de progesterona (+7 a +10) y umbrales de folículo para el trigger, tomados de la literatura.
+- `js/fertilidad.js`: ventana de progesterona (+7 a +10).
 - `js/preconcepcional.js`: unidades de cada hormona.
 
 ## Precio

@@ -171,3 +171,7 @@ button,input,select{font:inherit;color:inherit}
   .grid,.form{grid-template-columns:1fr}
   .opt span{width:38px;height:38px}
 }
+
+.logo{border-radius:50%;background:#fff}
+.logo-hero{background:#fff;border-radius:16px;padding:6px;margin:4px auto 14px;max-width:340px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.logo-hero img{display:block;width:100%;height:auto}
