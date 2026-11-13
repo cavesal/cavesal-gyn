@@ -38,11 +38,21 @@
     var lista = cat.funciones.filter(function (f) { return estado.etapa === 'todas' || f.etapas.indexOf(estado.etapa) >= 0; });
     $('vacio').hidden = lista.length > 0;
     $('grid').innerHTML = lista.map(function (f) {
-      var v1 = f.estado === 'v1';
+      var v1 = f.estado === 'v1', bl = bloqueada(f);
       return '<a class="card' + (v1 ? ' v1' : '') + '" href="#' + f.id + '"><span class="badge ' + (v1 ? 'b-v1' : 'b-prox') + '">' + (v1 ? T.app.conLogica : T.app.proximamente) + '</span>' +
+        (bl ? ' <span class="badge b-full">' + esc(T.app.soloFull) + '</span>' : '') +
         '<h3>' + esc(f.nombre) + '</h3><p>' + esc(f.resumen) + '</p><span class="etapas">' + esc(nombresEtapas(f.etapas)) + '</span>' +
         '<span class="ir">' + (v1 ? T.app.abrir : T.app.verDetalle) + ' →</span></a>';
     }).join('');
+  }
+
+  function bloqueada(f) { return f.estado === 'v1' && !w.GYN.licencia.esFull() && !w.GYN.licencia.abiertaEnDemo(f.id); }
+
+  function htmlBloqueo(titulo) {
+    return '<div class="bloqueo"><h3>' + esc(titulo || T.app.bloqTitulo) + '</h3><p>' + esc(T.app.bloqTexto) + '</p>' +
+      '<button type="button" class="btn-activar" data-activar>' + esc(T.app.activar) + '</button>' +
+      '<div class="compra"><a href="https://cavesal.gumroad.com/l/cavesal" target="_blank" rel="noopener">' + esc(T.app.comprarTarjeta) + ' ↗</a>' +
+      '<a href="https://cavesal.app/comprar.html?producto=gyn" target="_blank" rel="noopener">' + esc(T.app.comprarTransf) + ' ↗</a></div></div>';
   }
 
   function renderProx(cont, f) {
@@ -67,7 +77,8 @@
     $('pBadge').className = 'badge ' + (r.f.estado === 'v1' ? 'b-v1' : 'b-prox');
     $('pBadge').textContent = r.f.estado === 'v1' ? T.app.conLogica : T.app.proximamente;
     var cont = $('pCuerpo');
-    if (r.f.estado === 'v1' && w.GYN[r.f.id] && w.GYN[r.f.id].render) w.GYN[r.f.id].render(cont, T);
+    if (bloqueada(r.f)) cont.innerHTML = htmlBloqueo();
+    else if (r.f.estado === 'v1' && w.GYN[r.f.id] && w.GYN[r.f.id].render) w.GYN[r.f.id].render(cont, T, { bloqueo: htmlBloqueo, esFull: w.GYN.licencia.esFull() });
     else renderProx(cont, r.f);
     w.scrollTo(0, 0);
     $('pTitulo').focus({ preventScroll: true });
@@ -118,6 +129,10 @@
     $('volver').addEventListener('click', function () { location.hash = ''; });
     tema(); legal();
     w.GYN.licencia.iniciar();
+    d.addEventListener('click', function (e) { if (e.target.closest('[data-activar]')) w.GYN.licencia.abrir(); });
+    function banner() { $('demoBanner').hidden = w.GYN.licencia.esFull(); }
+    w.addEventListener('gyn:licencia', function () { banner(); router(); });
+    banner();
     w.addEventListener('hashchange', router);
     router();
   });

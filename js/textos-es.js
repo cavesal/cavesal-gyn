@@ -7,6 +7,12 @@
 
   w.GYN_TEXTOS = {
     app: {
+      bloqTitulo: 'Función de la versión completa',
+      bloqTexto: 'Esta función se habilita con la clave de CaVeSal® GYN. En la Demo quedan abiertas la escala MRS y el día de ovulación.',
+      activar: 'Activar versión completa',
+      comprarTarjeta: 'Comprar con tarjeta',
+      comprarTransf: 'Comprar por transferencia',
+      soloFull: 'Versión completa',
       nombre: 'CaVeSal® GYN',
       bajada: 'Calculadora gineco-endocrinológica para el profesional',
       aviso: 'Herramienta de apoyo a la decisión clínica. No reemplaza el criterio del profesional.',
@@ -123,6 +129,7 @@
         tolerancia: 'Tolerancia',
         encima: 'Por encima del rango'
       },
+      triggerBloq: 'Trigger según tamaño folicular · versión completa',
       esquemasTitulo: 'Referencia de esquemas posológicos (solo informativo)',
       esquemasTexto: [
         'Letrozol: 2,5 mg/día VO por 5 días desde el día 2 a 5; escalar a 5,0 mg y máximo 7,5 mg.',
@@ -136,7 +143,7 @@
       titulo: 'Preconcepcional: panel hormonal',
       ayuda: 'Todos los valores son opcionales. FSH, LH, AMH, TSH y prolactina del día 2 a 5 del ciclo; progesterona del día 21.',
       relacion: 'Relación LH/FSH',
-      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: ASRM 2021 · ATA 2017 · Guía CaVeSal® "Perfil hormonal femenino en fertilidad"'
+      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: ASRM 2020 (reserva ovárica) · ATA 2017 · Guía CaVeSal® "Perfil hormonal femenino en fertilidad"'
     },
 
     mrs: {

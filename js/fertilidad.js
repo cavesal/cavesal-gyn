@@ -73,17 +73,19 @@
 
   var COLOR = { noAlcanza: 'ambar', rango: 'verde', tolerancia: 'ambar', encima: 'rojo' };
 
-  function render(cont, T) {
+  function render(cont, T, opc) {
     var t = T.fertilidad;
+    var full = !opc || opc.esFull !== false;
     cont.innerHTML =
       '<div class="form">' +
       '<label class="campo"><span>' + t.ciclo + '</span><input id="f-ciclo" type="number" inputmode="numeric" min="15" max="60" step="1" placeholder="28"><small>' + t.cicloAyuda + '</small></label>' +
       '<label class="campo"><span>' + t.fum + '</span><input id="f-fum" type="date"></label>' +
-      '<label class="campo"><span>' + t.esquema + '</span><select id="f-esq">' +
+      (full ? '<label class="campo"><span>' + t.esquema + '</span><select id="f-esq">' +
       Object.keys(t.esquemas).map(function (k) { return '<option value="' + k + '">' + t.esquemas[k] + '</option>'; }).join('') +
       '</select></label>' +
-      '<label class="campo"><span>' + t.foliculo + '</span><input id="f-fol" type="number" inputmode="decimal" min="0" max="40" step="0.1" placeholder="19"></label>' +
+      '<label class="campo"><span>' + t.foliculo + '</span><input id="f-fol" type="number" inputmode="decimal" min="0" max="40" step="0.1" placeholder="19"></label>' : '') +
       '</div><div id="f-out" class="resultados" aria-live="polite"></div>' +
+      (full ? '' : opc.bloqueo(t.triggerBloq)) +
       '<details class="ref"><summary>' + t.esquemasTitulo + '</summary><ul>' + t.esquemasTexto.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul></details>' +
       '<p class="etiqueta">' + t.etiqueta + '</p>';
 
@@ -102,8 +104,8 @@
           if (c.fueraDeRango) html += fila('', t.cicloFuera, '', 'ambar');
         }
       }
-      var esq = $('f-esq').value, fol = $('f-fol').value;
-      if (fol !== '') {
+      var esq = full ? $('f-esq').value : '', fol = full ? $('f-fol').value : '';
+      if (full && fol !== '') {
         if (esq === 'ninguno') html += fila(t.trigger, t.sinEsquema, '', 'neutro');
         else {
           var est = clasificarFoliculo(esq, fol);
@@ -112,7 +114,7 @@
       }
       out.innerHTML = html;
     }
-    ['f-ciclo', 'f-fum', 'f-esq', 'f-fol'].forEach(function (id) { $(id).addEventListener('input', actualizar); });
+    ['f-ciclo', 'f-fum', 'f-esq', 'f-fol'].forEach(function (id) { var el = $(id); if (el) el.addEventListener('input', actualizar); });
   }
 
   function textoUmbral(esq) {

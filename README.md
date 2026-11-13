@@ -13,6 +13,13 @@ Con lógica:
 
 Próximamente (sin cálculo, solo ficha): el resto de las funciones del catálogo del boceto.
 
+## Demo y versión completa
+
+- Demo: abiertas la escala MRS y el día de ovulación con la ventana de progesterona (`ABIERTAS_DEMO` en `js/licencia.js`).
+- Versión completa: trigger por esquema, panel hormonal y todas las funciones nuevas.
+- Mientras `REQUIERE_LICENCIA = false` todo queda abierto; `?demo=1` muestra la Demo para revisarla.
+- La clave activada se guarda en `cavesal_gyn_full_unlocked`, que también abre Academy (`?desde=gyn`).
+
 ## Estructura
 
 ```
@@ -26,6 +33,11 @@ js/licencia.js        licencia (producto gyn)
 js/cvs-lic.js         persistencia y reactivación de la clave
 js/app.js             rutas, filtros y pantallas
 tests.html            pruebas obligatorias
+acerca.html           autoría, ecosistema, QR, tutoriales, bases y aviso legal
+manual.html           tutorial en español (EN y PT cuando se traduzca la app)
+bibliografia.html     referencias completas por función
+css/acerca.css        estilos de Acerca y bibliografía
+img/                  emblema, Academy, QR e imágenes del tutorial
 boceto/               boceto original de referencia
 assets/               logo del landing e ícono
 ```
@@ -53,4 +65,6 @@ Abrir `http://localhost:8000/` y `http://localhost:8000/tests.html` (debe decir 
 
 ## Precio
 
-Igual que la Calculadora Prenatal y Emergencias, con los mismos planes anuales desde 2027. Se suma un Mega Combo de 4 apps (precio a definir). No se publica precio en esta versión.
+Igual que la Calculadora Prenatal y Emergencias: USD 19.90 de por vida en el lanzamiento; desde 2027, USD 59.90 de por vida o USD 11.90 al año.
+
+Mega Combo (Calculadora + Historia Clínica + Emergencias + GYN), aprobado el 13/11/2026: USD 49.90 de lanzamiento; desde 2027, USD 149.90 de por vida o USD 29.90 al año. No se publica hasta que salga GYN.

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial y Manual de Uso · CaVeSal® GYN</title>
+<meta name="description" content="Tutorial paso a paso de CaVeSal® GYN: fertilidad y trigger, panel hormonal preconcepcional, escala MRS, Demo y versión completa.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="author" content="CaVeSal"/>
+<link rel="icon" href="assets/logo-gyn-icono.png"/>
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="Tutorial y Manual de Uso · CaVeSal® GYN"/>
+<meta property="og:description" content="Tutorial paso a paso de CaVeSal® GYN: fertilidad y trigger, panel hormonal, escala MRS, Demo y versión completa."/>
+<meta property="og:url" content="https://cavesal.app/cavesal-gyn/manual.html"/>
+<meta property="og:image" content="https://cavesal.app/img/landing/logo-gyn.jpg"/>
+<meta property="og:site_name" content="CaVeSal®"/>
+<meta property="og:locale" content="es_PY"/>
+<style>
+  :root{
+    --navy:#0D1B2D;--teal:#0EA5B7;--teal-lt:#e6f7f9;--slate:#4a6274;--mist:#f2f7f9;--border:#d0e8ed;--gold:#c9a227;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--mist);color:var(--navy);line-height:1.6}
+  header{background:linear-gradient(135deg,#0D1B2D,#0EA5B7);color:#fff;padding:32px 20px;text-align:center}
+  header h1{font-size:1.4rem;font-weight:800}
+  header p{font-size:.9rem;opacity:.85;margin-top:6px}
+  .portada{display:block;width:100%;max-width:520px;margin:0 auto 20px;background:#fff;border-radius:16px;padding:10px;box-shadow:0 6px 24px rgba(0,0,0,.22)}
+  .portada img{display:block;width:100%;height:auto;border-radius:10px}
+  main{max-width:760px;margin:0 auto;padding:28px 20px 60px}
+
+  nav.toc{background:#fff;border-radius:14px;padding:18px 20px;margin-bottom:22px;box-shadow:0 2px 12px rgba(14,165,183,.10)}
+  nav.toc h2{font-size:1rem;color:var(--teal);margin-bottom:10px}
+  nav.toc>ol{padding-left:18px;font-size:.88rem}
+  nav.toc>ol>li{margin-bottom:10px;font-weight:700}
+  nav.toc>ol>li>a{color:var(--navy);text-decoration:none}
+  nav.toc ol ol{padding-left:18px;font-weight:400;margin-top:4px}
+  nav.toc ol ol li{margin-bottom:3px;font-size:.84rem}
+  nav.toc a{color:var(--navy);text-decoration:none}
+  nav.toc ol ol a{color:var(--slate)}
+  nav.toc a:hover{color:var(--teal)}
+
+  .tab-divider{background:linear-gradient(135deg,#0D1B2D,#0EA5B7);color:#fff;border-radius:14px;padding:16px 20px;margin:26px 0 14px;scroll-margin-top:16px}
+  .tab-divider:first-of-type{margin-top:0}
+  .tab-divider h2{font-size:1.15rem;display:flex;align-items:center;gap:8px}
+  .tab-divider p{font-size:.8rem;opacity:.88;margin-top:4px}
+
+  section{background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 2px 12px rgba(14,165,183,.10);scroll-margin-top:16px}
+  section h2{font-size:1.1rem;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  section h3{font-size:.95rem;color:var(--navy);margin:14px 0 6px}
+  section .ref{font-size:.74rem;color:var(--slate);margin-bottom:14px;font-style:italic}
+  section p{font-size:.9rem;margin-bottom:10px}
+
+  .step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+  .step-num{background:var(--teal);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:800;flex-shrink:0;margin-top:2px}
+  .step p{font-size:.88rem;margin:0}
+
+  .tip{background:var(--teal-lt);border-left:3px solid var(--teal);border-radius:8px;padding:12px 14px;font-size:.85rem;margin-top:10px}
+  .warn{background:#fff8e6;border-left:3px solid var(--gold);border-radius:8px;padding:12px 14px;font-size:.85rem;margin-top:10px}
+
+  .shot{border:2px dashed var(--border);border-radius:12px;padding:22px;text-align:center;color:var(--slate);font-size:.82rem;margin:14px 0;background:#fafdfe}
+  .shot .cam{font-size:1.6rem;display:block;margin-bottom:6px}
+  .shot code{background:#eef7f9;padding:2px 6px;border-radius:5px;font-size:.78rem;color:var(--navy)}
+
+  .new{background:#eafbf0;border-left:3px solid #0d8f4a;border-radius:8px;padding:10px 14px;font-size:.78rem;margin-bottom:10px;color:#0d6b38;font-weight:600;display:inline-block}
+
+  .updated{font-size:.78rem;color:var(--slate);text-align:center;margin-top:20px}
+  a{color:var(--teal)}
+  .back-top{display:inline-block;margin-top:14px;font-size:.78rem}
+
+
+  .fig{margin:14px 0;text-align:center}
+  .fig img{max-width:100%;width:420px;border-radius:12px;box-shadow:0 2px 10px rgba(14,165,183,.18);border:1px solid var(--border)}
+  .fig figcaption{font-size:.76rem;color:var(--slate);margin-top:6px}
+  .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:14px 0}
+  .two .fig{margin:0}
+  .two .fig img{width:100%}
+  .two>*{min-width:0}.fig{min-width:0}.fig img{height:auto}
+  .badge{display:inline-block;font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
+  .b-full{background:#0D1B2D;color:#fff}.b-demo{background:#dcfce7;color:#15803d}
+  ul.list{padding-left:20px;margin:6px 0 10px}ul.list li{font-size:.88rem;margin-bottom:5px}
+  .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .cta{display:inline-block;padding:10px 16px;border-radius:10px;font-weight:700;font-size:.86rem;text-decoration:none}
+  .cta.dark{background:linear-gradient(135deg,#0D1B2D,#0EA5B7);color:#fff}
+  .cta.line{border:1.5px solid var(--teal);color:var(--teal);background:#fff}
+
+</style>
+<style>.portada{max-width:340px}</style>
+</head>
+<body>
+<header>
+  <div class="portada"><img src="assets/logo-gyn.jpg" width="640" height="640" alt="CaVeSal® GYN · Ginecología · Herramientas clínicas para la práctica ginecológica"></div>
+  <h1>Tutorial y Manual de Uso · CaVeSal® GYN</h1>
+  <p>Cómo usar cada función, en el mismo orden en que aparece en la app</p>
+</header>
+<main>
+<nav class="toc" id="top">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#intro">Antes de empezar</a><ol><li><a href="#demo-full">Demo y versión completa</a></li><li><a href="#instalar">Instalar y activar</a></li></ol></li>
+    <li><a href="#organizacion">Cómo está organizada la app</a><ol><li><a href="#botones">Botones de arriba</a></li></ol></li>
+    <li><a href="#funciones">Funciones que ya calculan</a><ol><li><a href="#fertilidad">Fertilidad: ovulación, progesterona y trigger</a></li><li><a href="#preconcepcional">Preconcepcional: panel hormonal</a></li><li><a href="#mrs">Climaterio: escala MRS</a></li></ol></li>
+    <li><a href="#proximamente">Funciones en preparación</a></li>
+    <li><a href="#ecosistema">Academy, IA y Acerca</a></li>
+    <li><a href="#legal">Aviso legal y contacto</a></li>
+  </ol>
+</nav>
+
+<div class="tab-divider" id="intro"><h2>Antes de empezar</h2><p>Qué es CaVeSal® GYN y para quién es</p></div>
+<section>
+  <h2>Qué es</h2>
+  <p>CaVeSal® GYN es una calculadora gineco-endocrinológica para profesionales de la salud. Reúne funciones de fertilidad, estudio preconcepcional, climaterio y, en próximas versiones, adolescencia, anticoncepción, salud ginecológica y endocrinología.</p>
+  <p>Cada función calcula su propio resultado en el mismo bloque donde cargás los datos. No hay una pestaña de resultados aparte: lo que cambiás se recalcula al instante.</p>
+  <p>Al abrir la app por primera vez aparece el aviso legal. Marcá la casilla y tocá Aceptar para continuar.</p>
+  <figure class="fig"><img src="img/manual/01-aviso.jpg" alt="Aviso legal al primer ingreso"><figcaption>Aviso legal al primer ingreso</figcaption></figure>
+  <div class="warn">Es una herramienta de apoyo a la decisión clínica. No reemplaza el criterio del profesional.</div>
+</section>
+<section id="demo-full">
+  <h2>Demo y versión completa</h2>
+  <p><span class="badge b-demo">Demo</span> Abierta para probar: la escala MRS y el día de ovulación con la ventana del dosaje de progesterona.</p>
+  <p><span class="badge b-full">Versión completa</span> Suma el momento del trigger según el esquema de inducción, el panel hormonal preconcepcional y todas las funciones que se vayan agregando, sin costo extra.</p>
+  <p>En la Demo, arriba aparece un aviso amarillo con el botón Activar versión completa. Las funciones cerradas muestran la etiqueta Versión completa y, al abrirlas, un candado con los enlaces de compra.</p>
+  <div class="two"><figure class="fig"><img src="img/manual/02-inicio-demo.jpg" alt="Inicio en Demo"><figcaption>Inicio en Demo</figcaption></figure><figure class="fig"><img src="img/manual/03-bloqueo.jpg" alt="Función de la versión completa" loading="lazy" width="400" height="860"><figcaption>Función de la versión completa</figcaption></figure></div>
+  <a class="back-top" href="#top">↑ Volver al contenido</a>
+</section>
+<section id="instalar">
+  <h2>Instalar y activar</h2>
+  <div class="step"><span class="step-num">1</span><p>Abrí <b>cavesal.app/cavesal-gyn/</b> en el navegador del celular o la computadora.</p></div><div class="step"><span class="step-num">2</span><p>Para tenerla como app: en Android, menú ⋮ y Agregar a la pantalla principal. En iPhone, botón Compartir y Agregar a inicio.</p></div><div class="step"><span class="step-num">3</span><p>Tocá Activar versión completa y escribí tu clave con el formato XXXX-XXXX-XXXX-XXXX.</p></div><div class="step"><span class="step-num">4</span><p>La clave habilita un dispositivo. Si cambiaste de equipo o borraste los datos del navegador, usá el enlace para reactivarla.</p></div>
+  <figure class="fig"><img src="img/manual/04-activar.jpg" alt="Ventana para activar la clave"><figcaption>Ventana para activar la clave</figcaption></figure>
+  <div class="tip">Si todavía no tenés clave, desde la misma ventana podés comprar con tarjeta o por transferencia.</div>
+  <a class="back-top" href="#top">↑ Volver al contenido</a>
+</section>
+
+<div class="tab-divider" id="organizacion"><h2>Cómo está organizada la app</h2><p>Categorías, etapa de vida y botones</p></div>
+<section>
+  <h2>Categorías y etapa de vida</h2>
+  <p>La pantalla de inicio muestra seis categorías: Adolescencia, Anticoncepción, Salud Ginecológica, Fertilidad y Reproducción, Climaterio y Endocrinología. El número de cada botón indica cuántas funciones tiene.</p>
+  <p>Con el filtro Etapa de vida (adolescencia, edad fértil, climaterio y menopausia, postmenopausia) ves solo las funciones que aplican a esa etapa. Tocá Todas para volver a verlas completas.</p>
+  <p>Cada función tiene una etiqueta: <b>Con lógica en v1</b> si ya calcula, o <b>Próximamente</b> si está en preparación.</p>
+</section>
+<section id="botones">
+  <h2>Botones de arriba</h2>
+  <ul class="list">
+    <li><b>Inicio</b>: vuelve a la pantalla principal.</li>
+    <li><b>Academy</b>: abre CaVeSal® Academy con las guías completas. Incluida con la versión completa.</li>
+    <li><b>CaVeSal® IA</b>: abre la IA profesional, que se adquiere aparte.</li>
+    <li><b>Tutorial</b>: este manual.</li>
+    <li><b>Acerca</b>: autoría, ecosistema, bases clínicas y aviso legal.</li>
+    <li>El botón redondo de la esquina cambia entre tema claro y oscuro.</li>
+  </ul>
+  <a class="back-top" href="#top">↑ Volver al contenido</a>
+</section>
+
+<div class="tab-divider" id="funciones"><h2>Funciones que ya calculan</h2><p>Cada bloque muestra su resultado y sus fuentes</p></div>
+<section id="fertilidad">
+  <h2>Fertilidad: ovulación, progesterona y trigger</h2>
+  <p class="ref">Algoritmo propio CaVeSal® · Basado en: ASRM 2013 y 2020, ESHRE 2023 y 2025, MSPyBS 2025</p>
+  <div class="step"><span class="step-num">1</span><p>Cargá la duración del ciclo en días: desde el primer día de una menstruación hasta el primer día de la siguiente.</p></div><div class="step"><span class="step-num">2</span><p>Si cargás la fecha de la última menstruación, la app muestra también la fecha de ovulación y la del dosaje de progesterona.</p></div><div class="step"><span class="step-num">3</span><p><span class="badge b-full">Versión completa</span> Elegí el esquema de inducción (clomifeno, letrozol o gonadotropinas) y el diámetro del folículo líder en milímetros.</p></div><div class="step"><span class="step-num">4</span><p>La app indica si el folículo está en rango para el trigger, por debajo o por encima del tamaño recomendado.</p></div>
+  <h3>Rangos del folículo líder</h3>
+  <ul class="list">
+    <li>Clomifeno: 20 a 28 mm, con mejores tasas entre 23 y 28 mm.</li>
+    <li>Letrozol: 19 a 23 mm, tolerado hasta 28 mm.</li>
+    <li>Gonadotropinas: 16 a 18 mm, tolerado hasta 20 mm.</li>
+  </ul>
+  <div class="two"><figure class="fig"><img src="img/manual/05-fertilidad-demo.jpg" alt="Fertilidad en Demo: ovulación y progesterona"><figcaption>Fertilidad en Demo: ovulación y progesterona</figcaption></figure><figure class="fig"><img src="img/manual/06-fertilidad.jpg" alt="Versión completa: esquema y folículo líder" loading="lazy" width="400" height="860"><figcaption>Versión completa: esquema y folículo líder</figcaption></figure></div>
+  <div class="tip">En la Demo, el esquema y el folículo quedan ocultos y aparece el aviso de la versión completa.</div>
+  <a class="back-top" href="#top">↑ Volver al contenido</a>
+</section>
+<section id="preconcepcional">
+  <h2>Preconcepcional: panel hormonal <span class="badge b-full">Versión completa</span></h2>
+  <p class="ref">Algoritmo propio CaVeSal® · Basado en: ASRM 2020 (reserva ovárica) · ATA 2017</p>
+  <p>Todos los valores son opcionales: cargá solo los que tengas. FSH, LH, AMH, TSH y prolactina se dosan del día 2 al 5 del ciclo; la progesterona, el día 21.</p>
+  <p>Cada valor muestra su interpretación orientativa: reserva ovárica, relación LH/FSH, meta de TSH preconcepcional, prolactina y confirmación de la ovulación.</p>
+  <figure class="fig"><img src="img/manual/07-panel.jpg" alt="Panel hormonal con valores cargados"><figcaption>Panel hormonal con valores cargados</figcaption></figure>
+  <a class="back-top" href="#top">↑ Volver al contenido</a>
+</section>
+<section id="mrs">
+  <h2>Climaterio: escala MRS <span class="badge b-demo">Demo</span></h2>
+  <p class="ref">Basado en: Heinemann 2004 (Menopause Rating Scale)</p>
+  <p>Marcá cada uno de los 11 síntomas de 0 (ninguno) a 4 (muy severo). El total, de 0 a 44, se actualiza arriba con su grado de severidad. Debajo se ve el puntaje de cada subescala: somato-vegetativa, psicológica y urogenital.</p>
+  <figure class="fig"><img src="img/manual/08-mrs.jpg" alt="Escala MRS con el total y la severidad"><figcaption>Escala MRS con el total y la severidad</figcaption></figure>
+  <div class="tip">La guía de la escala MRS y terapia hormonal está en la Historia Clínica CaVeSal® y en Academy.</div>
+  <a class="back-top" href="#top">↑ Volver al contenido</a>
+</section>
+
+<div class="tab-divider" id="proximamente"><h2>Funciones en preparación</h2><p>Se activan cuando están definidos sus criterios y su bibliografía</p></div>
+<section>
+  <h2>Próximamente</h2>
+  <p>Las funciones con la etiqueta Próximamente muestran qué cargaría el médico y qué devolvería, pero todavía no calculan. Se programan una vez definidos sus criterios clínicos y sus fuentes, y llegan como actualización sin costo para la versión completa.</p>
+  <figure class="fig"><img src="img/manual/09-proximamente.jpg" alt="Ejemplo de función en preparación"><figcaption>Ejemplo de función en preparación</figcaption></figure>
+  <a class="back-top" href="#top">↑ Volver al contenido</a>
+</section>
+
+<div class="tab-divider" id="ecosistema"><h2>Academy, IA y Acerca</h2><p>El resto del ecosistema CaVeSal®</p></div>
+<section>
+  <h2>Academy e IA</h2>
+  <p><b>CaVeSal® Academy</b> reúne las guías clínicas completas de todas las apps, incluidas las de ginecología, endocrinología y fertilidad. Está incluida con la versión completa: al tocar Academy desde la app, se abre con tu acceso.</p>
+  <p><b>CaVeSal® IA</b> es la inteligencia artificial profesional. Se adquiere aparte.</p>
+</section>
+<section>
+  <h2>Acerca</h2>
+  <p>Muestra el ecosistema de apps (esta en versión completa y las demás en Demo), el QR para invitar a tus pacientes a CaVeSal® Mamá y CaVeSal® Mujer, los tutoriales, la autoría clínica, las bases clínicas con su bibliografía y el aviso legal.</p>
+  <figure class="fig"><img src="img/manual/10-acerca.jpg" alt="Pantalla Acerca"><figcaption>Pantalla Acerca</figcaption></figure>
+  <a class="back-top" href="#top">↑ Volver al contenido</a>
+</section>
+
+<section id="legal">
+  <h2>Aviso legal y contacto</h2>
+  <p>CaVeSal® GYN es una herramienta de apoyo a la decisión clínica dirigida exclusivamente a profesionales de la salud. No diagnostica ni reemplaza el juicio clínico. La mención de ASRM, ESHRE, ATA, OMS, FIGO y otras instituciones tiene fines de atribución bibliográfica; ninguna patrocina, avala ni certifica CaVeSal®.</p>
+  <p>El software, el diseño, los textos y la lógica están protegidos por la Ley N.º 1328/1998 de Paraguay y el Convenio de Berna.</p>
+  <p>Consultas: <a href="mailto:drverasalerno@gmail.com">drverasalerno@gmail.com</a></p>
+  <div class="ctas"><a class="cta dark" href="index.html">Abrir CaVeSal® GYN</a><a class="cta line" href="acerca.html">Acerca</a></div>
+  <p class="updated">Actualizado: noviembre de 2026 · © 2026 CaVeSal® · Dr. Carlos Vera Salerno</p>
+</section>
+</main>
+</body>
+</html>
