@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>CaVeSal® GYN · Pruebas</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:16px;max-width:900px;line-height:1.4}
+h1{font-size:1.3rem} h2{font-size:1.05rem;margin-top:20px}
+.ok{color:#1b6e3a} .mal{color:#a1241b;font-weight:700}
+li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-radius:8px}
+</style>
+</head>
+<body>
+<h1>CaVeSal® GYN · Pruebas obligatorias</h1>
+<div id="resumen"></div>
+<div id="out"></div>
+<script src="js/textos-es.js"></script>
+<script src="js/fertilidad.js"></script>
+<script src="js/preconcepcional.js"></script>
+<script src="js/mrs.js"></script>
+<script>
+(function () {
+  var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
+  function grupo(t) { var h = document.createElement('h2'); h.textContent = t; out.appendChild(h); ul = document.createElement('ul'); out.appendChild(ul); }
+  function eq(desc, real, esperado) {
+    var pasa = JSON.stringify(real) === JSON.stringify(esperado);
+    pasa ? ok++ : mal++;
+    var li = document.createElement('li');
+    li.className = pasa ? 'ok' : 'mal';
+    li.textContent = (pasa ? 'APROBADO · ' : 'FALLADO · ') + desc + (pasa ? '' : ' → obtenido ' + JSON.stringify(real) + ', esperado ' + JSON.stringify(esperado));
+    ul.appendChild(li);
+  }
+  var F = GYN.fertilidad, P = GYN.preconcepcional, M = GYN.mrs;
+
+  grupo('Fertilidad · ciclo');
+  var c = F.calcularCiclo(28);
+  eq('Ciclo 28 → ovulación día 14', c.ovulacion, 14);
+  eq('Ciclo 28 → progesterona día 21 a 24', [c.p4Desde, c.p4Hasta], [21, 24]);
+  c = F.calcularCiclo(30);
+  eq('Ciclo 30 → ovulación día 16', c.ovulacion, 16);
+  eq('Ciclo 30 → progesterona día 23 a 26', [c.p4Desde, c.p4Hasta], [23, 26]);
+  eq('Ciclo 29 → ovulación día 15', F.calcularCiclo(29).ovulacion, 15);
+  eq('Ciclo 20 → aviso fuera de rango', F.calcularCiclo(20).fueraDeRango, true);
+  eq('Ciclo 36 → aviso fuera de rango', F.calcularCiclo(36).fueraDeRango, true);
+  eq('Ciclo 35 → sin aviso', F.calcularCiclo(35).fueraDeRango, false);
+
+  // Umbrales según la literatura (VALIDAR CON CARLOS): ver js/fertilidad.js
+  grupo('Fertilidad · trigger con letrozol (rango 19-23, tolerancia hasta 28)');
+  [[18, 'noAlcanza'], [18.9, 'noAlcanza'], [19, 'rango'], [21, 'rango'], [23, 'rango'], [23.5, 'tolerancia'], [28, 'tolerancia'], [28.5, 'encima']]
+    .forEach(function (p) { eq('Letrozol ' + p[0] + ' mm → ' + p[1], F.clasificarFoliculo('letrozol', p[0]), p[1]); });
+  grupo('Fertilidad · trigger con clomifeno (rango 20-28)');
+  [[19.9, 'noAlcanza'], [20, 'rango'], [24, 'rango'], [28, 'rango'], [28.1, 'encima']]
+    .forEach(function (p) { eq('Clomifeno ' + p[0] + ' mm → ' + p[1], F.clasificarFoliculo('clomifeno', p[0]), p[1]); });
+  grupo('Fertilidad · trigger con HMG o FSH (rango 16-18, tolerancia hasta 20)');
+  [[15, 'noAlcanza'], [16, 'rango'], [18, 'rango'], [18.5, 'tolerancia'], [20, 'tolerancia'], [20.1, 'encima']]
+    .forEach(function (p) { eq('HMG/FSH ' + p[0] + ' mm → ' + p[1], F.clasificarFoliculo('gonadotropinas', p[0]), p[1]); });
+
+  grupo('Preconcepcional · panel hormonal');
+  eq('FSH 7 → óptima', P.fsh(7).etq, 'Óptima');
+  eq('FSH 9 → límite', P.fsh(9).etq, 'Límite superior del rango óptimo');
+  eq('FSH 12 → intermedia', P.fsh(12).etq, 'Intermedia, sin categoría en la guía');
+  eq('FSH 16 → baja reserva', P.fsh(16).etq, 'Baja reserva ovárica');
+  var r = P.relacion(6, 5);
+  eq('LH 6 / FSH 5 (1,2) → no sugiere SOP', [r.valor, r.etq], [1.2, 'No sugiere SOP']);
+  r = P.relacion(12, 3);
+  eq('LH 12 / FSH 3 (4) → sugiere SOP', [r.valor, r.etq], [4, 'Sugiere SOP']);
+  eq('Sin LH → no calcula relación', P.relacion(null, 5), null);
+  eq('Progesterona 12 → óptima', P.p4(12).etq, 'Óptima');
+  eq('Progesterona 5 → por debajo del óptimo', P.p4(5).etq, 'Confirma ovulación, pero por debajo del valor óptimo');
+  eq('Progesterona 2 → no confirma', P.p4(2).etq, 'No confirma ovulación');
+  eq('AMH 2 → óptima', P.amh(2).etq, 'Óptima');
+  eq('AMH 0,8 → fuera del rango', P.amh(0.8).etq, 'Fuera del rango óptimo de la guía');
+  eq('TSH 2,4 → dentro de la meta', P.tsh(2.4).color, 'verde');
+  eq('TSH 2,5 → por encima de la meta', P.tsh(2.5).color, 'ambar');
+  eq('Prolactina 19 → normal', P.prl(19).etq, 'Normal');
+  eq('Prolactina 22 → límite', P.prl(22).etq, 'Límite');
+  eq('Prolactina 26 → elevada', P.prl(26).etq, 'Elevada');
+
+  grupo('Escala MRS');
+  function resp(o) { var a = [0,0,0,0,0,0,0,0,0,0,0]; Object.keys(o).forEach(function (k) { a[k - 1] = o[k]; }); return a; }
+  var t = M.calcular(resp({}));
+  eq('Todos en 0 → total 0 "sin o pocos síntomas"', [t.total.puntaje, t.total.nivel], [0, 0]);
+  t = M.calcular(resp({ 1: 4, 2: 4, 3: 4, 4: 4 }));
+  eq('Ítems 1 a 4 en 4 → somático 16 "8 o más"', [t.somatico.puntaje, t.somatico.rango], [16, '8 o más']);
+  eq('Ítems 1 a 4 en 4 → total 16 "severo"', [t.total.puntaje, t.total.nivel], [16, 3]);
+  t = M.calcular(resp({ 9: 1, 10: 1, 11: 1 }));
+  eq('Ítems 9 a 11 en 1 → urogenital 3 "2 a 3"', [t.urogenital.puntaje, t.urogenital.rango], [3, '2-3']);
+  eq('Ítems 9 a 11 en 1 → total 3 "sin o pocos síntomas"', [t.total.puntaje, t.total.nivel], [3, 0]);
+  eq('Total 8 → leve', M.nivel('total', 8), 1);
+  eq('Total 9 → moderado', M.nivel('total', 9), 2);
+  eq('Total 15 → moderado', M.nivel('total', 15), 2);
+  eq('Psicológico 7 → severo', M.nivel('psicologico', 7), 3);
+  eq('Somático 7 → moderado', M.nivel('somatico', 7), 2);
+  eq('Urogenital 1 → leve', M.nivel('urogenital', 1), 1);
+
+  var res = document.getElementById('resumen');
+  res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;
+  res.style.background = mal === 0 ? '#e6f4ea' : '#fbe5e3';
+  document.title = (mal === 0 ? 'OK ' : 'FALLO ') + document.title;
+})();
+</script>
+</body>
+</html>
