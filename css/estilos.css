@@ -193,3 +193,16 @@ button,input,select{font:inherit;color:inherit}
 .bloqueo .compra{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:.8rem}
 .bloqueo .compra a{color:var(--teal-ink)}
 .b-full{background:#eef2f7;color:#334155}
+/* Prolapso POP-Q */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.grid2>*,.grid3>*{min-width:0}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:.88rem;margin:4px 0 10px}
+.chk input{margin-top:3px;width:18px;height:18px}
+.pq-grilla{display:grid;grid-template-columns:repeat(3,1fr);border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.pq-celda{padding:8px;text-align:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface)}
+.pq-celda:nth-child(3n){border-right:0}.pq-celda:nth-child(n+7){border-bottom:0}
+.pq-celda span{display:block;font-size:.72rem;color:var(--ink-soft);font-weight:700}
+.pq-celda b{font-size:1rem}
+.pq-notas{margin:0;padding-left:18px;font-size:.82rem;color:var(--ink-soft)}
+.pq-acciones{display:flex;gap:10px;flex-wrap:wrap}

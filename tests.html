@@ -20,6 +20,7 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/fertilidad.js"></script>
 <script src="js/preconcepcional.js"></script>
 <script src="js/mrs.js"></script>
+<script src="js/prolapso.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -94,6 +95,23 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Psicológico 7 → severo', M.nivel('psicologico', 7), 3);
   eq('Somático 7 → moderado', M.nivel('somatico', 7), 2);
   eq('Urogenital 1 → leve', M.nivel('urogenital', 1), 1);
+
+  grupo('Prolapso · POP-Q');
+  var Q = GYN.prolapso, base = function (o) { var d = { aa: -3, ba: -3, c: -8, d: -10, ap: -3, bp: -3, tvl: 10, gh: 3, pb: 3, histerectomia: false }; for (var k in o) d[k] = o[k]; return d; };
+  var q = Q.calcular(base({}));
+  eq('Todo en -3 y C -8 con LVT 10 → estadio 0', [q.global, q.anterior, q.apical, q.posterior], [0, 0, 0, 0]);
+  eq('C -7 con LVT 10 → apical I', Q.calcular(base({ c: -7 })).apical, 1);
+  eq('Ba -2 → anterior I', Q.calcular(base({ ba: -2 })).anterior, 1);
+  eq('Ba -1 → anterior II (límite)', Q.calcular(base({ aa: -1, ba: -1 })).anterior, 2);
+  eq('Ba +1 → anterior II (límite)', Q.calcular(base({ aa: 1, ba: 1 })).anterior, 2);
+  eq('Ba +2 → anterior III', Q.calcular(base({ aa: 2, ba: 2 })).anterior, 3);
+  eq('C +8 con LVT 10 → apical IV', Q.calcular(base({ c: 8, d: 6 })).apical, 4);
+  eq('Bp +3 → posterior III; global III', [Q.calcular(base({ ap: 2, bp: 3 })).posterior, Q.calcular(base({ ap: 2, bp: 3 })).global], [3, 3]);
+  eq('Global = compartimento más avanzado', Q.calcular(base({ aa: 2, ba: 3, c: -2, ap: -2, bp: -2 })).global, 3);
+  eq('Histerectomía: sin D, cúpula C -6 con LVT 8 → 0', Q.calcular(base({ c: -6, d: null, tvl: 8, histerectomia: true })).apical, 0);
+  eq('Falta un punto → sin resultado', Q.calcular(base({ bp: null })).ok, false);
+  eq('Ba por encima de Aa → aviso', Q.calcular(base({ aa: 0, ba: -2 })).avisos.indexOf('ba') >= 0, true);
+  eq('Hiato gh + pb', Q.calcular(base({ gh: 4.5, pb: 2.5 })).hiato, 7);
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;

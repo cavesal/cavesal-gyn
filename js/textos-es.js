@@ -64,6 +64,8 @@
             entra: ['Hallazgos ecográficos', 'HSG, HyFoSy y otros estudios del catálogo'],
             sale: ['Conducta sugerida', 'Resumen para CaVeSal® IA'],
             nota: 'El catálogo exacto de estudios está abierto.' },
+          { id: 'prolapso', nombre: 'Prolapso genital: POP-Q', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
+            resumen: 'Estadio POP-Q global y por compartimento: anterior, apical (C y D) y posterior.' },
           { id: 'orads', nombre: 'Masa anexial: O-RADS / IOTA', estado: 'prox', etapas: TODAS,
             resumen: 'Checklist de hallazgos que devuelve una categoría de riesgo.',
             entra: ['Tamaño, componente sólido, vascularización, septos'],
@@ -157,6 +159,47 @@
       cita: 'Heinemann LAJ, Do MT, Strelow F, Gerbsch S, Schnitker J, Schneider HPG. The Menopause Rating Scale (MRS) as outcome measure for hormone treatment? A validation study. Health Qual Life Outcomes. 2004;2:67.',
       citaUrl: 'https://doi.org/10.1186/1477-7525-2-67',
       etiqueta: 'Algoritmo propio CaVeSal® · Basado en: Heinemann LAJ et al. Health Qual Life Outcomes 2004;2:67'
+    },
+
+    prolapso: {
+      titulo: 'Prolapso genital: POP-Q',
+      ayuda: 'Cargá cada punto en centímetros respecto al himen, con la paciente haciendo pujo máximo: negativo por encima del himen, positivo por debajo.',
+      histerectomia: 'Histerectomía previa (no hay cuello: C es la cúpula y no se mide D)',
+      grupos: { anterior: 'Compartimento anterior', apical: 'Compartimento apical', posterior: 'Compartimento posterior', medidas: 'Medidas' },
+      ayudas: {
+        aa: 'Pared anterior a 3 cm del meato. De -3 a +3.',
+        ba: 'Punto más bajo de la pared anterior por encima de Aa. Sin prolapso: -3.',
+        c: 'Borde del cuello o cúpula vaginal.',
+        d: 'Fondo de saco posterior. Solo con cuello.',
+        ap: 'Pared posterior a 3 cm del himen. De -3 a +3.',
+        bp: 'Punto más bajo de la pared posterior por encima de Ap. Sin prolapso: -3.',
+        tvl: 'Longitud vaginal total, en reposo.',
+        gh: 'Hiato genital (opcional).',
+        pb: 'Cuerpo perineal (opcional).'
+      },
+      faltan: 'Completá Aa, Ba, C, Ap, Bp y LVT para ver el estadio.',
+      global: 'Estadio POP-Q global',
+      estadio: 'Estadio',
+      puntoDistal: 'Punto más distal',
+      distal: 'Punto más bajo:',
+      desc: ['Sin prolapso', 'Más de 1 cm por encima del himen', 'Entre 1 cm por encima y 1 cm por debajo del himen', 'Más de 1 cm por debajo del himen, sin eversión completa', 'Eversión completa o casi completa (≥ LVT − 2 cm)'],
+      nombres: { cistocele: 'Cistocele', utero: 'Histerocele (prolapso uterino)', cupula: 'Prolapso de cúpula vaginal', rectocele: 'Rectocele o enterocele' },
+      grilla: 'Grilla POP-Q 3 × 3',
+      hiato: 'Hiato genital más cuerpo perineal',
+      avisos: {
+        tvl: 'Revisar LVT: valor fuera de lo habitual.',
+        aa: 'Aa va de -3 a +3 cm.',
+        ap: 'Ap va de -3 a +3 cm.',
+        ba: 'Ba no puede quedar por encima de Aa: revisar.',
+        bp: 'Bp no puede quedar por encima de Ap: revisar.',
+        c: 'C no puede superar la LVT: revisar.',
+        d: 'D quedó más bajo que C: revisar la medición.'
+      },
+      conHx: 'Con histerectomía previa.',
+      copiar: 'Copiar resultado',
+      copiado: 'Copiado',
+      cita: 'Bump RC, Mattiasson A, Bø K, et al. The standardization of terminology of female pelvic organ prolapse and pelvic floor dysfunction. Am J Obstet Gynecol. 1996;175:10-17 · Haylen BT, Maher CF, Barber MD, et al. An International Urogynecological Association (IUGA)/International Continence Society (ICS) joint report on the terminology for female pelvic organ prolapse (POP). Int Urogynecol J. 2016;27:165-194.',
+      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: Bump 1996 (POP-Q) · IUGA/ICS 2016'
     },
 
     legal: {
