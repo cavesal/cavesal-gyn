@@ -24,6 +24,7 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/vaginitis.js"></script>
 <script src="js/thm.js"></script>
 <script src="js/mec.js"></script>
+<script src="js/incretinas.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -199,6 +200,24 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Suspensión: 48 sin hormonas, 23 meses → seguir; 24 → suspender', [E.calcular(mb({ edad: 48, metodoActual: 'ninguno', amenorreaMeses: 23 })).suspension.clave, E.calcular(mb({ edad: 48, metodoActual: 'ninguno', amenorreaMeses: 24 })).suspension.clave], ['noHormonalMenos50', 'noHormonalSuspender']);
   eq('Suspensión: 50 sin hormonas, 12 meses → suspender', E.calcular(mb({ edad: 50, metodoActual: 'cu', amenorreaMeses: 12 })).suspension.clave, 'noHormonalSuspender');
   eq('Menos de 40 años → sin bloque SIC', E.calcular(mb({ edad: 39 })).mas40, null);
+
+  grupo('Incretinas');
+  var I = GYN.incretinas, hoy = new Date(2026, 10, 13);
+  eq('IMC 90 kg, 160 cm = 35,2', I.imc(90, 160), 35.2);
+  eq('Indicación: IMC 30 cumple; 28 sin comorbilidad no; 28 con comorbilidad sí', [I.indicacion(30, false).cumple, I.indicacion(28, false).cumple, I.indicacion(28, true).cumple], [true, false, true]);
+  eq('Escalada: sin iniciar semaglutida → 0,25 mg', I.escalada('sema', -1, null, 'buena', hoy).dosis, 0.25);
+  eq('Escalada: semaglutida 0,5 mg, 4 semanas, tolera → 1 mg', I.escalada('sema', 1, 4, 'buena', hoy).sig, 1);
+  eq('Escalada: tirzepatida 5 mg, 2 semanas → esperar hasta 27/11/2026', [I.escalada('tirze', 1, 2, 'buena', hoy).clave, I.escalada('tirze', 1, 2, 'buena', hoy).fecha.getDate()], ['esperar', 27]);
+  eq('Escalada: no tolera → no escalar', I.escalada('tirze', 2, 8, 'no', hoy).clave, 'noTolera');
+  eq('Escalada: 2,4 mg y 15 mg son máximas', [I.escalada('sema', 4, 8, 'buena', hoy).clave, I.escalada('tirze', 5, 8, 'buena', hoy).clave], ['maxima', 'maxima']);
+  eq('Respuesta: 100→96 kg a 12 semanas = 4 % insuficiente', [I.respuesta(100, 96, 12).pct, I.respuesta(100, 96, 12).insuficiente], [4, true]);
+  eq('Respuesta: 100→96 kg a 8 semanas no evaluable', I.respuesta(100, 96, 8).evaluable, false);
+  eq('Respuesta: 100→95 kg a 12 semanas adecuada', I.respuesta(100, 95, 12).insuficiente, false);
+  var ib = function (o) { var d = { objetivo: 'peso', mol: 'sema', dosisIdx: 0, semanasDosis: '4', semanasTotales: '4', tolerancia: 'buena', pesoIni: '', pesoAct: '', talla: '', metodo: 'nooral', comorbilidad: false, contra: {}, hoy: hoy }; for (var k in o) d[k] = o[k]; return d; };
+  eq('Contraindicación absoluta bloquea la escalada', [I.calcular(ib({ contra: { mtc: true } })).bloqueo, I.calcular(ib({ contra: { mtc: true } })).escalada], [true, null]);
+  eq('Washout: semaglutida 60 días, tirzepatida 30 días', [I.calcular(ib({ objetivo: 'embarazo' })).washout.desde.getMonth(), I.calcular(ib({ objetivo: 'embarazo', mol: 'tirze' })).washout.desde.getDate()], [0, 13]);
+  eq('Anticoncepción: tirzepatida + oral → ámbar; sin método → rojo; semaglutida + oral → verde', [I.calcular(ib({ mol: 'tirze', metodo: 'oral', semanasDosis: '1' })).anticoncepcion.color, I.calcular(ib({ metodo: 'ninguno' })).anticoncepcion.color, I.calcular(ib({ metodo: 'oral' })).anticoncepcion.color], ['ambar', 'rojo', 'verde']);
+  eq('Precaución no bloquea', I.calcular(ib({ contra: { bil: true } })).bloqueo, false);
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;

@@ -95,11 +95,8 @@
         ] },
       { id: 'endocrino', nombre: 'Endocrinología', intro: 'Seguimiento metabólico de la paciente no embarazada.',
         funciones: [
-          { id: 'glp1', nombre: 'Seguimiento GLP-1 y metformina', estado: 'prox', etapas: ['edad-fertil', 'climaterio'],
-            resumen: 'Peso y dosis en el tiempo para detectar falta de respuesta al tratamiento.',
-            entra: ['Peso y dosis actual en cada control', 'Glicemia'],
-            sale: ['Si la baja de peso es la esperada para esa dosis'],
-            nota: 'Esquemas de dosis y escalada quedan como texto de guía, no como calculadora.' },
+          { id: 'incretinas', nombre: 'Incretinas: escalada, contraindicaciones y alarma', estado: 'v1', etapas: ['edad-fertil', 'climaterio'],
+            resumen: 'Semaglutida y tirzepatida: indicación por IMC, contraindicaciones, escalada con fecha, respuesta a 12 semanas, washout, anticoncepción y signos de alarma.' },
           { id: 'dm', nombre: 'Diabetes fuera del embarazo', estado: 'prox', etapas: ['edad-fertil', 'climaterio'],
             resumen: 'Prediabetes y diabetes tipo 2 con criterio para no gestante.',
             entra: ['Glucemia en ayunas, PTOG, HbA1c'],

@@ -10,6 +10,7 @@ Con lógica:
 - Fertilidad: día de ovulación (ciclo − 14), dosaje de progesterona (ovulación + 7 a + 10), fechas si se carga la FUM, y clasificación del folículo líder para el trigger según esquema (letrozol, clomifeno, HMG/FSH).
 - Preconcepcional: panel hormonal (FSH, LH, relación LH/FSH, AMH, TSH, prolactina, progesterona día 21).
 - Escala MRS (Heinemann 2004): 11 ítems, total sobre 44 y subescalas somática, psicológica y urogenital.
+- Incretinas (solo Full): semaglutida y tirzepatida con indicación por IMC, contraindicaciones y precauciones, escalada cada 4 semanas con fecha, respuesta a 12 semanas (<5 % insuficiente), washout por molécula, anticoncepción, estudios basales y signos de alarma.
 
 Próximamente (sin cálculo, solo ficha): el resto de las funciones del catálogo del boceto.
 
@@ -29,6 +30,7 @@ js/textos-es.js       catálogo, textos de interfaz, legales y etiquetas
 js/fertilidad.js      ciclo y trigger
 js/preconcepcional.js panel hormonal
 js/mrs.js             escala MRS
+js/incretinas.js      incretinas: escalada, contraindicaciones y alarma
 js/licencia.js        licencia (producto gyn)
 js/cvs-lic.js         persistencia y reactivación de la clave
 js/app.js             rutas, filtros y pantallas
