@@ -1,5 +1,7 @@
 /* CaVeSal® GYN · Puente HC → GYN (fase 1): recibe datos estructurados de la Historia Clínica CaVeSal®
    (sin nombre ni documento) y precarga MRS, MEC, THM, Incretinas y el semáforo preconcepcional.
+   Fase 2: Incontinencia (Diario Miccional), IMC, Fertilidad (FUM y ciclo), SOMP, Pareja, Endometriosis (EFI),
+   masa anexial y estudios (edad).
    Solo precarga: cada dato queda editable y la conducta la sigue definiendo el profesional.
    © 2026 Dr. Carlos Vera Salerno · Ley N.º 1328/1998 (Paraguay). Prohibida su copia o reproducción. */
 (function (w) {
@@ -90,11 +92,73 @@
       return '';
     },
     preconcepcional: function (cont, d) {
+      fijar(cont.querySelector('#s-edad'), d.edad);
+      fijar(cont.querySelector('#s-peso'), d.peso);
+      fijar(cont.querySelector('#s-talla'), d.talla);
       fijar(cont.querySelector('#s-dm'), d.p_dm);
       fijar(cont.querySelector('#s-epi'), d.p_epi);
       return '';
+    },
+    imc: function (cont, d) {
+      if (!d.peso && !d.talla) return null;
+      fijar(cont.querySelector('#imc-peso'), d.peso);
+      fijar(cont.querySelector('#imc-talla'), d.talla);
+      return '';
+    },
+    incontinencia: function (cont, d) {
+      var x = d.diario, notas = [];
+      fijar(cont.querySelector('#u-edad'), d.edad);
+      fijar(cont.querySelector('#u-peso'), d.peso);
+      fijar(cont.querySelector('#u-imc'), (d.imc !== undefined && d.imc >= 30) || d.p_obesidad);
+      if (x) {
+        fijar(cont.querySelector('#u-md'), x.micDia);
+        fijar(cont.querySelector('#u-mn'), x.micNoche);
+        fijar(cont.querySelector('#u-ue'), x.urg);
+        fijar(cont.querySelector('#u-pu'), x.pUrg);
+        fijar(cont.querySelector('#u-v24'), x.vol24);
+        fijar(cont.querySelector('#u-vn'), x.volNoche);
+        notas.push('Diario Miccional: promedio de ' + x.dias + (x.dias === 1 ? ' día' : ' días') + ' (' + esc(x.desde) + (x.dias > 1 ? ' a ' + esc(x.hasta) : '') + '). Noche = 22:00 a 05:59: ajustá si el horario de sueño es otro.');
+        if (x.dias < 3) notas.push('Se recomiendan 3 días de registro.');
+        if (x.vol24 === undefined) notas.push('Volúmenes no cargados: no todas las micciones tienen ml anotados.');
+        if (x.pSinUrg) notas.push('Pérdidas sin urgencia: ' + x.pSinUrg + ' por día' + (x.actividades ? ' (' + x.actividades.map(esc).join('; ') + ')' : '') + '. Si fueron por esfuerzo, cargalas en "Pérdidas por esfuerzo".');
+      } else notas.push('No hay Diario Miccional en la HC.');
+      if (d.p_hta) notas.push('HTA en la HC: indicar si está controlada.');
+      return notas.join(' ');
+    },
+    fertilidad: function (cont, d) {
+      if (!d.fum && !d.ciclo) return null;
+      fijar(cont.querySelector('#f-fum'), d.fum);
+      fijar(cont.querySelector('#f-ciclo'), d.ciclo);
+      return d.ciclo ? 'Ciclo: promedio de los últimos ciclos del registro de Kaltenbach.' : (d.ritmo ? 'Ritmo ' + esc(d.ritmo).toLowerCase() + ' en la HC: cargar la duración del ciclo.' : '');
+    },
+    somp: function (cont, d) {
+      fijar(cont.querySelector('#so-peso'), d.peso);
+      fijar(cont.querySelector('#so-talla'), d.talla);
+      return cicloSel(cont, '#so-ciclo', d);
+    },
+    pareja: function (cont, d) {
+      fijar(cont.querySelector('#pa-edad'), d.edad);
+      return cicloSel(cont, '#pa-ciclo', d);
+    },
+    endometriosis: function (cont, d) {
+      fijar(cont.querySelector('#f-edad'), d.edad);
+      fijar(cont.querySelector('#f-emb'), d.embPrevio === true);
+      return '';
+    },
+    orads: function (cont, d) { if (d.edad === undefined) return null; fijar(cont.querySelector('#a-edad'), d.edad); return ''; },
+    estudios: function (cont, d) {
+      if (d.edad === undefined) return null;
+      ['#b-edad', '#c-edad', '#e-edad'].forEach(function (s) { fijar(cont.querySelector(s), d.edad); });
+      return '';
     }
   };
+
+  // Ritmo de la HC: "Regular" → regulares; "Irregular" no dice de qué tipo, se completa a mano.
+  function cicloSel(cont, sel, d) {
+    if (d.ritmo === 'Regular' && (!d.ciclo || (d.ciclo >= 21 && d.ciclo <= 35))) { fijar(cont.querySelector(sel), 'reg'); return ''; }
+    if (d.ritmo || d.ciclo) return 'En la HC: ritmo ' + (d.ritmo ? esc(d.ritmo).toLowerCase() : 'sin dato') + (d.ciclo ? ', ciclo de ' + d.ciclo + ' días' : '') + '. Elegir el tipo de ciclo a mano.';
+    return '';
+  }
 
   function esc(x) { return String(x).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function aviso(cont, nota) {
