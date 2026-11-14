@@ -19,6 +19,8 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/textos-es.js"></script>
 <script src="js/fertilidad.js"></script>
 <script src="js/preconcepcional.js"></script>
+<script src="js/pareja.js"></script>
+<script src="js/somp.js"></script>
 <script src="js/mrs.js"></script>
 <script src="js/prolapso.js"></script>
 <script src="js/vaginitis.js"></script>
@@ -73,9 +75,9 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('FSH 12 → intermedia', P.fsh(12).etq, 'Intermedia, sin categoría en la guía');
   eq('FSH 16 → baja reserva', P.fsh(16).etq, 'Baja reserva ovárica');
   var r = P.relacion(6, 5);
-  eq('LH 6 / FSH 5 (1,2) → no sugiere SOP', [r.valor, r.etq], [1.2, 'No sugiere SOP']);
+  eq('LH 6 / FSH 5 (1,2) → no sugiere SOMP', [r.valor, r.etq], [1.2, 'No sugiere SOMP']);
   r = P.relacion(12, 3);
-  eq('LH 12 / FSH 3 (4) → sugiere SOP', [r.valor, r.etq], [4, 'Sugiere SOP']);
+  eq('LH 12 / FSH 3 (4) → sugiere SOMP', [r.valor, r.etq], [4, 'Sugiere SOMP']);
   eq('Sin LH → no calcula relación', P.relacion(null, 5), null);
   eq('Progesterona 12 → óptima', P.p4(12).etq, 'Óptima');
   eq('Progesterona 5 → por debajo del óptimo', P.p4(5).etq, 'Confirma ovulación, pero por debajo del valor óptimo');
@@ -347,6 +349,63 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Ovario: ganglios 12 mm → IIIA1(ii)', o0({ gang: 'mas10' }), 'IIIA1(ii)');
   eq('Ovario: peritoneo 3 cm → IIIC; pleura → IVA', [o0({ perit: 'mas2' }), o0({ pleura: true })], ['IIIC', 'IVA']);
   eq('Ovario: bajo grado IA → sin quimioterapia', /sin quimioterapia/.test(N.ovarioConducta('IA', { histo: 'bg' }).tto.join(' ')), true);
+
+  grupo('Estudio de la pareja');
+  var PA = GYN.pareja;
+  var es0 = function (o) { var d = { vol: 2, conc: 40, total: null, mot: 55, prog: 40, morf: 6, vital: 70, cripto: false }; for (var k in o) d[k] = o[k]; return PA.espermo(d); };
+  eq('Espermograma normal → normal, un estudio basta', [es0({}).normal, es0({}).color], [true, 'verde']);
+  eq('Concentración 10 → oligozoospermia', es0({ conc: 10 }).dx, ['Oligozoospermia']);
+  eq('Vol 1 conc 30 (total 30) → hipospermia + oligo', es0({ vol: 1, conc: 30 }).dx, ['Hipospermia', 'Oligozoospermia']);
+  eq('Conc 10, prog 20, morf 2 → OAT', es0({ conc: 10, prog: 20, morf: 2 }).dx, ['Oligoastenoteratozoospermia (OAT)']);
+  eq('Vitalidad 40 → necrozoospermia', es0({ vital: 40 }).dx, ['Necrozoospermia']);
+  eq('Conc 0 → azoospermia rojo', [es0({ conc: 0 }).azoo, es0({ conc: 0 }).color], [true, 'rojo']);
+  eq('Conc 0 con sedimento → criptozoospermia', es0({ conc: 0, cripto: true }).dx, ['Criptozoospermia']);
+  eq('Conc 4 → cariotipo; conc 1 → microdeleciones Y', [/cariotipo/.test(es0({ conc: 4 }).con.join(' ')), /microdeleciones/.test(es0({ conc: 4 }).con.join(' ')), /microdeleciones/.test(es0({ conc: 1 }).con.join(' '))], [true, false, true]);
+  eq('Alterado → repetir tras 11 semanas', /11 semanas/.test(es0({ morf: 2 }).con.join(' ')), true);
+  eq('REM 6 / 4 / 2 / 0,5 → IIU / IIU / FIV / ICSI', [PA.rem(6).tecnica, PA.rem(4).tecnica, PA.rem(2).tecnica, PA.rem(0.5).tecnica], ['IIU', 'IIU', 'FIV', 'ICSI']);
+  var ov0 = function (o) { var d = { ciclo: '', p4: null, edad: 30, fsh: null, prl: null, tsh: null, hipo: false, hiperA: false, mop: false }; for (var k in o) d[k] = o[k]; return PA.ovulacion(d); };
+  eq('Ciclos regulares → ovulatoria', ov0({ ciclo: 'reg' }).anov, false);
+  eq('P4 2 → anovulación sin causa definida', [ov0({ p4: 2 }).anov, ov0({ p4: 2 }).causas[0].id], [true, 'nd']);
+  eq('Amenorrea, 32 años, FSH 40 → IOP', ov0({ ciclo: 'amen', fsh: 40 }).causas[0].id, 'iop');
+  eq('Irregulares + hiperandrogenismo → SOMP', ov0({ ciclo: 'irreg', hiperA: true }).causas.map(function (x) { return x.id; }), ['somp']);
+  eq('Irregulares + PRL 60 → hiperprolactinemia', ov0({ ciclo: 'irreg', prl: 60 }).causas[0].id, 'prl');
+  eq('Reserva: RFA 2+2 → baja; 36 años → rojo', [PA.reserva({ edad: 30, rfaD: 2, rfaI: 2, amh: null }).cat, PA.reserva({ edad: 36, rfaD: 2, rfaI: 2, amh: null }).color], ['baja', 'rojo']);
+  eq('Reserva: AMH 0,9 → baja', PA.reserva({ edad: 30, rfaD: null, rfaI: null, amh: 0.9 }).cat, 'baja');
+  eq('Reserva: RFA 3+3 → límite Bologna', PA.reserva({ edad: 30, rfaD: 3, rfaI: 3, amh: null }).cat, 'limite');
+  eq('Reserva: 22 folículos en un ovario → alta', PA.reserva({ edad: 30, rfaD: 22, rfaI: 15, amh: null }).cat, 'alta');
+  var ut0 = function (o) { var d = { eco: {}, prueba: 'hsg', res: 'perm', riesgo: false, clam: '' }; for (var k in o) d[k] = o[k]; return PA.uteroTrompas(d); };
+  eq('Trompas: bilateral → rojo FIV', [ut0({ res: 'bil' }).bil, /FIV/.test(ut0({ res: 'bil' }).con[0])], [true, true]);
+  eq('Hidrosálpinx → salpingectomía', /salpingectomía/.test(ut0({ res: 'hidro' }).con.join(' ')), true);
+  eq('Sin prueba + riesgo → laparoscopía; sin riesgo → HSG o HyCoSy', [/laparoscopía/.test(ut0({ prueba: 'no', res: '', riesgo: true }).con[0]), /HyCoSy/.test(ut0({ prueba: 'no', res: '' }).con[0])], [true, true]);
+  eq('Pólipo → histeroscopía', /histeroscopía/.test(ut0({ eco: { polipo: true } }).con.join(' ')), true);
+  var esN = es0({}), ovN = ov0({ ciclo: 'reg' }), utN = ut0({});
+  eq('Todo normal + buen pronóstico → expectante (ESCA)', [PA.siguiente({ es: esN, rm: null, ov: ovN, rs: null, ut: utN, edad: 30, prono: 'bueno' }).esca, /expectante/.test(PA.siguiente({ es: esN, rm: null, ov: ovN, rs: null, ut: utN, edad: 30, prono: 'bueno' }).pasos[0][1])], [true, true]);
+  eq('Todo normal + pronóstico desfavorable → IIU con estimulación', /IIU con estimulación/.test(PA.siguiente({ es: esN, rm: null, ov: ovN, rs: null, ut: utN, edad: 30, prono: 'malo' }).pasos[0][1]), true);
+  eq('Azoospermia primero', /Azoospermia/.test(PA.siguiente({ es: es0({ conc: 0 }), rm: null, ov: ovN, rs: null, ut: ut0({ res: 'bil' }), edad: 30 }).pasos[0][1]), true);
+  eq('Factor cervical → IIU', /IIU/.test(PA.siguiente({ es: esN, rm: null, ov: ovN, rs: null, ut: utN, cervical: true, edad: 30 }).pasos[0][1]), true);
+  eq('Faltan estudios → lista', PA.siguiente({ es: null, rm: null, ov: null, rs: null, ut: ut0({ prueba: 'no', res: '' }), edad: 30 }).faltan, ['espermograma', 'evaluación ovulatoria', 'permeabilidad tubaria']);
+
+  grupo('SOMP');
+  var S = GYN.somp;
+  var s0 = function (o) { var d = { anosMenarca: null, ciclo: '', anovReg: false, hirs: false, bioq: false, rfa: null, vol: null, amhAlta: false, tsh: true, prl: true, ohp: true }; for (var k in o) d[k] = o[k]; return S.criterios(d); };
+  eq('Irregulares + hirsutismo → SOMP sin eco (A o B)', [s0({ ciclo: 'irreg', hirs: true }).dx, /A o B/.test(s0({ ciclo: 'irreg', hirs: true }).fen)], [true, true]);
+  eq('Tres criterios → fenotipo A', /^A /.test(s0({ ciclo: 'irreg', hirs: true, rfa: 25 }).fen), true);
+  eq('HA + MOP con ciclos regulares → fenotipo C', /^C /.test(s0({ ciclo: 'reg', bioq: true, rfa: 22 }).fen), true);
+  eq('Irregulares + volumen 12 mL → fenotipo D', /^D /.test(s0({ ciclo: 'irreg', vol: 12 }).fen), true);
+  eq('Solo irregulares → no cumple', s0({ ciclo: 'irreg' }).dx, false);
+  eq('Adolescente (3 años de menarca): irregulares + MOP → no cumple', s0({ anosMenarca: 3, ciclo: 'irreg', rfa: 25 }).dx, false);
+  eq('Adolescente: irregulares + hiperandrogenismo → cumple', s0({ anosMenarca: 3, ciclo: 'irreg', hirs: true }).dx, true);
+  eq('Faltan exclusiones → aviso', /exclusión/.test(s0({ ciclo: 'irreg', hirs: true, tsh: false }).notas.join(' ')), true);
+  eq('HOMA-IR 90 × 10 / 405 = 2,2', S.homa(90, 10), 2.2);
+  eq('Glucemia ayunas 110 → alterada (ámbar); PTOG 210 → diabetes (rojo)', [S.glucemia({ ay: 110, h2: null, a1c: null }).color, S.glucemia({ ay: null, h2: 210, a1c: null }).color], ['ambar', 'rojo']);
+
+  grupo('Preconcepcional · anti-Tg y autoinmunidad');
+  eq('Anti-Tg positivo → aviso ámbar', P.antiTg('pos', 'neg').color, 'ambar');
+  eq('Anti-Tg negativo → sin aviso', P.antiTg('neg', ''), null);
+  eq('Lupus → aspirina desde el primer trimestre e hidroxicloroquina', /hidroxicloroquina/.test(P.autoinmune({ les: true })[0].txt.join(' ')) && /Aspirina/.test(P.autoinmune({ les: true })[0].txt.join(' ')), true);
+  eq('SAF trombótico → heparina terapéutica', /terapéutica/.test(P.autoinmune({ saft: true })[0].txt[0]), true);
+  eq('SAF obstétrico → profiláctica', /profiláctica/.test(P.autoinmune({ safo: true })[0].txt[0]), true);
+  eq('TEV previa → trombofilia solo con indicación', P.autoinmune({ tev: true })[0].t, 'Trombofilia');
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;

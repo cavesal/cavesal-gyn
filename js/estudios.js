@@ -148,7 +148,7 @@
     } else if (d.etapa === 'fertil') {
       if (d.sangrado === 'no') { tit = 'Sin sangrado anormal'; con.push('El grosor varía con el ciclo: proliferativo 4 a 8 mm, periovulatorio 8 a 12, secretor hasta 14 a 16. No se biopsia por el grosor solo.'); }
       else if (d.edad !== null && d.edad >= 45) { tit = 'Sangrado uterino anormal, 45 años o más'; color = 'rojo'; con.push('Biopsia endometrial (ACOG PB 128).'); }
-      else if (d.fr || d.falla) { tit = 'Sangrado anormal con factores de riesgo o falla del tratamiento'; color = 'rojo'; con.push('Biopsia endometrial: obesidad, anovulación crónica o SOP, Lynch, o sangrado que no responde (ACOG PB 128).'); }
+      else if (d.fr || d.falla) { tit = 'Sangrado anormal con factores de riesgo o falla del tratamiento'; color = 'rojo'; con.push('Biopsia endometrial: obesidad, anovulación crónica o SOMP, Lynch, o sangrado que no responde (ACOG PB 128).'); }
       else if (d.edad === null) return { falta: 'edad' };
       else { tit = 'Sangrado anormal, menor de 45 sin factores de riesgo'; color = 'ambar'; con.push('Tratamiento médico: progestágenos o anticonceptivos combinados. Biopsia si falla.'); }
     } else {
@@ -187,7 +187,7 @@
         c.sel('e-san', [['no', 'Sin sangrado'], ['si', 'Sangrado'], ['persiste', 'Sangrado persistente o recurrente']], 'Sangrado') +
         c.sel('e-thm', [['no', 'Sin THM'], ['continua', 'THM combinada continua'], ['secuencial', 'THM secuencial']], 'THM') + '</div>' +
       c.chk('e-nov', 'Endometrio no visible o mal definido') + c.chk('e-tam', 'Toma tamoxifeno') +
-      c.chk('e-fr', 'Factores de riesgo: obesidad, anovulación crónica o SOP, Lynch') + c.chk('e-fal', 'Falla del tratamiento médico') +
+      c.chk('e-fr', 'Factores de riesgo: obesidad, anovulación crónica o SOMP, Lynch') + c.chk('e-fal', 'Falla del tratamiento médico') +
       c.grupo('Hallazgos IETA (opcional)', c.chk('e-i1', 'Ecogenicidad no uniforme') + c.chk('e-i2', 'Interfase endometrio-miometrio irregular') + c.chk('e-i3', 'Vasos múltiples desorganizados') + c.chk('e-i4', 'Vaso único dominante')) +
       '<div id="e-out" class="resultados" aria-live="polite"></div>' +
       '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: ACOG CO 734 (2018) · ACOG PB 128 · ACOG CO 601 · SOGC 249/390 · IETA (Leone FP et al. UOG 2010) · Epstein E et al. UOG 2018 · Guía CaVeSal® de HC</p>' +

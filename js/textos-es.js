@@ -75,12 +75,16 @@
           { id: 'vaginitis', nombre: 'Infecciones genitales bajas', estado: 'v1', etapas: TODAS,
             resumen: 'Vaginosis, candidiasis, tricomoniasis y vaginitis aeróbica, con tratamiento oral y local.' }
         ] },
-      { id: 'fertilidad', nombre: 'Fertilidad y Reproducción', intro: 'Ciclo, ovulación y estudio preconcepcional de la paciente en edad fértil.',
+      { id: 'fertilidad', nombre: 'Fertilidad y Reproducción', intro: 'Ciclo, ovulación, estudio preconcepcional, estudio de la pareja y SOMP.',
         funciones: [
           { id: 'fertilidad', nombre: 'Fertilidad', estado: 'v1', etapas: ['edad-fertil'],
             resumen: 'Día de ovulación, ventana de progesterona y tamaño folicular para el trigger.' },
           { id: 'preconcepcional', nombre: 'Preconcepcional: semáforo, ácido fólico y panel hormonal', estado: 'v1', etapas: ['edad-fertil'],
-            resumen: 'Semáforo de riesgo del MSPBS, dosis y momento del ácido fólico, TSH preconcepcional y valores del día 2 y del día 21.' }
+            resumen: 'Semáforo de riesgo del MSPBS, dosis y momento del ácido fólico, TSH con anti-TPO y anti-Tg, valores del día 2 y del día 21, y alertas de lupus, SAF y trombofilia.' },
+          { id: 'pareja', nombre: 'Estudio de la pareja infértil: siguiente paso', estado: 'v1', etapas: ['edad-fertil'],
+            resumen: 'Espermograma OMS 2021 con diagnóstico, REM, ovulación y su causa, reserva ovárica, útero y trompas, y el siguiente paso según los resultados.' },
+          { id: 'somp', nombre: 'SOMP: criterios, fenotipo y HOMA-IR', estado: 'v1', etapas: ['edad-fertil'],
+            resumen: 'Síndrome ovárico metabólico poliendocrino (antes SOP): criterios 2023, adolescentes, fenotipo, HOMA-IR, estado glucémico y conducta.' }
         ] },
       { id: 'climaterio', nombre: 'Climaterio', intro: 'Síntomas climatéricos y decisión sobre terapia hormonal.',
         funciones: [

@@ -33,10 +33,11 @@
     if (lh === null || f === null || f === 0) return null;
     var r = lh / f;
     var o;
-    if (r <= 2) o = { etq: 'No sugiere SOP', color: 'verde' };
+    if (r <= 2) o = { etq: 'No sugiere SOMP', color: 'verde' };
     else if (r <= 3) o = { etq: 'Zona de corte de la guía (">2-3")', color: 'ambar' };
-    else o = { etq: 'Sugiere SOP', color: 'rojo' };
+    else o = { etq: 'Sugiere SOMP', color: 'rojo' };
     o.valor = Math.round(r * 10) / 10;
+    if (r > 2) o.det = 'La relación LH/FSH no es criterio diagnóstico en la guía internacional 2023: confirmar con los criterios del módulo SOMP.';
     return o;
   }
   function amh(v) {
@@ -72,6 +73,30 @@
     if (v < 20) return { etq: 'Normal', color: 'verde' };
     if (v <= 25) return { etq: 'Límite', color: 'ambar' };
     return { etq: 'Elevada', color: 'rojo' };
+  }
+
+  /* ---------- Anti-Tg y alertas autoinmunes/trombofilia ---------- */
+  function antiTg(v, tpo) {
+    if (v !== 'pos') return null;
+    return { etq: 'Anti-Tg positivo: autoinmunidad tiroidea', color: 'ambar', det: 'La decisión de levotiroxina de la ATA 2017 se basa en anti-TPO' + (tpo ? '' : ' (pedirlo si falta)') + '. Controlar TSH al confirmar el embarazo.' };
+  }
+  var AUTO = [
+    { id: 'les', txt: 'Lupus eritematoso sistémico' },
+    { id: 'safo', txt: 'SAF obstétrico (sin trombosis)' },
+    { id: 'saft', txt: 'SAF trombótico' },
+    { id: 'apl', txt: 'Anticuerpos antifosfolípidos positivos sin criterios clínicos' },
+    { id: 'tev', txt: 'Trombosis venosa o embolia previa' },
+    { id: 'trf', txt: 'Trombofilia hereditaria conocida o familiar de primer grado con trombofilia de alto riesgo' }
+  ];
+  // a: {les, safo, saft, apl, tev, trf}
+  function autoinmune(a) {
+    var r = [];
+    if (a.les) r.push({ t: 'Lupus', color: 'rojo', txt: ['Planificar con lupus inactivo o de baja actividad al menos 6 meses, con medicación compatible (ACR 2020).', 'Continuar o iniciar hidroxicloroquina.', 'Suspender micofenolato 6 semanas o más antes, metotrexato 1 a 3 meses antes y ciclofosfamida 3 meses antes.', 'Pedir anticuerpos antifosfolípidos y anti-Ro/La; función renal y proteinuria.', 'Aspirina en dosis baja desde el primer trimestre, idealmente desde las 12 semanas (ACR 2020, SMFM #64).', 'Consejería con medicina materno-fetal y reumatología. Ver guía «Lupus eritematoso sistémico — Planificación preconcepcional».'] });
+    if (a.saft) r.push({ t: 'SAF trombótico', color: 'rojo', txt: ['Heparina en dosis terapéutica en el embarazo; cambiar warfarina por heparina antes de la semana 6 (ACR 2020, SMFM #64).', 'Aspirina en dosis baja. Ver guía «Síndrome Antifosfolipídico (SAAF) y trombofilias».'] });
+    else if (a.safo) r.push({ t: 'SAF obstétrico', color: 'rojo', txt: ['Aspirina en dosis baja + heparina profiláctica en el embarazo y el puerperio (ACR 2020, SMFM #64).', 'Ver guía «Síndrome Antifosfolipídico (SAAF) y trombofilias».'] });
+    else if (a.apl) r.push({ t: 'aPL sin criterios', color: 'ambar', txt: ['Aspirina en dosis baja en el embarazo (ACR 2020).'] });
+    if (a.tev || a.trf) r.push({ t: 'Trombofilia', color: 'ambar', txt: ['Estudiar trombofilias solo con TEV personal o familiar de primer grado con trombofilia de alto riesgo (ACOG PB 197); no de rutina en infertilidad (ASRM 2026). No pedir MTHFR.', 'Tromboprofilaxis según el riesgo: derivar a medicina materno-fetal o hematología.'] });
+    return r;
   }
   var INTERP = { fsh: fsh, amh: amh, tsh: tsh, prl: prl, p4: p4 };
 
@@ -171,7 +196,7 @@
       res.push({ id: c.id, nombre: c.nombre, valor: v, unidad: UNIDADES[c.id], etq: o.etq, color: o.color, det: o.det || '' });
     });
     var r = relacion(num(vals.lh), num(vals.fsh));
-    if (r) res.splice(1, 0, { id: 'lhfsh', nombre: 'Relación LH/FSH', valor: r.valor, unidad: '', etq: r.etq, color: r.color });
+    if (r) res.splice(1, 0, { id: 'lhfsh', nombre: 'Relación LH/FSH', valor: r.valor, unidad: '', etq: r.etq, color: r.color, det: r.det || '' });
     return res;
   }
 
@@ -205,10 +230,15 @@
           '<input id="p-' + c.id + '" type="number" inputmode="decimal" min="0" step="0.01"></label>';
       }).join('') +
       campo('p-lsup', 'Límite superior de TSH del laboratorio', 'si no lo informa, 4,0', '0.01') +
-      '<label class="campo"><span>Anti-TPO</span>' + sel('p-tpo', [['', 'Sin dato'], ['pos', 'Positivo'], ['neg', 'Negativo']]) + '</label></div>' +
+      '<label class="campo"><span>Anti-TPO</span>' + sel('p-tpo', [['', 'Sin dato'], ['pos', 'Positivo'], ['neg', 'Negativo']]) + '</label>' +
+      '<label class="campo"><span>Anti-Tg</span>' + sel('p-tg', [['', 'Sin dato'], ['pos', 'Positivo'], ['neg', 'Negativo']]) + '</label></div>' +
       '<label class="chk"><input type="checkbox" id="p-levo"> En tratamiento con levotiroxina</label>' +
       '<label class="chk"><input type="checkbox" id="p-fiv"> Va a FIV o ICSI</label>' +
       '<div id="p-out" class="resultados" aria-live="polite"></div>' +
+      '<h3 class="sub">Autoinmunidad y trombofilia</h3>' +
+      '<fieldset class="mrs-grupo"><legend>Antecedentes</legend>' + AUTO.map(function (c) { return '<label class="chk"><input type="checkbox" data-au="' + c.id + '"> ' + c.txt + '</label>'; }).join('') + '</fieldset>' +
+      '<div id="au-out" class="resultados" aria-live="polite"></div>' +
+      '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: ACR 2020 (Sammaritano LR et al.) · SMFM Consult #64 · ACOG PB 197 · ASRM 2026</p>' +
       '<p class="orientativa">' + T.app.orientativa + '</p><p class="etiqueta">' + t.etiqueta + '</p>';
     var q = function (s) { return cont.querySelector(s); };
     function actualizar() {
@@ -232,6 +262,11 @@
         var v = String(x.valor).replace('.', ',') + (x.unidad ? ' ' + x.unidad : '');
         return F(x.nombre, v + ' · <strong>' + x.etq + '</strong>', x.det, x.color);
       }).join('');
+      var tg = antiTg(q('#p-tg').value, q('#p-tpo').value);
+      if (tg) q('#p-out').innerHTML += F('Anti-Tg', '<strong>' + tg.etq + '</strong>', tg.det, tg.color);
+      var au = {};
+      cont.querySelectorAll('input[data-au]').forEach(function (c) { au[c.getAttribute('data-au')] = c.checked; });
+      q('#au-out').innerHTML = autoinmune(au).map(function (x) { return F(x.t, '<ul class="lista">' + x.txt.map(function (i) { return '<li>' + i + '</li>'; }).join('') + '</ul>', '', x.color); }).join('');
     }
     cont.addEventListener('input', actualizar);
     cont.addEventListener('change', actualizar);
@@ -239,5 +274,5 @@
   }
 
   w.GYN = w.GYN || {};
-  w.GYN.preconcepcional = { semaforo: semaforo, acidoFolico: acidoFolico, imc: imc, claseOMS: claseOMS, interpretar: interpretar, fsh: fsh, relacion: relacion, amh: amh, p4: p4, tsh: tsh, prl: prl, UNIDADES: UNIDADES, render: render };
+  w.GYN.preconcepcional = { semaforo: semaforo, acidoFolico: acidoFolico, imc: imc, claseOMS: claseOMS, interpretar: interpretar, fsh: fsh, relacion: relacion, amh: amh, p4: p4, tsh: tsh, prl: prl, antiTg: antiTg, autoinmune: autoinmune, AUTO: AUTO, UNIDADES: UNIDADES, render: render };
 })(window);
