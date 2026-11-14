@@ -49,6 +49,10 @@ js/utero.js           MUSA y miomas FIGO con STEP-W
 js/endometriosis.js   Sospecha, IDEA, #Enzian, rASRM, EFI y conducta
 js/incontinencia.js   Tipo, Stamey, Sandvik, diario miccional y conducta
 js/imc.js             IMC con clase OMS (Demo)
+js/pwa.js             Registro del service worker y botón Instalar app (Android, computadora e iPhone)
+sw.js                 Service worker: funciona sin conexión (subir VERSION en cada publicación)
+manifest.json         App instalable con el logo de CaVeSal® GYN como ícono
+og-cover-gyn.jpg      Open Graph 1200 × 630 con el logo
 js/onco.js            estadificación FIGO
 js/licencia.js        licencia (producto gyn)
 js/cvs-lic.js         persistencia y reactivación de la clave

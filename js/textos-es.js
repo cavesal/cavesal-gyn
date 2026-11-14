@@ -8,7 +8,7 @@
   w.GYN_TEXTOS = {
     app: {
       bloqTitulo: 'Función de la versión completa',
-      bloqTexto: 'Esta función se habilita con la clave de CaVeSal® GYN. En la Demo quedan abiertas la escala MRS, el día de ovulación y la Calculadora de THM con el algoritmo SEGIRP 2026.',
+      bloqTexto: 'Esta función se habilita con la clave de CaVeSal® GYN. En la Demo quedan abiertas la escala MRS, el día de ovulación, la Calculadora de THM con el algoritmo SEGIRP 2026, el POP-Q del prolapso y el IMC.',
       activar: 'Activar versión completa',
       comprarTarjeta: 'Comprar con tarjeta',
       comprarTransf: 'Comprar por transferencia',

@@ -1,0 +1,19 @@
+{
+  "name": "CaVeSal® GYN",
+  "short_name": "CaVeSal GYN",
+  "description": "Calculadora gineco-endocrinológica para el profesional — CaVeSal®",
+  "id": "./index.html",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#0b8e9f",
+  "lang": "es",
+  "categories": ["medical", "education"],
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
