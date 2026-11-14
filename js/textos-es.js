@@ -72,6 +72,11 @@
             sale: ['Categoría O-RADS 2 a 5', 'Reglas simples / grupos IOTA'],
             nota: 'Falta la bibliografía exacta (ACR e IOTA) que el autor quiera usar.' }
         ] },
+      { id: 'infecciones', nombre: 'Infecciones genitales', intro: 'Flujo vaginal: diagnóstico por clínica y laboratorio, con tratamiento oral y local sugerido.',
+        funciones: [
+          { id: 'vaginitis', nombre: 'Infecciones genitales bajas', estado: 'v1', etapas: TODAS,
+            resumen: 'Vaginosis, candidiasis, tricomoniasis y vaginitis aeróbica, con tratamiento oral y local.' }
+        ] },
       { id: 'fertilidad', nombre: 'Fertilidad y Reproducción', intro: 'Ciclo, ovulación y estudio preconcepcional de la paciente en edad fértil.',
         funciones: [
           { id: 'fertilidad', nombre: 'Fertilidad', estado: 'v1', etapas: ['edad-fertil'],
@@ -200,6 +205,73 @@
       copiado: 'Copiado',
       cita: 'Bump RC, Mattiasson A, Bø K, et al. The standardization of terminology of female pelvic organ prolapse and pelvic floor dysfunction. Am J Obstet Gynecol. 1996;175:10-17 · Haylen BT, Maher CF, Barber MD, et al. An International Urogynecological Association (IUGA)/International Continence Society (ICS) joint report on the terminology for female pelvic organ prolapse (POP). Int Urogynecol J. 2016;27:165-194.',
       etiqueta: 'Algoritmo propio CaVeSal® · Basado en: Bump 1996 (POP-Q) · IUGA/ICS 2016'
+    },
+
+    vaginitis: {
+      titulo: 'Infecciones genitales bajas',
+      ayuda: 'Cargá lo que tengas: características del flujo, pH y laboratorio. El resultado se arma con los datos disponibles; lo que no se realizó queda sin evaluar.',
+      grupos: { paciente: 'Paciente', clinica: 'Clínica', lab: 'Laboratorio' },
+      noRealizado: 'No realizado', si: 'Positivo', no: 'Negativo',
+      flujos: [['normal', 'Fisiológico, sin cambios'], ['grumoso', 'Blanco grumoso (tipo leche cortada)'], ['homogeneo', 'Gris-blanquecino, fino y homogéneo'], ['espumoso', 'Amarillo-verdoso, espumoso'], ['purulento', 'Amarillento purulento']],
+      c: {
+        embarazo: 'Embarazo', inmuno: 'Diabetes mal controlada, inmunosupresión o corticoides', recurrente: '3 o más episodios en el último año',
+        hipoestro: 'Posmenopausia o hipoestrogenismo', flujo: 'Flujo', olor: 'Olor a pescado', prurito: 'Prurito', ardor: 'Ardor, disuria o dispareunia',
+        severa: 'Eritema y edema vulvar extensos, excoriaciones o fisuras', fresa: 'Cérvix en fresa', sequedad: 'Sequedad vaginal',
+        ph: 'pH vaginal', phAyuda: 'Normal ≤ 4,5', aminas: 'Prueba de aminas (KOH 10%)', aminasCorto: 'Aminas',
+        clave: 'Células clave > 20%', claveCorto: 'Células clave', levaduras: 'Levaduras o pseudohifas (KOH o cultivo)', levadurasCorto: 'Levaduras',
+        tricomonas: 'Tricomonas (móviles o NAAT)', tricomonasCorto: 'Tricomonas', nugent: 'Nugent (Gram)', nugentAyuda: '0-3 normal · 4-6 intermedio · 7-10 vaginosis',
+        donders: 'Puntaje de Donders', dondersAyuda: 'Vaginitis aeróbica: 3 o más', noAlbicans: 'Cultivo con especie no albicans'
+      },
+      faltan: 'Cargá el flujo, el pH o algún dato de laboratorio para ver el resultado.',
+      resultado: 'Resultado', sospecha: 'Sospecha clínica',
+      dx: { vb: 'Vaginosis bacteriana', candida: 'Candidiasis vulvovaginal', tricomonas: 'Tricomoniasis', aerobica: 'Vaginitis aeróbica' },
+      confirmar: { candida: 'Confirmar con KOH o cultivo antes de tratar.', tricomonas: 'Pedir NAAT o examen en fresco inmediato.' },
+      complicada: 'Complicada', noComplicada: 'No complicada',
+      motivos: { recurrente: 'recurrente', severa: 'severa', noAlbicans: 'no albicans', inmuno: 'huésped comprometido' },
+      gravedad: { leve: 'leve', moderada: 'moderada', severa: 'severa' },
+      mixta: 'Infección mixta', mixtaDet: 'Tratar cada agente.',
+      atrofia: 'Probable atrofia o síndrome genitourinario', atrofiaDet: 'Sin agente infeccioso: valorar terapia local (ver Climaterio).',
+      sinCriterios: 'Sin criterios de vaginitis infecciosa', sinCriteriosDet: 'Con los datos cargados.',
+      oral: 'Vía oral', local: 'Vía local', alternativas: 'Alternativas',
+      tto: {
+        vb: {
+          oral: 'Metronidazol 500 mg cada 12 h por 7 días',
+          local: ['Metronidazol gel 0,75%, 1 aplicador (5 g) por día, 5 días', 'Clindamicina crema 2%, 1 aplicador (5 g) al acostarse, 7 noches'],
+          alt: ['Clindamicina 300 mg cada 12 h por 7 días', 'Clindamicina óvulos 100 mg al acostarse, 3 noches', 'Tinidazol 2 g por día, 2 días; o 1 g por día, 5 días', 'Secnidazol 2 g en dosis única'],
+          altEmb: ['Clindamicina 300 mg cada 12 h por 7 días', 'Clindamicina óvulos 100 mg al acostarse, 3 noches'],
+          notaEmb: 'Embarazo: evitar tinidazol y secnidazol.'
+        },
+        candida: {
+          oral: 'Fluconazol 150 mg en dosis única',
+          local: ['Clotrimazol crema 1%, 5 g por día, 7 a 14 días; o crema 2%, 5 g por día, 3 días', 'Miconazol óvulo 100 mg por día, 7 días; 200 mg, 3 días; o 1200 mg, 1 día'],
+          severaOral: 'Fluconazol 150 mg, 2 dosis separadas por 72 h',
+          severaLocal: 'Azol vaginal por 7 a 14 días',
+          recInduccion: 'Inducción: fluconazol 100, 150 o 200 mg los días 1, 4 y 7',
+          recMant: 'Mantenimiento: fluconazol 100, 150 o 200 mg por semana, 6 meses',
+          recLocal: 'Inducción alternativa: azol vaginal por 7 a 14 días',
+          noAlbicans: 'Azol distinto del fluconazol, oral o local, por 7 a 14 días',
+          noAlbicansRec: 'Si recidiva: ácido bórico 600 mg en cápsula vaginal por día, 3 semanas; si persiste, derivar',
+          inmuno: 'Tratamiento convencional prolongado, 7 a 14 días',
+          notaInmuno: 'Corregir el factor modificable (glucemia, corticoides).',
+          emb: 'Azol vaginal por 7 días',
+          notaEmb: 'Embarazo: solo azoles locales por 7 días. No usar fluconazol.'
+        },
+        tricomonas: {
+          oral: 'Metronidazol 500 mg cada 12 h por 7 días',
+          alt: 'Tinidazol 2 g en dosis única',
+          nota: 'Tratar a la pareja, rastrear otras ITS (HIV, sífilis, gonorrea, clamidia) y repetir la prueba a los 3 meses. El gel de metronidazol no sirve para tricomonas.',
+          notaEmb: 'Embarazo: evitar tinidazol.'
+        },
+        aerobica: 'Vaginitis aeróbica: sin esquema en la guía CDC 2021. Definir el tratamiento según la gravedad y el cultivo.'
+      },
+      notas: {
+        nugentIntermedio: 'Nugent 4-6: flora intermedia. Correlacionar con la clínica.',
+        candidaPhAlto: 'Candidiasis con pH > 4,5: descartar infección mixta.',
+        embarazo: 'Embarazo: esquemas ajustados según CDC 2021.'
+      },
+      copiar: 'Copiar resultado', copiado: 'Copiado',
+      cita: 'Workowski KA, Bachmann LH, Chan PA, et al. Sexually Transmitted Infections Treatment Guidelines, 2021. MMWR Recomm Rep. 2021;70(4):1-187 · Amsel R, Totten PA, Spiegel CA, et al. Nonspecific vaginitis. Am J Med. 1983;74:14-22 · Nugent RP, Krohn MA, Hillier SL. J Clin Microbiol. 1991;29:297-301 · Donders GG, Vereecken A, Bosmans E, et al. Definition of a type of abnormal vaginal flora that is distinct from bacterial vaginosis: aerobic vaginitis. BJOG. 2002;109:34-43.',
+      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: CDC STI 2021 · Amsel 1983 · Nugent 1991 · Donders 2002'
     },
 
     legal: {

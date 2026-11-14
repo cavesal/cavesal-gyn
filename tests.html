@@ -21,6 +21,7 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/preconcepcional.js"></script>
 <script src="js/mrs.js"></script>
 <script src="js/prolapso.js"></script>
+<script src="js/vaginitis.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -112,6 +113,31 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Falta un punto → sin resultado', Q.calcular(base({ bp: null })).ok, false);
   eq('Ba por encima de Aa → aviso', Q.calcular(base({ aa: 0, ba: -2 })).avisos.indexOf('ba') >= 0, true);
   eq('Hiato gh + pb', Q.calcular(base({ gh: 4.5, pb: 2.5 })).hiato, 7);
+
+  grupo('Infecciones genitales bajas · CDC 2021');
+  var V = GYN.vaginitis, vb = function (o) { var d = { embarazo: false, inmuno: false, recurrente: false, hipoestro: false, flujo: '', olor: false, prurito: false, ardor: false, severa: false, fresa: false, sequedad: false, ph: null, aminas: '', clave: '', levaduras: '', tricomonas: '', noAlbicans: false, nugent: null, donders: null }; for (var k in o) d[k] = o[k]; return d; };
+  eq('Amsel 3 de 4 → vaginosis', V.calcular(vb({ flujo: 'homogeneo', ph: 5, aminas: 'si' })).dx, ['vb']);
+  eq('Amsel 2 de 4 → sin vaginosis', V.calcular(vb({ ph: 5, aminas: 'si' })).dx, []);
+  eq('pH 4,5 no suma Amsel (límite)', V.calcular(vb({ flujo: 'homogeneo', ph: 4.5, aminas: 'si' })).dx, []);
+  eq('Nugent 7 → vaginosis', V.calcular(vb({ nugent: 7 })).dx, ['vb']);
+  eq('Nugent 6 → intermedio, sin vaginosis', [V.calcular(vb({ nugent: 6 })).dx, V.calcular(vb({ nugent: 6 })).notas], [[], ['nugentIntermedio']]);
+  eq('Nugent 3 → normal', V.calcular(vb({ nugent: 3 })).nugent, 'normal');
+  eq('Levaduras + → candidiasis no complicada', V.calcular(vb({ levaduras: 'si', ph: 4 })).candida.complicada, false);
+  eq('Recurrente → complicada', V.calcular(vb({ levaduras: 'si', recurrente: true })).candida.motivos, ['recurrente']);
+  eq('Inmunosupresión → complicada', V.calcular(vb({ levaduras: 'si', inmuno: true })).candida.complicada, true);
+  var tE = V.tratamiento('candida', V.calcular(vb({ levaduras: 'si', embarazo: true })), GYN_TEXTOS.vaginitis);
+  eq('Candidiasis en embarazo → sin vía oral', tE.oral.length, 0);
+  var tB = V.tratamiento('vb', V.calcular(vb({ nugent: 8, embarazo: true })), GYN_TEXTOS.vaginitis);
+  eq('Vaginosis en embarazo → sin tinidazol ni secnidazol', tB.alt.join(' ').indexOf('nidazol 2 g') < 0 && tB.alt.join(' ').indexOf('Tinidazol') < 0, true);
+  eq('Tricomonas + → tricomoniasis', V.calcular(vb({ tricomonas: 'si' })).dx, ['tricomonas']);
+  eq('Cérvix en fresa sin prueba → sospecha tricomonas', V.calcular(vb({ fresa: true })).sospechas, ['tricomonas']);
+  eq('Grumoso + prurito sin KOH → sospecha candidiasis', V.calcular(vb({ flujo: 'grumoso', prurito: true })).sospechas, ['candida']);
+  eq('Donders 3 → aeróbica leve', V.calcular(vb({ donders: 3 })).donders, 'leve');
+  eq('Donders 5 → moderada; 7 → severa', [V.calcular(vb({ donders: 5 })).donders, V.calcular(vb({ donders: 7 })).donders], ['moderada', 'severa']);
+  eq('Donders 2 → sin aeróbica', V.calcular(vb({ donders: 2 })).dx, []);
+  eq('Vaginosis + tricomonas → mixta', V.calcular(vb({ nugent: 8, tricomonas: 'si' })).mixta, true);
+  eq('Hipoestrogenismo + sequedad sin agente → atrofia', V.calcular(vb({ hipoestro: true, sequedad: true, ph: 6 })).atrofia, true);
+  eq('pH 4 y KOH negativo → sin criterios', V.calcular(vb({ ph: 4, levaduras: 'no' })).sinCriterios, true);
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;

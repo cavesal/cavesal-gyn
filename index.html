@@ -112,6 +112,7 @@
 <script src="js/preconcepcional.js"></script>
 <script src="js/mrs.js"></script>
 <script src="js/prolapso.js"></script>
+<script src="js/vaginitis.js"></script>
 <script src="js/app.js"></script>
 <script>/* Academy se abre aparte (no reemplaza la app) y lleva la clave para entrar directo */
 (function(){document.addEventListener("click",function(ev){var a=ev.target&&ev.target.closest?ev.target.closest('a[href^="/academy/"]'):null;if(!a)return;var k="";try{k=(localStorage.getItem("cavesal_gyn_full_unlocked")||"").trim();}catch(e){}if(k==="true"||k==="1")k="";var h=k?"#k="+encodeURIComponent(k):"";a.href="https://cavesal.app/academy/?desde=gyn"+h;a.target="_blank";a.rel="noopener";},true);})();</script>

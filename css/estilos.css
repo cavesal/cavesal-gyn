@@ -206,3 +206,5 @@ button,input,select{font:inherit;color:inherit}
 .pq-celda b{font-size:1rem}
 .pq-notas{margin:0;padding-left:18px;font-size:.82rem;color:var(--ink-soft)}
 .pq-acciones{display:flex;gap:10px;flex-wrap:wrap}
+.vg-tto{margin:-4px 0 12px;padding:8px 12px;border-left:3px solid var(--line);font-size:.88rem}
+.vg-tto p{margin:6px 0 2px}
