@@ -23,6 +23,7 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/prolapso.js"></script>
 <script src="js/vaginitis.js"></script>
 <script src="js/thm.js"></script>
+<script src="js/mec.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -173,6 +174,31 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Osteo: T -1,8 → THM (límite)', H.calcular(hb({ svm: false, oste: true, fractura: 'bajo', tscore: -1.8 })).osteo.conducta, 'thm');
   eq('Solo SGUM con contraindicación (SEGIRP) → local no', H.calcular(hb({ svm: false, sgum: true, contra: { tev: true } })).localCondicion, 'no');
   eq('Riesgo cerebrovascular (combinado) → sin tibolona', H.presentaciones(H.calcular(hb({ modo: 'combinado', pato: { cerebro: true } })), GYN_TEXTOS.thm).join('').indexOf('Tibolona') < 0, true);
+
+  grupo('Elegibilidad MEC (US MEC 2024)');
+  var E = GYN.mec, mb = function (o) { var d = { edad: null, uso: 'iniciacion', sel: {}, tirzepatida: false, mas40: {}, metodoActual: '', amenorreaMeses: null, fsh30: '' }; for (var k in o) d[k] = o[k]; return d; };
+  var cats = function (r) { return E.METODOS.map(function (m) { return r.metodos[m].cat; }); };
+  eq('Edad 39 → combinados 1; 40 → 2', [E.calcular(mb({ edad: 39 })).metodos.ahc.cat, E.calcular(mb({ edad: 40 })).metodos.ahc.cat], [1, 2]);
+  eq('Edad 19 → DIU 2; AMPD <18 y >45 → 2', [E.calcular(mb({ edad: 19 })).metodos.cu.cat, E.calcular(mb({ edad: 17 })).metodos.ampd.cat, E.calcular(mb({ edad: 46 })).metodos.ampd.cat, E.calcular(mb({ edad: 45 })).metodos.ampd.cat], [2, 2, 2, 1]);
+  eq('Migraña con aura → combinados 4, resto 1', cats(E.calcular(mb({ sel: { cefalea: 'migranaCon' } }))), [1, 1, 1, 1, 1, 4]);
+  eq('Fumadora ≥35 y ≥15 cig → combinados 4', E.calcular(mb({ sel: { tabaco: 'mayor35mas15' } })).metodos.ahc.cat, 4);
+  eq('Cáncer de mama actual → hormonales 4, cobre 1', cats(E.calcular(mb({ sel: { mama: 'actual' } }))), [1, 4, 4, 4, 4, 4]);
+  eq('Cardiopatía isquémica: DIU-LNG 2 al iniciar y 3 al continuar', [E.calcular(mb({ sel: { isquemica: 'si' } })).metodos.lng.cat, E.calcular(mb({ uso: 'continuacion', sel: { isquemica: 'si' } })).metodos.lng.cat], [2, 3]);
+  eq('EPI actual: DIU 4 al iniciar, 2 al continuar', [E.calcular(mb({ sel: { epi: 'actual' } })).metodos.cu.cat, E.calcular(mb({ uso: 'continuacion', sel: { epi: 'actual' } })).metodos.cu.cat], [4, 2]);
+  eq('Múltiples FR CV → combinados 3–4 (rango, toma 4)', [E.calcular(mb({ sel: { multiplesFr: 'si' } })).metodos.ahc.txt, E.calcular(mb({ sel: { multiplesFr: 'si' } })).metodos.ahc.cat], ['3–4', 4]);
+  eq('Lactancia <21 días → combinados 4; DIU no aplica', [E.calcular(mb({ sel: { lactancia: 'l21' } })).metodos.ahc.cat, E.calcular(mb({ sel: { lactancia: 'l21' } })).metodos.cu.cat], [4, null]);
+  eq('Embarazo → no corresponde para hormonales', E.calcular(mb({ sel: { embarazo: 'si' } })).metodos.imp.embarazo, true);
+  eq('Manda la categoría más alta (HTA controlada 3 + migraña sin aura 2)', E.calcular(mb({ sel: { hta: 'controlada', cefalea: 'migranaSin' } })).metodos.ahc.cat, 3);
+  eq('Bypass → píldora solo progestágeno 3', E.calcular(mb({ sel: { bariatrica: 'malabsortiva' } })).metodos.pop.cat, 3);
+  eq('Rifampicina → combinados 3, implante 2', [E.calcular(mb({ sel: { antimicrobianos: 'rifampicina' } })).metodos.ahc.cat, E.calcular(mb({ sel: { antimicrobianos: 'rifampicina' } })).metodos.imp.cat], [3, 2]);
+  eq('Nota OMS con antirretrovirales', E.calcular(mb({ sel: { arv: 'ipr' } })).notasOms, ['arv']);
+  eq('Alerta tirzepatida', E.calcular(mb({ tirzepatida: true, edad: 30 })).alertas, ['tirzepatida']);
+  eq('Suspensión: 55 años → suspender', E.calcular(mb({ edad: 55 })).suspension.clave, 'suspender55');
+  eq('Suspensión: 50 con combinado → cambiar', E.calcular(mb({ edad: 50, metodoActual: 'ahc' })).suspension.clave, 'ahc50');
+  eq('Suspensión: 51 con implante y FSH >30 → 1 año más', E.calcular(mb({ edad: 51, metodoActual: 'imp', fsh30: 'si' })).suspension.clave, 'pocFshAlta');
+  eq('Suspensión: 48 sin hormonas, 23 meses → seguir; 24 → suspender', [E.calcular(mb({ edad: 48, metodoActual: 'ninguno', amenorreaMeses: 23 })).suspension.clave, E.calcular(mb({ edad: 48, metodoActual: 'ninguno', amenorreaMeses: 24 })).suspension.clave], ['noHormonalMenos50', 'noHormonalSuspender']);
+  eq('Suspensión: 50 sin hormonas, 12 meses → suspender', E.calcular(mb({ edad: 50, metodoActual: 'cu', amenorreaMeses: 12 })).suspension.clave, 'noHormonalSuspender');
+  eq('Menos de 40 años → sin bloque SIC', E.calcular(mb({ edad: 39 })).mas40, null);
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;
