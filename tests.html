@@ -36,6 +36,13 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/onco.js"></script>
 <script src="js/pubertad.js"></script>
 <script src="js/dm.js"></script>
+<script src="js/cvs-lic.js"></script>
+<script src="js/licencia.js"></script>
+<script src="js/hua.js"></script>
+<script src="js/amenorrea.js"></script>
+<script src="js/epi.js"></script>
+<script src="js/dolor.js"></script>
+<script src="js/ficha.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -455,6 +462,67 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Ayunas 130 sola → confirmar', DM.clasificar({ ay: 130, h2: null, a1c: null, azar: null, sintomas: false, embarazo: false }).tit, 'Rango de diabetes: confirmar');
   eq('Ayunas 112 + HbA1c 6 → Prediabetes', DM.clasificar({ ay: 112, h2: null, a1c: 6, azar: null, sintomas: false, embarazo: false }).tit, 'Prediabetes');
   eq('Azar 250 con síntomas → Diabetes', DM.clasificar({ ay: null, h2: null, a1c: null, azar: 250, sintomas: true, embarazo: false }).tit, 'Diabetes');
+
+
+  grupo('Sangrado uterino anormal');
+  var HU = GYN.hua, hb0 = function (o) { var d = { edad: 30, hcg: 'neg', frec: null, dur: null, var: null, hb: null, endo: null, abund: false, inter: false, posc: false, posmeno: false, virgen: false, agudo: false, inestable: false, cMenarca: false, cHpp: false, cQx: false, cDental: false, cHema: false, cEpi: false, cEnc: false, cFam: false, estrSinOp: false, falla: false, tamox: false, lynch: false, pPolipo: false, pAdeno: false, pMioma: false, pMiomaSm: false, pMalig: false, coag: false, oAnov: false, eEndo: false, iIatro: false, nNo: false }; for (var k in o) d[k] = o[k]; return d; };
+  eq('Ciclo 22 d → anormal', HU.patron(hb0({ frec: 22 })).anormal, true);
+  eq('Ciclo 28, 5 d, variación 4 → normal', HU.patron(hb0({ frec: 28, dur: 5, var: 4 })).anormal, false);
+  eq('Variación 8 a los 20 años → regular (límite 9)', HU.patron(hb0({ edad: 20, var: 8 })).anormal, false);
+  eq('Variación 8 a los 30 años → irregular', HU.patron(hb0({ var: 8 })).anormal, true);
+  eq('Abundante desde la menarca → coagulopatía +', HU.coagulopatia(hb0({ cMenarca: true })).positivo, true);
+  eq('Un ítem del segundo grupo → negativo', HU.coagulopatia(hb0({ cEpi: true })).positivo, false);
+  eq('46 años → biopsia', HU.biopsia(hb0({ edad: 46 })).length > 0, true);
+  eq('Posmenopausia 3 mm → bajo riesgo', /bajo riesgo/.test(HU.biopsia(hb0({ posmeno: true, endo: 3 }))[0]), true);
+  eq('β-hCG positiva → no es SUA', HU.evaluar(hb0({ hcg: 'pos' })).color, 'rojo');
+  eq('Mioma submucoso → L en el título', /L$/.test(HU.evaluar(hb0({ abund: true, pMioma: true, pMiomaSm: true })).tit), true);
+
+  grupo('Amenorrea');
+  var AM = GYN.amenorrea, am0 = function (o) { var d = { edad: null, menarca: false, meses: null, irregPrev: false, mamas: false, aniosTelarquia: null, hcg: '', tsh: '', prl: '', fsh: null, fsh2: false, e2: '', testo: '', ppTest: '', epTest: '', utero: '', cario: '', obstruccion: false, andro: false, asherman: false, funcional: false, neuro: false, anosmia: false }; for (var k in o) d[k] = o[k]; return d; };
+  eq('15 años sin menarca con mamas → primaria', AM.definicion(am0({ edad: 15, mamas: true })).tipo, 'primaria');
+  eq('13 años sin menarca ni mamas → primaria', AM.definicion(am0({ edad: 13 })).tipo, 'primaria');
+  eq('3 meses con ciclos regulares → secundaria', AM.definicion(am0({ menarca: true, meses: 3 })).tipo, 'secundaria');
+  eq('4 meses con ciclos irregulares → todavía no', AM.definicion(am0({ menarca: true, meses: 4, irregPrev: true })).tipo, null);
+  eq('Sin mamas + FSH 60 + 45,X → hipergonadotrófico', /hipergonadotrófico/.test(AM.evaluar(am0({ edad: 16, fsh: 60, cario: '45x' })).r.causa), true);
+  eq('Mamas sin útero 46,XX → MRKH', /MRKH/.test(AM.evaluar(am0({ edad: 16, mamas: true, utero: 'no', cario: '46xx' })).r.causa), true);
+  eq('Mamas sin útero 46,XY → insensibilidad androgénica', /Insensibilidad/.test(AM.evaluar(am0({ edad: 16, mamas: true, utero: 'no', cario: '46xy' })).r.causa), true);
+  var sec0 = { edad: 32, menarca: true, meses: 7, hcg: 'neg' };
+  eq('FSH 48 a los 32 → IOP', /IOP/.test(AM.evaluar(am0(Object.assign({}, sec0, { fsh: 48 }))).r.causa), true);
+  eq('Prolactina alta → hiperprolactinemia', AM.evaluar(am0(Object.assign({}, sec0, { prl: 'alto' }))).r.causa, 'Hiperprolactinemia');
+  eq('Sangra con progestágeno → anovulación', /Anovulación/.test(AM.evaluar(am0(Object.assign({}, sec0, { tsh: 'normal', prl: 'normal', ppTest: 'si' }))).r.causa), true);
+  eq('No sangra con P ni con E+P → uterina', /uterina/.test(AM.evaluar(am0(Object.assign({}, sec0, { ppTest: 'no', epTest: 'no' }))).r.causa), true);
+  eq('No sangra con P, sí con E+P, FSH 3 → hipotalámica', /hipotalámica/.test(AM.evaluar(am0(Object.assign({}, sec0, { ppTest: 'no', epTest: 'si', fsh: 3 }))).r.causa), true);
+
+  grupo('EPI');
+  var EP = GYN.epi, ep0 = function (o) { var d = { hcg: 'neg', cmt: false, utero: false, anexo: false, fiebre: false, muco: false, leuco: false, vsg: false, gc: false, biopsia: false, imagen: false, atoImg: false, lap: false, urg: false, ato: false, grave: false, oral: false, falla: false, diu: false }; for (var k in o) d[k] = o[k]; return d; };
+  eq('Sin criterio mínimo → no EPI', EP.evaluar(ep0({ fiebre: true })).minimo, false);
+  eq('Dolor a la movilización → ambulatorio', EP.evaluar(ep0({ cmt: true, muco: true })).internar.length, 0);
+  eq('Absceso en imagen → internación', EP.evaluar(ep0({ cmt: true, imagen: true, atoImg: true })).internar.length > 0, true);
+  eq('Ambulatorio → ceftriaxona 500 mg', /ceftriaxona 500 mg/.test(EP.evaluar(ep0({ cmt: true })).trat[0]), true);
+
+  grupo('Dolor pélvico');
+  var DP = GYN.dolor, da0 = function (o) { var d = { inest: false, hcg: '', hcgV: null, hcg48: null, saco: '', masa: false, hemo: false, lcf: false, lact: false, contraMtx: false, subito: false, vomitos: false, masaAnex: false, cmt: false, fiebre: false, flujo: false, masaComp: false, quiste: false, liquido: false, mitad: false, fid: false, urin: false, mioma: false, diu: false }; for (var k in o) d[k] = o[k]; return d; };
+  eq('Ectópico 1800 sin LCF → metotrexato', /Candidata a metotrexato/.test(DP.agudo(da0({ hcg: 'pos', hcgV: 1800, saco: 'nada', masa: true })).conducta[0]), true);
+  eq('Ectópico 6000 → cirugía', /No cumple/.test(DP.agudo(da0({ hcg: 'pos', hcgV: 6000, saco: 'ect' })).conducta[0]), true);
+  eq('Ectópico con hemoperitoneo → cirugía de urgencia', /urgencia/.test(DP.agudo(da0({ hcg: 'pos', saco: 'ect', hemo: true })).conducta[0]), true);
+  eq('PUL subida 20 % → sospecha', /sospecha de ectópico/.test(DP.agudo(da0({ hcg: 'pos', saco: 'nada', hcgV: 1000, hcg48: 1200 })).conducta.join(' ')), true);
+  eq('PUL subida 60 % → viable', /viable/.test(DP.agudo(da0({ hcg: 'pos', saco: 'nada', hcgV: 1000, hcg48: 1600 })).conducta.join(' ')), true);
+  eq('hCG negativa, súbito + masa → torsión', DP.agudo(da0({ hcg: 'neg', subito: true, masaAnex: true })).causas[0].c, 'Torsión anexial');
+  var dc0 = function (o) { var d = { meses: 8 }; for (var k in o) d[k] = o[k]; return DP.cronico(d); };
+  eq('Dismenorrea + dispareunia → endometriosis', dc0({ dism: true, disp: true }).causas[0].c, 'Endometriosis');
+  eq('Bandera roja → rojo', dc0({ bMasa: true }).color, 'rojo');
+  eq('4 meses → no cumple crónico', /todavía no/.test(dc0({ meses: 4 }).definicion), true);
+
+  grupo('Ficha de la paciente');
+  var FI = GYN.ficha;
+  var dv = FI.derivar({ edad: '38', peso: '80', talla: '160', cig: '20', anosFuma: '15', m_cefalea: 'migranaCon' });
+  eq('IMC 31,3 y paquetes-año 15', [dv.imc, dv.paq], [31.3, 15]);
+  eq('38 años y 20 cigarrillos → tabaco mayor35mas15', dv.sel.tabaco, 'mayor35mas15');
+  eq('IMC ≥30 → obesidad imc30', dv.sel.obesidad, 'imc30');
+  var mm = GYN.mec.calcular({ edad: 38, uso: 'iniciacion', sel: dv.sel });
+  eq('Combinados categoría 4, DIU-LNG 1', [mm.metodos.ahc.cat, mm.metodos.lng.cat], [4, 1]);
+  eq('Semáforo: fuma con 35 o más en rojo', FI.semaforo({ edad: '38', cig: '20', anosFuma: '15', m_cefalea: 'migranaCon' }, dv)[0].col, 'rojo');
+  eq('Lactancia 25 días → l21_30', FI.derivar({ edad: '28', partoDias: '25', lactancia: true }).sel.lactancia, 'l21_30');
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;

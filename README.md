@@ -24,7 +24,13 @@ Con lógica:
 - Pubertad precoz (js/pubertad.js): Tanner, edad ósea, ecografía pélvica con informe, perfil hormonal y conducta (freno del eje). Full.
 - Diabetes fuera del embarazo (js/dm.js): ADA 2026 y OMS. Full.
 - Casos de ejemplo (js/ejemplos.js): en Full cargan los campos; en Demo los módulos cerrados muestran el ejemplo en solo lectura.
-- Simulador (simulador.html + js/sim-gyn.js): 14 casos ficticios por sector, libre en Demo.
+- Simulador (simulador.html + js/sim-gyn.js): 18 casos ficticios por sector, libre en Demo.
+- Sangrado uterino anormal (js/hua.js): patrón FIGO 2018, coagulopatía, biopsia, PALM-COEIN y sangrado agudo. Full.
+- Amenorrea (js/amenorrea.js): primaria y secundaria, ASRM 2008, ESHRE POI, Endocrine Society 2017. Full.
+- EPI (js/epi.js): CDC 2021, internación, esquemas y seguimiento. Full.
+- Dolor pélvico agudo y crónico (js/dolor.js): ectópico, torsión, EPI y causas del dolor crónico. Full.
+- Ficha de la paciente (js/ficha.js, ruta #ficha): antecedentes, semáforo y MEC; libre en Demo. Guardar, abrir, exportar e importar JSON (localStorage cavesal_gyn_pacientes) y guardar consultas por módulo: Full. El puente usa la ficha con la HC por encima.
+- Inicio: buscador y pestañas Motivo de consulta, Etapa de vida y Capítulo (textos-es.js: capitulos, motivos, caps, kw).
 
 Ya no quedan funciones Próximamente.
 

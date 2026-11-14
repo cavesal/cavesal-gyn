@@ -7,6 +7,14 @@
   function hoyMenos(dias) { var d = new Date(); d.setDate(d.getDate() - dias); return d.toISOString().slice(0, 10); }
 
   var EJ = {
+    hua: [{ t: 'Mujer de 46 años con sangrado abundante, mioma submucoso y anemia', v: { '#hu-edad': 46, '#hu-hcg': 'neg', '#hu-frec': 22, '#hu-dur': 10, '#hu-var': 5, '#hu-hb': 9.4, '#hu-abund': true, '#hu-pl': true, '#hu-pls': true } },
+      { t: 'Adolescente de 15 años con sangrado abundante desde la menarca', v: { '#hu-edad': 15, '#hu-hcg': 'neg', '#hu-frec': 26, '#hu-dur': 9, '#hu-hb': 10.2, '#hu-abund': true, '#hu-virgen': true, '#hu-cmen': true, '#hu-cepi': true, '#hu-cenc': true } }],
+    amenorrea: [{ t: 'Mujer de 32 años con 7 meses de amenorrea y FSH alta', v: { '#am-edad': 32, '#am-men': true, '#am-meses': 7, '#am-mam': true, '#am-hcg': 'neg', '#am-tsh': 'normal', '#am-prl': 'normal', '#am-fsh': 48, '#am-fsh2': true } },
+      { t: 'Joven de 16 años sin menarca, con mamas y sin útero', v: { '#am-edad': 16, '#am-mam': true, '#am-ut': 'no', '#am-cario': '46xx', '#am-testo': 'normal' } }],
+    epi: [{ t: 'Mujer de 22 años con dolor pélvico, fiebre y absceso tubo-ovárico', v: { '#ep-hcg': 'neg', '#ep-cmt': true, '#ep-an': true, '#ep-fie': true, '#ep-muco': true, '#ep-vsg': true, '#ep-atoimg': true } },
+      { t: 'Dolor a la movilización y flujo mucopurulento, sin criterios de internación', v: { '#ep-hcg': 'neg', '#ep-cmt': true, '#ep-ut': true, '#ep-muco': true, '#ep-leu': true, '#ep-diu': true } }],
+    dolor: [{ t: 'Dolor agudo con β-hCG 1800 y masa anexial con útero vacío', v: { '#dp-modo': 'agudo', '#da-hcg': 'pos', '#da-hcgv': 1800, '#da-saco': 'nada', '#da-masa': true } },
+      { t: 'Dolor pélvico crónico de 14 meses con dismenorrea y dispareunia', v: { '#dp-modo': 'cronico', '#dc-meses': 14, '#dc-dism': true, '#dc-disp': true, '#dc-int': true, '#dc-gat': true } }],
     pubertad: [{ t: 'Niña de 6 años y medio con telarquia', v: { '#pp-edad': 6.5, '#pp-m': '3', '#pp-p': '2', '#pp-vc': 8, '#pp-eo': 9, '#pp-ul': 46, '#pp-uap': 14, '#pp-ut': 18, '#pp-rel': '2:1', '#pp-conf': 'piriforme', '#pp-endo': 'visible', '#pp-em': 3, '#pp-od': 3.4, '#pp-oi': 2.8, '#pp-fn': 7, '#pp-fm': 9, '#pp-lh': 0.8, '#pp-e2': true } },
       { t: 'Niña de 7 años con vello púbico aislado', v: { '#pp-edad': 7, '#pp-m': '1', '#pp-p': '2', '#pp-eo': 7.5, '#pp-ul': 30, '#pp-rel': '1:1', '#pp-conf': 'tubular', '#pp-endo': 'no', '#pp-od': 1.1, '#pp-oi': 1, '#pp-lh': 0.1, '#pp-ohp': 0.6 } }],
     mec: [{ t: 'Puérpera de 28 años, 25 días, con lactancia', v: { '#mc-edad': 28, 'r:mc-uso=iniciacion': true, 'c:paridad': 'multipara', 'c:lactancia': 'l21_30' } },

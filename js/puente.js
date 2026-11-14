@@ -19,7 +19,18 @@
       w.history.replaceState(null, '', w.location.pathname + (q ? '?' + q : '') + w.location.hash);
     } catch (e) {}
   }
-  function cargar() { try { datos = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) { datos = null; } return datos; }
+  var origenHC = false;
+  // Datos de la HC sobre los de la ficha de la paciente (la HC manda si ambos traen el mismo dato).
+  function cargar() {
+    var hc = null, fi = null;
+    try { hc = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) { hc = null; }
+    try { fi = w.GYN && w.GYN.ficha ? w.GYN.ficha.comoHC() : null; } catch (e) { fi = null; }
+    origenHC = !!hc;
+    if (!hc && !fi) { datos = null; return null; }
+    datos = {};
+    [fi, hc].forEach(function (o) { if (o) Object.keys(o).forEach(function (k) { datos[k] = o[k]; }); });
+    return datos;
+  }
   function descartar() { try { sessionStorage.removeItem(KEY); } catch (e) {} datos = null; }
 
   function fijar(el, v) {
@@ -44,6 +55,11 @@
     mec: function (cont, d) {
       var falta = [];
       fijar(cont.querySelector('#mc-edad'), d.edad);
+      if (d.mecSel) {
+        // Ficha de la paciente: condiciones con código MEC directo.
+        Object.keys(d.mecSel).forEach(function (k) { selCond(cont, k, d.mecSel[k]); });
+        return '';
+      }
       if (d.tabaco) { if (d.edad !== undefined && d.edad < 35) selCond(cont, 'tabaco', 'menor35'); else falta.push('cigarrillos por día (tabaquismo con 35 años o más)'); }
       if ((d.imc !== undefined && d.imc >= 30) || d.p_obesidad) selCond(cont, 'obesidad', d.edad !== undefined && d.edad < 18 ? 'imc30menor18' : 'imc30');
       if (d.p_trombo) selCond(cont, 'trombofilia', 'si');
@@ -73,6 +89,7 @@
     },
     thm: function (cont, d) {
       fijar(cont.querySelector('#th-edad'), d.edad);
+      if (d.utero) fijar(cont.querySelector('#th-utero'), d.utero);
       fijar(cont.querySelector('#th-c-trombofilia'), d.p_trombo || d.p_saf);
       fijar(cont.querySelector('#th-p-obesidad'), (d.imc !== undefined && d.imc > 30) || d.p_obesidad);
       fijar(cont.querySelector('#th-p-hta'), d.p_hta);
@@ -166,10 +183,10 @@
     var div = document.createElement('div');
     div.className = 'fila neutro';
     div.style.marginBottom = '12px';
-    div.innerHTML = '<strong>Datos recibidos de la HC CaVeSal®</strong> (sin datos personales). Se precargaron; revisalos antes de usar el resultado.' +
-      (nota ? '<br>' + nota : '') + ' <button type="button" class="btn-sec" data-hc-descartar>Descartar datos de la HC</button>';
+    div.innerHTML = (origenHC ? '<strong>Datos recibidos de la HC CaVeSal®</strong> (sin datos personales)' : '<strong>Datos de la ficha de la paciente</strong>') + '. Se precargaron; revisalos antes de usar el resultado.' +
+      (nota ? '<br>' + nota : '') + ' <button type="button" class="btn-sec" data-hc-descartar>' + (origenHC ? 'Descartar datos de la HC' : 'Ocultar aviso') + '</button>';
     cont.insertBefore(div, cont.firstChild);
-    div.querySelector('[data-hc-descartar]').addEventListener('click', function () { descartar(); div.remove(); });
+    div.querySelector('[data-hc-descartar]').addEventListener('click', function () { if (origenHC) descartar(); div.remove(); });
   }
 
   function aplicar(id, cont) {

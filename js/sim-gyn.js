@@ -272,5 +272,109 @@
           ], ref: 'Oncología ginecológica · FIGO 2018', url: B + 'onco' }
       ]
     }
+    ,{
+      id: 'hua-mioma', sector: 'Ginecología', titulo: 'Mujer de 46 años con sangrado menstrual abundante',
+      resumen: 'Ciclos de 22 días con 10 días de sangrado y anemia. ¿Qué causa PALM-COEIN y qué conducta?',
+      modulo: 'hua',
+      relato: 'Mujer de 46 años, β-hCG negativa. Ciclos cada 22 días con 10 días de sangrado abundante que interfiere con su trabajo. Hb 9,4 g/dL. Ecografía: mioma de 3 cm que protruye más del 50 % en la cavidad (FIGO 1).',
+      preguntas: [
+        { q: '¿Cómo se clasifica el patrón según FIGO 2018?',
+          ops: [
+            { t: 'Frecuente, prolongado y abundante', ok: true, fb: 'Correcto. Menos de 24 días es frecuente, más de 8 días es prolongado y el volumen lo define la paciente.' },
+            { t: 'Normal, porque es regular', fb: 'No. Ser regular no alcanza: la frecuencia y la duración están fuera de rango.' },
+            { t: 'Infrecuente', fb: 'No. Infrecuente es más de 38 días.' }
+          ], ref: 'Sangrado uterino anormal · Munro 2018', url: B + 'hua' },
+        { q: '¿Corresponde la biopsia endometrial?',
+          ops: [
+            { t: 'Sí, por tener 45 años o más con sangrado anormal', ok: true, fb: 'Correcto. Desde los 45 años con sangrado anormal se toma muestra del endometrio.' },
+            { t: 'No, porque la causa es el mioma', fb: 'No. El mioma no descarta una hiperplasia coexistente.' },
+            { t: 'Solo si el endometrio mide más de 4 mm', fb: 'No. El corte de 4 mm es para la posmenopausia.' }
+          ], ref: 'Sangrado uterino anormal · ACOG PB 128', url: B + 'hua' },
+        { q: '¿Cuál es el tratamiento de la causa?',
+          ops: [
+            { t: 'Miomectomía histeroscópica', ok: true, fb: 'Correcto. Los miomas FIGO 0 a 2 se resecan por histeroscopía; el tipo 2 puede requerir dos tiempos.' },
+            { t: 'Solo hierro y control', fb: 'No. Hay que tratar la anemia y también la causa.' },
+            { t: 'Ablación endometrial sin tratar el mioma', fb: 'No. El mioma submucoso es la causa y se reseca.' }
+          ], ref: 'Sangrado uterino anormal · Guías CaVeSal®', url: B + 'hua' }
+      ]
+    },
+    {
+      id: 'amen-iop', sector: 'Endocrinología', titulo: 'Mujer de 32 años con 7 meses sin menstruar',
+      resumen: 'β-hCG negativa, TSH y prolactina normales y FSH alta. ¿Qué diagnóstico y qué conducta?',
+      modulo: 'amenorrea',
+      relato: 'Mujer de 32 años con ciclos regulares hasta hace 7 meses. Sofocos. β-hCG negativa, TSH y prolactina normales. FSH 48 UI/L y, 6 semanas después, 52 UI/L.',
+      preguntas: [
+        { q: '¿Cuál es el diagnóstico?',
+          ops: [
+            { t: 'Insuficiencia ovárica prematura', ok: true, fb: 'Correcto. Amenorrea con FSH mayor de 25 UI/L en dos determinaciones con más de 4 semanas de diferencia y menos de 40 años.' },
+            { t: 'Amenorrea hipotalámica funcional', fb: 'No. En la hipotalámica la FSH es normal o baja.' },
+            { t: 'SOMP', fb: 'No. El SOMP no eleva la FSH a ese nivel.' }
+          ], ref: 'Amenorrea · ESHRE POI 2016', url: B + 'amenorrea' },
+        { q: '¿Qué estudios corresponden?',
+          ops: [
+            { t: 'Cariotipo, premutación FMR1 y anticuerpos adrenales y tiroideos', ok: true, fb: 'Correcto. Son las causas que cambian el seguimiento y el consejo familiar.' },
+            { t: 'RMN de silla turca', fb: 'No. La falla es ovárica, no central.' },
+            { t: 'Ninguno', fb: 'No. Se busca la causa.' }
+          ], ref: 'Amenorrea · ESHRE POI 2024', url: B + 'amenorrea' },
+        { q: '¿Cuál es la conducta hormonal?',
+          ops: [
+            { t: 'THM hasta la edad de la menopausia natural, salvo contraindicación', ok: true, fb: 'Correcto. Protege el hueso y el sistema cardiovascular; se mantiene hasta cerca de los 51 años.' },
+            { t: 'No dar hormonas por el riesgo de cáncer de mama', fb: 'No. En la IOP la THM reemplaza lo que falta; el riesgo no es el de la posmenopausia.' },
+            { t: 'Solo calcio y vitamina D', fb: 'No. Sin estrógenos se pierde hueso.' }
+          ], ref: 'Amenorrea · ESHRE POI', url: B + 'amenorrea' }
+      ]
+    },
+    {
+      id: 'epi-ato', sector: 'Infecciones', titulo: 'Mujer de 22 años con dolor pélvico y fiebre',
+      resumen: 'Dolor a la movilización, fiebre y masa anexial compleja. ¿Ambulatorio o internación?',
+      modulo: 'epi',
+      relato: 'Mujer de 22 años. Dolor pélvico de 4 días, fiebre de 38,8 °C, flujo mucopurulento, dolor a la movilización del cuello y anexial izquierdo. β-hCG negativa. Ecografía: masa anexial compleja de 6 cm compatible con absceso tubo-ovárico.',
+      preguntas: [
+        { q: '¿Dónde se trata?',
+          ops: [
+            { t: 'Internación', ok: true, fb: 'Correcto. El absceso tubo-ovárico es criterio de internación (CDC 2021).' },
+            { t: 'Ambulatorio con control a las 72 horas', fb: 'No. Con absceso no corresponde el manejo ambulatorio.' },
+            { t: 'Cirugía inmediata en todos los casos', fb: 'No. Se empieza con antibióticos parenterales; drenaje o cirugía si no responde, si es grande o si se rompe.' }
+          ], ref: 'EPI · CDC 2021', url: B + 'epi' },
+        { q: '¿Qué esquema parenteral es el recomendado?',
+          ops: [
+            { t: 'Ceftriaxona 1 g IV cada 24 h + doxiciclina + metronidazol', ok: true, fb: 'Correcto. Es el esquema recomendado por el CDC 2021.' },
+            { t: 'Ceftriaxona sola', fb: 'No. Falta cobertura de clamidia y anaerobios.' },
+            { t: 'Azitromicina dosis única', fb: 'No. No trata la EPI.' }
+          ], ref: 'EPI · CDC 2021', url: B + 'epi' },
+        { q: '¿Qué se hace con la pareja?',
+          ops: [
+            { t: 'Evaluar y tratar a las parejas de los últimos 60 días', ok: true, fb: 'Correcto. Tratamiento empírico de gonococo y clamidia.' },
+            { t: 'Nada si no tiene síntomas', fb: 'No. La pareja asintomática también se trata.' },
+            { t: 'Solo si el cultivo de la paciente es positivo', fb: 'No. Se trata igual.' }
+          ], ref: 'EPI · CDC 2021', url: B + 'epi' }
+      ]
+    },
+    {
+      id: 'ectopico', sector: 'Ginecología', titulo: 'Dolor pélvico agudo con β-hCG positiva',
+      resumen: 'Útero vacío y masa anexial. ¿Metotrexato o cirugía?',
+      modulo: 'dolor',
+      relato: 'Mujer de 29 años, hemodinámicamente estable, con dolor en fosa ilíaca derecha y atraso de 6 semanas. β-hCG 1800 mUI/mL. Ecografía transvaginal: útero vacío, masa anexial derecha de 2 cm sin actividad cardíaca, sin líquido libre. Sin lactancia ni enfermedad hepática o renal.',
+      preguntas: [
+        { q: '¿Cuál es el diagnóstico más probable?',
+          ops: [
+            { t: 'Embarazo ectópico tubario', ok: true, fb: 'Correcto. β-hCG positiva con útero vacío y masa anexial.' },
+            { t: 'Quiste de cuerpo lúteo con embarazo intrauterino', fb: 'No. No hay saco intrauterino.' },
+            { t: 'Torsión anexial', fb: 'No. La β-hCG positiva orienta a ectópico.' }
+          ], ref: 'Dolor pélvico · ACOG PB 193', url: B + 'dolor' },
+        { q: '¿Es candidata a metotrexato?',
+          ops: [
+            { t: 'Sí: estable, sin rotura, β-hCG menor de 5000 y sin actividad cardíaca', ok: true, fb: 'Correcto. Cumple los criterios y puede hacer el seguimiento.' },
+            { t: 'No, siempre es quirúrgico', fb: 'No. El metotrexato es opción en casos seleccionados.' },
+            { t: 'No, porque la β-hCG es menor de 3500', fb: 'No. La β-hCG baja favorece el metotrexato.' }
+          ], ref: 'Dolor pélvico · ACOG PB 193', url: B + 'dolor' },
+        { q: '¿Cómo se controla la respuesta?',
+          ops: [
+            { t: 'β-hCG los días 4 y 7: debe caer 15 % o más entre ambos', ok: true, fb: 'Correcto. Luego semanal hasta que sea negativa.' },
+            { t: 'Ecografía diaria', fb: 'No. El control es con β-hCG.' },
+            { t: 'No hace falta control', fb: 'No. Puede fallar y romperse.' }
+          ], ref: 'Dolor pélvico · ACOG PB 193', url: B + 'dolor' }
+      ]
+    }
   ];
 })(window);

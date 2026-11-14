@@ -8,7 +8,7 @@
   w.GYN_TEXTOS = {
     app: {
       bloqTitulo: 'Función de la versión completa',
-      bloqTexto: 'Esta función se habilita con la clave de CaVeSal® GYN. En la Demo quedan abiertas la escala MRS, el día de ovulación, la Calculadora de THM con el algoritmo SEGIRP 2026, el POP-Q del prolapso y el IMC.',
+      bloqTexto: 'Esta función se habilita con la clave de CaVeSal® GYN. En la Demo quedan abiertas la escala MRS, el día de ovulación, la Calculadora de THM con el algoritmo SEGIRP 2026, el POP-Q del prolapso, el IMC y la ficha de la paciente (sin guardado).',
       activar: 'Activar versión completa',
       comprarTarjeta: 'Comprar con tarjeta',
       comprarTransf: 'Comprar por transferencia',
@@ -40,69 +40,92 @@
       { id: 'postmenopausia', nombre: 'Postmenopausia', rango: 'desde los 55 años' }
     ],
 
-    categorias: [
-      { id: 'adolescencia', nombre: 'Adolescencia', intro: 'Evaluación de la pubertad en la paciente adolescente.',
+    capitulos: [
+      { id: 'gin', nombre: 'Ginecología general', intro: 'Sangrado, dolor, amenorrea, útero y endometriosis.',
         funciones: [
-          { id: 'pubertad', nombre: 'Pubertad precoz: Tanner, edad ósea, ecografía y perfil hormonal', estado: 'v1', etapas: ['adolescencia'],
-            resumen: 'Estadios de Tanner, adelanto de edad ósea, ecografía pélvica (útero, relación cuerpo/cuello, ovarios y folículos) con informe, perfil hormonal, origen probable (central, adrenal, ovárico o variante no progresiva) y conducta: freno del eje.' }
+          { id: 'hua', nombre: 'Sangrado uterino anormal: PALM-COEIN', estado: 'v1', etapas: TODAS, caps: ['endocrino'], motivos: ['sangrado', 'irregularidad'], kw: 'hemorragia hua sua menorragia metrorragia polimenorrea',
+            resumen: 'Patrón de sangrado FIGO, tamizaje de coagulopatía, causa PALM-COEIN, estudios (biopsia endometrial cuando corresponde) y conducta por causa, incluido el sangrado agudo abundante.' },
+          { id: 'amenorrea', nombre: 'Amenorrea primaria y secundaria', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: ['endocrino', 'fertilidad'], motivos: ['irregularidad', 'infertilidad', 'pubertad'], kw: 'oligomenorrea iop insuficiencia ovarica turner mrkh asherman prolactina',
+            resumen: 'Definición, algoritmo con β-hCG, TSH, prolactina, FSH, prueba de progestágeno y estrógeno-progestágeno, causa probable (SOMP, hipotalámica, IOP, hiperprolactinemia, Asherman, Turner, MRKH, insensibilidad androgénica) y conducta.' },
+          { id: 'dolor', nombre: 'Dolor pélvico agudo y crónico', estado: 'v1', etapas: TODAS, caps: [], motivos: ['dolor'], kw: 'ectopico torsion dismenorrea dispareunia congestion',
+            resumen: 'Agudo: embarazo ectópico (metotrexato o cirugía), torsión anexial, EPI, quiste roto y causas no ginecológicas. Crónico: endometriosis, adenomiosis, congestión pélvica, adherencias, vejiga dolorosa, colon irritable, dolor miofascial y neuropático, con banderas rojas y conducta.' },
+          { id: 'endometriosis', nombre: 'Endometriosis: #Enzian, rASRM, EFI y conducta', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: ['fertilidad', 'imagenes'], motivos: ['dolor', 'infertilidad', 'tumor'], kw: 'dismenorrea endometrioma dienogest',
+            resumen: 'Sospecha clínica, ecografía IDEA en 4 pasos, código #Enzian, estadio rASRM, EFI posquirúrgico y conducta ESHRE 2022 para dolor e infertilidad.' },
+          { id: 'utero', nombre: 'Útero: adenomiosis MUSA y miomas FIGO', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio', 'postmenopausia'], caps: ['imagenes', 'fertilidad'], motivos: ['sangrado', 'dolor', 'tumor', 'infertilidad'], kw: 'mioma leiomioma adenomiosis',
+            resumen: 'Adenomiosis por MUSA revisado y miomas por tipo FIGO con STEP-W, con conducta.' }
         ] },
-      { id: 'anticoncepcion', nombre: 'Anticoncepción', intro: 'Elegibilidad de métodos según criterios médicos, con las dos guías lado a lado cuando divergen.',
+      { id: 'endocrino', nombre: 'Endocrinología ginecológica', intro: 'Pubertad, amenorrea, SOMP, glucemia y peso.',
         funciones: [
-          { id: 'mec', nombre: 'Elegibilidad de métodos (MEC)', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'],
+          { id: 'pubertad', nombre: 'Pubertad precoz: Tanner, edad ósea, ecografía y perfil hormonal', estado: 'v1', etapas: ['adolescencia'], caps: [], motivos: ['pubertad'], kw: 'tanner telarquia pubarca edad osea',
+            resumen: 'Estadios de Tanner, adelanto de edad ósea, ecografía pélvica (útero, relación cuerpo/cuello, ovarios y folículos) con informe, perfil hormonal, origen probable (central, adrenal, ovárico o variante no progresiva) y conducta: freno del eje.' },
+          { id: 'somp', nombre: 'SOMP: criterios, fenotipo y HOMA-IR', estado: 'v1', etapas: ['adolescencia', 'edad-fertil'], caps: ['fertilidad'], motivos: ['irregularidad', 'infertilidad', 'metabolico'], kw: 'sop ovario poliquistico hirsutismo acne',
+            resumen: 'Síndrome ovárico metabólico poliendocrino (antes SOP): criterios 2023, adolescentes, fenotipo, HOMA-IR, estado glucémico y conducta.' },
+          { id: 'dm', nombre: 'Diabetes fuera del embarazo', estado: 'v1', etapas: TODAS, caps: [], motivos: ['metabolico', 'prevencion'], kw: 'glucemia hba1c prediabetes',
+            resumen: 'Normoglucemia, prediabetes o diabetes con criterio ADA 2026 para la no gestante (diferencias con OMS), confirmación con segunda prueba y conducta.' },
+          { id: 'incretinas', nombre: 'Incretinas: escalada, contraindicaciones y alarma', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'], caps: [], motivos: ['metabolico'], kw: 'semaglutida tirzepatida obesidad glp1',
+            resumen: 'Semaglutida y tirzepatida: indicación por IMC, contraindicaciones, escalada con fecha, respuesta a 12 semanas, washout, anticoncepción y signos de alarma.' },
+          { id: 'imc', nombre: 'IMC y clasificación OMS', estado: 'v1', etapas: TODAS, caps: [], motivos: ['metabolico', 'prevencion'], kw: 'peso obesidad',
+            resumen: 'Índice de masa corporal con la clase OMS, de bajo peso a obesidad clase III.' }
+        ] },
+      { id: 'fertilidad', nombre: 'Fertilidad y reproducción', intro: 'Ovulación, preconcepcional, pareja infértil.',
+        funciones: [
+          { id: 'fertilidad', nombre: 'Fertilidad: ovulación, progesterona y trigger', estado: 'v1', etapas: ['edad-fertil'], caps: [], motivos: ['infertilidad'], kw: 'ovulacion letrozol clomifeno folículo',
+            resumen: 'Día de ovulación, ventana de progesterona y tamaño folicular para el trigger.' },
+          { id: 'preconcepcional', nombre: 'Preconcepcional: semáforo, ácido fólico y panel hormonal', estado: 'v1', etapas: ['edad-fertil'], caps: [], motivos: ['prevencion', 'infertilidad'], kw: 'acido folico riesgo reproductivo',
+            resumen: 'Semáforo de riesgo del MSPBS, dosis y momento del ácido fólico, TSH con anti-TPO y anti-Tg, valores del día 2 y del día 21, y alertas de lupus, SAF y trombofilia.' },
+          { id: 'pareja', nombre: 'Estudio de la pareja infértil: siguiente paso', estado: 'v1', etapas: ['edad-fertil'], caps: [], motivos: ['infertilidad'], kw: 'espermograma infertilidad amh',
+            resumen: 'Espermograma OMS 2021 con diagnóstico, REM, ovulación y su causa, reserva ovárica, útero y trompas, y el siguiente paso según los resultados.' }
+        ] },
+      { id: 'anticoncepcion', nombre: 'Anticoncepción', intro: 'Elegibilidad de métodos según criterios médicos.',
+        funciones: [
+          { id: 'mec', nombre: 'Elegibilidad de métodos (MEC)', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: [], motivos: ['anticoncepcion'], kw: 'anticonceptivo diu implante pildora oms',
             resumen: 'Categoría 1 a 4 de seis métodos con 67 condiciones del US MEC 2024, notas de la OMS 2025, más de 40 años (SIC 2025) y cuándo suspender la anticoncepción y pasar a THM.' }
         ] },
-      { id: 'salud-gin', nombre: 'Salud Ginecológica', intro: 'Estudios por imágenes y clasificación de hallazgos.',
+      { id: 'infecciones', nombre: 'Infecciones genitales', intro: 'Flujo vaginal y enfermedad pélvica inflamatoria.',
         funciones: [
-          { id: 'imc', nombre: 'IMC y clasificación OMS', estado: 'v1', etapas: TODAS,
-            resumen: 'Índice de masa corporal con la clase OMS, de bajo peso a obesidad clase III.' },
-          { id: 'estudios', nombre: 'Mama, cérvix y endometrio: BI-RADS, tamizaje y grosor', estado: 'v1', etapas: TODAS,
-            resumen: 'BI-RADS v2025 con conducta por categoría, tamizaje de cuello uterino ASCCP con conducta por resultado y grosor endometrial con IETA.' },
-          { id: 'utero', nombre: 'Útero: adenomiosis MUSA y miomas FIGO', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
-            resumen: 'Adenomiosis por MUSA revisado y miomas por tipo FIGO con STEP-W, con conducta.' },
-          { id: 'endometriosis', nombre: 'Endometriosis: #Enzian, rASRM, EFI y conducta', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'],
-            resumen: 'Sospecha clínica, ecografía IDEA en 4 pasos, código #Enzian, estadio rASRM, EFI posquirúrgico y conducta ESHRE 2022 para dolor e infertilidad.' },
-          { id: 'prolapso', nombre: 'Prolapso genital: POP-Q y conducta', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
+          { id: 'vaginitis', nombre: 'Infecciones genitales bajas', estado: 'v1', etapas: TODAS, caps: [], motivos: ['flujo'], kw: 'flujo vaginosis candida tricomonas',
+            resumen: 'Vaginosis, candidiasis, tricomoniasis y vaginitis aeróbica, con tratamiento oral y local.' },
+          { id: 'epi', nombre: 'Enfermedad pélvica inflamatoria (EPI)', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: ['gin'], motivos: ['dolor', 'flujo', 'infertilidad'], kw: 'epi salpingitis absceso tuboovarico',
+            resumen: 'Criterios mínimos y adicionales CDC 2021, absceso tubo-ovárico, criterios de internación, esquema ambulatorio u hospitalario, DIU, pareja y seguimiento.' }
+        ] },
+      { id: 'suelo', nombre: 'Suelo pélvico', intro: 'Prolapso e incontinencia urinaria.',
+        funciones: [
+          { id: 'prolapso', nombre: 'Prolapso genital: POP-Q y conducta', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'], caps: [], motivos: ['orina'], kw: 'cistocele rectocele pesario bulto',
             resumen: 'Estadio POP-Q global y por compartimento, con conducta: suelo pélvico, pesario y cirugía por compartimento.' },
-          { id: 'incontinencia', nombre: 'Incontinencia urinaria: esfuerzo, urgencia y mixta', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
-            resumen: 'Tipo, grado de Stamey, índice de Sandvik y diario miccional, con conducta y fármacos de la urgencia.' },
-          { id: 'orads', nombre: 'Masa anexial: O-RADS, IOTA y GI-RADS', estado: 'v1', etapas: TODAS,
-            resumen: 'O-RADS US v2022, reglas simples IOTA y GI-RADS, con marcadores tumorales, imagen complementaria y derivación.' }
+          { id: 'incontinencia', nombre: 'Incontinencia urinaria: esfuerzo, urgencia y mixta', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'], caps: [], motivos: ['orina'], kw: 'perdida de orina vejiga hiperactiva',
+            resumen: 'Tipo, grado de Stamey, índice de Sandvik y diario miccional, con conducta y fármacos de la urgencia.' }
         ] },
-      { id: 'onco', nombre: 'Oncología ginecológica', intro: 'Estadificación FIGO con estudios de extensión, derivación y conducta general.',
+      { id: 'climaterio', nombre: 'Climaterio y menopausia', intro: 'Síntomas y terapia hormonal.',
         funciones: [
-          { id: 'onco', nombre: 'Estadificación FIGO: cérvix, endometrio y ovario', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
-            resumen: 'Cérvix FIGO 2018, endometrio FIGO 2023 con grupo molecular y ovario FIGO 2014, sin dosis.' }
-        ] },
-      { id: 'infecciones', nombre: 'Infecciones genitales', intro: 'Flujo vaginal: diagnóstico por clínica y laboratorio, con tratamiento oral y local sugerido.',
-        funciones: [
-          { id: 'vaginitis', nombre: 'Infecciones genitales bajas', estado: 'v1', etapas: TODAS,
-            resumen: 'Vaginosis, candidiasis, tricomoniasis y vaginitis aeróbica, con tratamiento oral y local.' }
-        ] },
-      { id: 'fertilidad', nombre: 'Fertilidad y Reproducción', intro: 'Ciclo, ovulación, estudio preconcepcional, estudio de la pareja y SOMP.',
-        funciones: [
-          { id: 'fertilidad', nombre: 'Fertilidad', estado: 'v1', etapas: ['edad-fertil'],
-            resumen: 'Día de ovulación, ventana de progesterona y tamaño folicular para el trigger.' },
-          { id: 'preconcepcional', nombre: 'Preconcepcional: semáforo, ácido fólico y panel hormonal', estado: 'v1', etapas: ['edad-fertil'],
-            resumen: 'Semáforo de riesgo del MSPBS, dosis y momento del ácido fólico, TSH con anti-TPO y anti-Tg, valores del día 2 y del día 21, y alertas de lupus, SAF y trombofilia.' },
-          { id: 'pareja', nombre: 'Estudio de la pareja infértil: siguiente paso', estado: 'v1', etapas: ['edad-fertil'],
-            resumen: 'Espermograma OMS 2021 con diagnóstico, REM, ovulación y su causa, reserva ovárica, útero y trompas, y el siguiente paso según los resultados.' },
-          { id: 'somp', nombre: 'SOMP: criterios, fenotipo y HOMA-IR', estado: 'v1', etapas: ['edad-fertil'],
-            resumen: 'Síndrome ovárico metabólico poliendocrino (antes SOP): criterios 2023, adolescentes, fenotipo, HOMA-IR, estado glucémico y conducta.' }
-        ] },
-      { id: 'climaterio', nombre: 'Climaterio', intro: 'Síntomas climatéricos y decisión sobre terapia hormonal.',
-        funciones: [
-          { id: 'mrs', nombre: 'Escala MRS', estado: 'v1', etapas: ['climaterio', 'postmenopausia'],
+          { id: 'mrs', nombre: 'Escala MRS', estado: 'v1', etapas: ['climaterio', 'postmenopausia'], caps: [], motivos: ['climaterio'], kw: 'sofocos menopausia',
             resumen: 'Once ítems, subtotales por dominio y total con su gravedad.' },
-          { id: 'thm', nombre: 'Calculadora de THM', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
+          { id: 'thm', nombre: 'Calculadora de THM', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'], caps: ['endocrino'], motivos: ['climaterio'], kw: 'terapia hormonal estrogeno progesterona',
             resumen: 'Conducta de terapia hormonal según etapa, síntomas, contraindicaciones y riesgo cardiovascular y mamario. Algoritmo SEGIRP 2026 en la Demo y algoritmo combinado en la versión completa.' }
         ] },
-      { id: 'endocrino', nombre: 'Endocrinología', intro: 'Seguimiento metabólico de la paciente no embarazada.',
+      { id: 'onco', nombre: 'Oncología ginecológica', intro: 'Masa anexial, mama, cérvix, endometrio y estadificación FIGO.',
         funciones: [
-          { id: 'incretinas', nombre: 'Incretinas: escalada, contraindicaciones y alarma', estado: 'v1', etapas: ['edad-fertil', 'climaterio'],
-            resumen: 'Semaglutida y tirzepatida: indicación por IMC, contraindicaciones, escalada con fecha, respuesta a 12 semanas, washout, anticoncepción y signos de alarma.' },
-          { id: 'dm', nombre: 'Diabetes fuera del embarazo', estado: 'v1', etapas: ['edad-fertil', 'climaterio'],
-            resumen: 'Normoglucemia, prediabetes o diabetes con criterio ADA 2026 para la no gestante (diferencias con OMS), confirmación con segunda prueba y conducta.' }
-        ] }
+          { id: 'orads', nombre: 'Masa anexial: O-RADS, IOTA y GI-RADS', estado: 'v1', etapas: TODAS, caps: ['imagenes', 'gin'], motivos: ['tumor', 'dolor'], kw: 'quiste ovario tumor ca125 marcadores',
+            resumen: 'O-RADS US v2022, reglas simples IOTA y GI-RADS, con marcadores tumorales, imagen complementaria y derivación.' },
+          { id: 'estudios', nombre: 'Mama, cérvix y endometrio: BI-RADS, tamizaje y grosor', estado: 'v1', etapas: TODAS, caps: ['imagenes'], motivos: ['tumor', 'sangrado', 'prevencion'], kw: 'mamografia pap vph citologia endometrio',
+            resumen: 'BI-RADS v2025 con conducta por categoría, tamizaje de cuello uterino ASCCP con conducta por resultado y grosor endometrial con IETA.' },
+          { id: 'onco', nombre: 'Estadificación FIGO: cérvix, endometrio y ovario', estado: 'v1', etapas: TODAS, caps: [], motivos: ['tumor', 'sangrado'], kw: 'cancer figo estadio',
+            resumen: 'Cérvix FIGO 2018, endometrio FIGO 2023 con grupo molecular y ovario FIGO 2014, sin dosis.' }
+        ] },
+      { id: 'imagenes', nombre: 'Estudios e imágenes', intro: 'Hallazgos de imagen con su conducta.', funciones: [] }
+    ],
+    motivos: [
+      { id: 'tumor', nombre: 'Tumor o masa', grande: true, desc: 'Masa anexial, mama, útero, cáncer' },
+      { id: 'dolor', nombre: 'Dolor', grande: true, desc: 'Agudo, crónico, dismenorrea, EPI' },
+      { id: 'sangrado', nombre: 'Sangrado', grande: true, desc: 'Sangrado uterino anormal, posmenopáusico' },
+      { id: 'flujo', nombre: 'Flujo', grande: true, desc: 'Vaginitis, cervicitis, EPI' },
+      { id: 'irregularidad', nombre: 'Irregularidad menstrual y amenorrea' },
+      { id: 'infertilidad', nombre: 'Infertilidad' },
+      { id: 'anticoncepcion', nombre: 'Anticoncepción' },
+      { id: 'climaterio', nombre: 'Síntomas del climaterio' },
+      { id: 'orina', nombre: 'Pérdida de orina o bulto genital' },
+      { id: 'pubertad', nombre: 'Desarrollo puberal' },
+      { id: 'metabolico', nombre: 'Peso, glucemia y metabolismo' },
+      { id: 'prevencion', nombre: 'Control, tamizaje y preconcepcional' }
     ],
 
     fertilidad: {

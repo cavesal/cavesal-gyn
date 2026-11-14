@@ -92,28 +92,25 @@
     <a class="pill" href="acerca.html">Acerca</a>
   </nav>
   <div class="demo-banner" id="demoBanner" hidden>
-    <span>Versión Demo: abiertas la escala MRS, el día de ovulación, la Calculadora de THM, el POP-Q y el IMC. En los demás módulos podés ver un caso de ejemplo, y el <a href="simulador.html">Simulador</a> es libre.</span>
+    <span>Versión Demo: abiertas la escala MRS, el día de ovulación, la Calculadora de THM, el POP-Q y el IMC. La ficha de la paciente es libre (guardar pacientes es de la versión completa). En los demás módulos podés ver un caso de ejemplo, y el <a href="simulador.html">Simulador</a> es libre.</span>
     <button type="button" class="btn-activar" data-activar>Activar versión completa</button>
   </div>
 
   <main>
     <section id="inicio">
       <div class="logo-hero"><img src="assets/logo-gyn.jpg" alt="CaVeSal® GYN · Ginecología · Herramientas clínicas para la práctica ginecológica" width="640" height="640"></div>
-      <nav class="cats" id="cats" aria-label="Categorías"></nav>
+      <a class="ficha-bar" href="#ficha"><span class="fb-tit">Ficha de la paciente</span><span class="fb-sub" id="fichaChip">Antecedentes y factores de riesgo con semáforo</span><span class="fb-ir">Abrir →</span></a>
+      <label class="buscador"><span class="sr">Buscar</span><input id="buscar" type="search" placeholder="Buscar: sangrado, dolor, mioma, SOMP, ectópico, mamografía…" autocomplete="off"></label>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Buscar por"></div>
+      <div class="sub" id="sub"></div>
       <p class="cat-intro" id="catIntro"></p>
-      <div class="filtro-wrap">
-        <span class="filtro-etq">Etapa de vida</span>
-        <div class="filtro" id="filtro" role="group" aria-label="Etapa de vida"></div>
-        <span class="rango" id="rango"></span>
-      </div>
       <div class="grid" id="grid"></div>
-      <p class="vacio" id="vacio" hidden>Ninguna función de esta categoría aplica a la etapa elegida. Probá con otra etapa o con "Todas".</p>
+      <p class="vacio" id="vacio" hidden>Sin resultados. Probá con otra palabra o elegí un motivo de consulta.</p>
     </section>
 
     <section id="pantalla" hidden>
       <button type="button" class="btn-volver" id="volver">← Volver</button>
       <div class="p-cab">
-        <span class="badge" id="pBadge"></span>
         <h2 id="pTitulo" tabindex="-1"></h2>
         <p class="p-sub" id="pSub"></p>
       </div>
@@ -148,6 +145,11 @@
 <script src="js/utero.js"></script>
 <script src="js/endometriosis.js"></script>
 <script src="js/onco.js"></script>
+<script src="js/hua.js"></script>
+<script src="js/amenorrea.js"></script>
+<script src="js/epi.js"></script>
+<script src="js/dolor.js"></script>
+<script src="js/ficha.js"></script>
 <script src="js/puente.js"></script>
 <script src="js/app.js"></script>
 <script src="js/pwa.js"></script>

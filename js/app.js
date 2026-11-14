@@ -1,15 +1,19 @@
-/* CaVeSal® GYN · Navegación (categorías, filtro de etapa y pantallas por hash).
+/* CaVeSal® GYN · Navegación (buscador, motivo de consulta, etapa de vida, capítulo, ficha y pantallas por hash).
    © 2026 Dr. Carlos Vera Salerno · Ley N.º 1328/1998 (Paraguay). Prohibida su copia o reproducción. */
 (function (w, d) {
   'use strict';
   var T = w.GYN_TEXTOS;
-  var estado = { cat: 'fertilidad', etapa: 'todas' };
+  var NAVK = 'cavesal_gyn_nav';
+  var estado = { tab: 'motivo', sel: 'tumor', q: '' };
+  try { var g = JSON.parse(sessionStorage.getItem(NAVK) || 'null'); if (g && g.tab) estado = g; } catch (e) {}
+  function guardarNav() { try { sessionStorage.setItem(NAVK, JSON.stringify(estado)); } catch (e) {} }
   var $ = function (id) { return d.getElementById(id); };
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function norm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
 
   function todasLasFunciones() {
     var l = [];
-    T.categorias.forEach(function (c) { c.funciones.forEach(function (f) { l.push({ f: f, c: c }); }); });
+    T.capitulos.forEach(function (c) { c.funciones.forEach(function (f) { l.push({ f: f, c: c }); }); });
     return l;
   }
   function buscar(id) {
@@ -17,33 +21,61 @@
     for (var i = 0; i < l.length; i++) if (l[i].f.id === id) return l[i];
     return null;
   }
+  function capsDe(r) { return [r.c.id].concat(r.f.caps || []); }
   function nombresEtapas(ids) {
     if (ids.length === T.etapas.length) return 'Todas las etapas';
     return ids.map(function (i) { for (var k = 0; k < T.etapas.length; k++) if (T.etapas[k].id === i) return T.etapas[k].nombre; return i; }).join(' · ');
   }
+  function nombreMotivo(id) { for (var i = 0; i < T.motivos.length; i++) if (T.motivos[i].id === id) return T.motivos[i].nombre; return id; }
+
+  var TABS = [['motivo', 'Motivo de consulta'], ['etapa', 'Etapa de vida'], ['cap', 'Capítulo']];
+  function filtrar() {
+    var l = todasLasFunciones();
+    if (estado.q) {
+      var q = norm(estado.q).split(/\s+/).filter(Boolean);
+      return l.filter(function (r) {
+        var t = norm([r.f.nombre, r.f.resumen, r.f.kw, r.c.nombre, (r.f.motivos || []).map(nombreMotivo).join(' ')].join(' '));
+        return q.every(function (p) { return t.indexOf(p) >= 0; });
+      });
+    }
+    if (estado.tab === 'motivo') return l.filter(function (r) { return (r.f.motivos || []).indexOf(estado.sel) >= 0; });
+    if (estado.tab === 'etapa') return l.filter(function (r) { return r.f.etapas.indexOf(estado.sel) >= 0; });
+    return l.filter(function (r) { return capsDe(r).indexOf(estado.sel) >= 0; });
+  }
+  function cuenta(tab, id) {
+    return todasLasFunciones().filter(function (r) {
+      return tab === 'motivo' ? (r.f.motivos || []).indexOf(id) >= 0 : tab === 'etapa' ? r.f.etapas.indexOf(id) >= 0 : capsDe(r).indexOf(id) >= 0;
+    }).length;
+  }
 
   function renderInicio() {
-    $('cats').innerHTML = T.categorias.map(function (c) {
-      return '<button type="button" class="cat" data-cat="' + c.id + '" aria-pressed="' + (c.id === estado.cat) + '">' + esc(c.nombre) + '<span class="c-n">' + c.funciones.length + '</span></button>';
-    }).join('');
-    $('filtro').innerHTML = [{ id: 'todas', nombre: T.app.todas }].concat(T.etapas).map(function (e) {
-      return '<button type="button" class="chip" data-etapa="' + e.id + '" aria-pressed="' + (e.id === estado.etapa) + '"' + (e.rango ? ' title="' + esc(e.rango) + '"' : '') + '>' + esc(e.nombre) + '</button>';
-    }).join('');
-    var et = null;
-    T.etapas.forEach(function (e) { if (e.id === estado.etapa) et = e; });
-    $('rango').textContent = et ? et.rango : '';
-    var cat = null;
-    T.categorias.forEach(function (c) { if (c.id === estado.cat) cat = c; });
-    $('catIntro').textContent = cat.intro;
-    var lista = cat.funciones.filter(function (f) { return estado.etapa === 'todas' || f.etapas.indexOf(estado.etapa) >= 0; });
+    if (d.activeElement !== $('buscar')) $('buscar').value = estado.q;
+    $('tabs').innerHTML = TABS.map(function (t) { return '<button type="button" class="tab" role="tab" data-tab="' + t[0] + '" aria-selected="' + (!estado.q && estado.tab === t[0]) + '">' + t[1] + '</button>'; }).join('');
+    var sub = '', intro = '';
+    if (estado.tab === 'motivo') {
+      var gr = T.motivos.filter(function (m) { return m.grande; }), ch = T.motivos.filter(function (m) { return !m.grande; });
+      sub = '<div class="tiles">' + gr.map(function (m) { return '<button type="button" class="tile" data-sel="' + m.id + '" aria-pressed="' + (!estado.q && estado.sel === m.id) + '"><b>' + esc(m.nombre) + '</b><small>' + esc(m.desc || '') + '</small></button>'; }).join('') + '</div>' +
+        ch.map(function (m) { return '<button type="button" class="chip" data-sel="' + m.id + '" aria-pressed="' + (!estado.q && estado.sel === m.id) + '">' + esc(m.nombre) + '<span class="c-n">' + cuenta('motivo', m.id) + '</span></button>'; }).join('');
+    } else if (estado.tab === 'etapa') {
+      sub = T.etapas.map(function (e) { return '<button type="button" class="chip" data-sel="' + e.id + '" aria-pressed="' + (!estado.q && estado.sel === e.id) + '" title="' + esc(e.rango) + '">' + esc(e.nombre) + '<span class="c-n">' + cuenta('etapa', e.id) + '</span></button>'; }).join('');
+      T.etapas.forEach(function (e) { if (e.id === estado.sel) intro = e.nombre + ': ' + e.rango + '.'; });
+    } else {
+      sub = T.capitulos.filter(function (c) { return cuenta('cap', c.id) > 0; }).map(function (c) { return '<button type="button" class="chip" data-sel="' + c.id + '" aria-pressed="' + (!estado.q && estado.sel === c.id) + '">' + esc(c.nombre) + '<span class="c-n">' + cuenta('cap', c.id) + '</span></button>'; }).join('');
+      T.capitulos.forEach(function (c) { if (c.id === estado.sel) intro = c.intro; });
+    }
+    $('sub').innerHTML = sub;
+    var lista = filtrar();
+    $('catIntro').textContent = estado.q ? lista.length + ' resultado' + (lista.length === 1 ? '' : 's') + ' para "' + estado.q + '"' : intro;
     $('vacio').hidden = lista.length > 0;
-    $('grid').innerHTML = lista.map(function (f) {
-      var v1 = f.estado === 'v1', bl = bloqueada(f);
-      return '<a class="card' + (v1 ? ' v1' : '') + '" href="#' + f.id + '"><span class="badge ' + (v1 ? 'b-v1' : 'b-prox') + '">' + (v1 ? T.app.conLogica : T.app.proximamente) + '</span>' +
-        (bl ? ' <span class="badge b-full">' + esc(T.app.soloFull) + '</span>' : '') +
+    $('grid').innerHTML = lista.map(function (r) {
+      var f = r.f, bl = bloqueada(f), ej = w.GYN.ejemplos && w.GYN.ejemplos.de(f.id);
+      return '<a class="card v1' + (bl ? ' bloq' : '') + '" href="#' + f.id + '"' + (bl && ej ? ' data-card-ej="' + f.id + '"' : '') + '>' +
+        (bl ? '<span class="lock">🔒 ' + esc(T.app.soloFull) + '</span>' : '') +
         '<h3>' + esc(f.nombre) + '</h3><p>' + esc(f.resumen) + '</p><span class="etapas">' + esc(nombresEtapas(f.etapas)) + '</span>' +
-        '<span class="ir">' + (v1 ? T.app.abrir : T.app.verDetalle) + ' →</span></a>';
+        '<span class="ir">' + (bl ? (ej ? 'Ver ejemplo' : 'Ver') : T.app.abrir) + ' →</span></a>';
     }).join('');
+    var rs = w.GYN.ficha && w.GYN.ficha.resumen();
+    $('fichaChip').textContent = rs && (rs.edad !== null || rs.total) ? rs.id + (rs.edad !== null ? ' · ' + rs.edad + ' años' : '') + ' · ' + rs.total + ' factor' + (rs.total === 1 ? '' : 'es') + (rs.n ? ' (' + rs.n + ' de alto riesgo)' : '') : 'Antecedentes y factores de riesgo con semáforo';
   }
 
   function bloqueada(f) { return f.estado === 'v1' && !w.GYN.licencia.esFull() && !w.GYN.licencia.abiertaEnDemo(f.id); }
@@ -55,44 +87,48 @@
       '<a href="https://cavesal.app/comprar.html?producto=gyn" target="_blank" rel="noopener">' + esc(T.app.comprarTransf) + ' ↗</a></div></div>';
   }
 
-  var ejSel = null;
+  var ejSel = null, pendEj = null;
   function barraEjemplos(ejs, bloq) {
     return '<div class="ej-barra"><span class="ej-etq">' + (bloq ? 'Mirá cómo funciona con un caso de ejemplo:' : 'Cargar ejemplo:') + '</span>' +
       ejs.map(function (e, i) { return '<button type="button" class="btn-sec ej-btn" data-ej="' + i + '">' + esc(e.t) + '</button>'; }).join('') + '</div>';
   }
 
-  function renderProx(cont, f) {
-    cont.innerHTML = '<p class="prox-aviso">' + esc(T.app.prox) + '</p>' +
-      '<h3>' + esc(T.app.queCarga) + '</h3><ul>' + f.entra.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>' +
-      '<h3>' + esc(T.app.queDevuelve) + '</h3><ul>' + f.sale.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>' +
-      '<h3>' + esc(T.app.nota) + '</h3><p>' + esc(f.nota) + '</p>';
+  var actual = null; // módulo en pantalla, para guardar la consulta al salir
+  function capturarActual() {
+    if (actual && w.GYN.ficha) { var c = $('pCuerpo'); if (c) w.GYN.ficha.capturar(actual, c); }
+    actual = null;
   }
 
   function router() {
     var id = (location.hash || '').replace('#', '');
+    var viejo = $('pCuerpo'), cont = viejo.cloneNode(false);
+    if (id === 'ficha' && w.GYN.ficha) {
+      $('inicio').hidden = true; $('pantalla').hidden = false;
+      $('pTitulo').textContent = 'Ficha de la paciente';
+      $('pSub').textContent = 'Antecedentes, factores de riesgo y anticoncepción · libre en la Demo';
+      viejo.parentNode.replaceChild(cont, viejo);
+      w.GYN.ficha.render(cont, T, {});
+      w.scrollTo(0, 0); $('pTitulo').focus({ preventScroll: true });
+      return;
+    }
     var r = id ? buscar(id) : null;
     if (!r) {
       $('inicio').hidden = false; $('pantalla').hidden = true;
       renderInicio();
       return;
     }
-    estado.cat = r.c.id;
     $('inicio').hidden = true; $('pantalla').hidden = false;
     $('pTitulo').textContent = r.f.nombre;
     $('pSub').textContent = r.c.nombre + ' · ' + nombresEtapas(r.f.etapas);
-    $('pBadge').className = 'badge ' + (r.f.estado === 'v1' ? 'b-v1' : 'b-prox');
-    $('pBadge').textContent = r.f.estado === 'v1' ? T.app.conLogica : T.app.proximamente;
     // Contenedor nuevo en cada pantalla: evita que los oyentes de un módulo anterior sigan activos.
-    var viejo = $('pCuerpo'), cont = viejo.cloneNode(false);
     viejo.parentNode.replaceChild(cont, viejo);
     var ejs = w.GYN.ejemplos ? w.GYN.ejemplos.de(r.f.id) : null;
     var iEj = ejSel && ejSel.id === r.f.id && ejs && ejs[ejSel.i] ? ejSel.i : null;
     var full = w.GYN.licencia.esFull(), soloLectura = iEj !== null && !full;
     if (bloqueada(r.f) && iEj === null) cont.innerHTML = htmlBloqueo() + (ejs ? barraEjemplos(ejs, true) : '');
-    else if (r.f.estado === 'v1' && w.GYN[r.f.id] && w.GYN[r.f.id].render) w.GYN[r.f.id].render(cont, T, { bloqueo: htmlBloqueo, esFull: full || soloLectura });
-    else renderProx(cont, r.f);
+    else if (w.GYN[r.f.id] && w.GYN[r.f.id].render) w.GYN[r.f.id].render(cont, T, { bloqueo: htmlBloqueo, esFull: full || soloLectura });
     if (iEj !== null) {
-      w.GYN.ejemplos.aplicar(cont, ejs[iEj]);
+      w.GYN.ejemplos.aplicar(cont, ejs[iEj]); w.GYN.ejemplos.aplicar(cont, ejs[iEj]);
       var cab = d.createElement('div');
       cab.className = 'ej-aviso';
       cab.innerHTML = '<strong>Ejemplo ilustrativo:</strong> ' + esc(ejs[iEj].t) + '. Paciente ficticia.' +
@@ -108,6 +144,17 @@
       cont.insertBefore(bar.firstChild, cont.firstChild);
     }
     if (w.GYN.puente && !bloqueada(r.f) && iEj === null) w.GYN.puente.aplicar(r.f.id, cont);
+    if (iEj === null && !bloqueada(r.f)) {
+      if (full) actual = r.f.id;
+      var cs = w.GYN.ficha && w.GYN.ficha.consulta(r.f.id), fp = w.GYN.ficha && w.GYN.ficha.actual();
+      if (cs && full) {
+        var cb = d.createElement('div');
+        cb.className = 'fila neutro cons-bar';
+        cb.innerHTML = '<strong>Consulta guardada de ' + esc(fp.id) + '</strong> (' + esc(cs.fecha) + '). <button type="button" class="btn-sec" data-cons>Restaurar</button>';
+        cont.insertBefore(cb, cont.firstChild);
+        cb.querySelector('[data-cons]').addEventListener('click', function () { w.GYN.ejemplos.aplicar(cont, cs); w.GYN.ejemplos.aplicar(cont, cs); cb.remove(); });
+      }
+    }
     w.scrollTo(0, 0);
     $('pTitulo').focus({ preventScroll: true });
   }
@@ -146,14 +193,20 @@
   }
 
   d.addEventListener('DOMContentLoaded', function () {
-    $('cats').addEventListener('click', function (e) {
-      var b = e.target.closest('[data-cat]'); if (!b) return;
-      estado.cat = b.getAttribute('data-cat'); renderInicio();
+    var PRIMERO = { motivo: 'tumor', etapa: 'edad-fertil', cap: 'gin' };
+    $('tabs').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-tab]'); if (!b) return;
+      var t = b.getAttribute('data-tab');
+      if (t !== estado.tab) { estado.tab = t; estado.sel = PRIMERO[t]; }
+      estado.q = ''; guardarNav(); renderInicio();
     });
-    $('filtro').addEventListener('click', function (e) {
-      var b = e.target.closest('[data-etapa]'); if (!b) return;
-      estado.etapa = b.getAttribute('data-etapa'); renderInicio();
+    $('sub').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-sel]'); if (!b) return;
+      estado.sel = b.getAttribute('data-sel'); estado.q = ''; guardarNav(); renderInicio();
     });
+    $('buscar').addEventListener('input', function () { estado.q = this.value.trim(); guardarNav(); renderInicio(); var i = $('buscar'); i.focus(); });
+    $('grid').addEventListener('click', function (e) { var a = e.target.closest('[data-card-ej]'); if (a) pendEj = a.getAttribute('data-card-ej'); });
+    w.addEventListener('gyn:ficha', function () {});
     $('volver').addEventListener('click', function () { location.hash = ''; });
     tema(); legal();
     w.GYN.licencia.iniciar();
@@ -161,11 +214,17 @@
     function banner() { $('demoBanner').hidden = w.GYN.licencia.esFull(); }
     w.addEventListener('gyn:licencia', function () { banner(); router(); });
     banner();
-    w.addEventListener('hashchange', function () { ejSel = null; router(); });
+    w.addEventListener('hashchange', function () {
+      capturarActual();
+      var nid = (location.hash || '').replace('#', '');
+      ejSel = pendEj && pendEj === nid ? { id: nid, i: 0 } : null; pendEj = null;
+      router();
+    });
+    w.addEventListener('pagehide', capturarActual);
     d.addEventListener('click', function (e) {
       var b = e.target.closest('[data-ej]');
-      if (b) { ejSel = { id: (location.hash || '').replace('#', ''), i: +b.getAttribute('data-ej') }; router(); return; }
-      if (e.target.closest('[data-ej-salir]')) { ejSel = null; router(); }
+      if (b) { actual = null; ejSel = { id: (location.hash || '').replace('#', ''), i: +b.getAttribute('data-ej') }; router(); return; }
+      if (e.target.closest('[data-ej-salir]')) { actual = null; ejSel = null; router(); }
     });
     router();
   });
