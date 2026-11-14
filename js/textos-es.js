@@ -62,8 +62,12 @@
             resumen: 'BI-RADS v2025 con conducta por categoría, tamizaje de cuello uterino ASCCP con conducta por resultado y grosor endometrial con IETA.' },
           { id: 'utero', nombre: 'Útero: adenomiosis MUSA y miomas FIGO', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
             resumen: 'Adenomiosis por MUSA revisado y miomas por tipo FIGO con STEP-W, con conducta.' },
-          { id: 'prolapso', nombre: 'Prolapso genital: POP-Q', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
-            resumen: 'Estadio POP-Q global y por compartimento: anterior, apical (C y D) y posterior.' },
+          { id: 'endometriosis', nombre: 'Endometriosis: #Enzian, rASRM, EFI y conducta', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'],
+            resumen: 'Sospecha clínica, ecografía IDEA en 4 pasos, código #Enzian, estadio rASRM, EFI posquirúrgico y conducta ESHRE 2022 para dolor e infertilidad.' },
+          { id: 'prolapso', nombre: 'Prolapso genital: POP-Q y conducta', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
+            resumen: 'Estadio POP-Q global y por compartimento, con conducta: suelo pélvico, pesario y cirugía por compartimento.' },
+          { id: 'incontinencia', nombre: 'Incontinencia urinaria: esfuerzo, urgencia y mixta', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
+            resumen: 'Tipo, grado de Stamey, índice de Sandvik y diario miccional, con conducta y fármacos de la urgencia.' },
           { id: 'orads', nombre: 'Masa anexial: O-RADS, IOTA y GI-RADS', estado: 'v1', etapas: TODAS,
             resumen: 'O-RADS US v2022, reglas simples IOTA y GI-RADS, con marcadores tumorales, imagen complementaria y derivación.' }
         ] },
@@ -202,7 +206,7 @@
       copiar: 'Copiar resultado',
       copiado: 'Copiado',
       cita: 'Bump RC, Mattiasson A, Bø K, et al. The standardization of terminology of female pelvic organ prolapse and pelvic floor dysfunction. Am J Obstet Gynecol. 1996;175:10-17 · Haylen BT, Maher CF, Barber MD, et al. An International Urogynecological Association (IUGA)/International Continence Society (ICS) joint report on the terminology for female pelvic organ prolapse (POP). Int Urogynecol J. 2016;27:165-194.',
-      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: Bump 1996 (POP-Q) · IUGA/ICS 2016'
+      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: Bump 1996 (POP-Q) · IUGA/ICS 2016 · Conducta: ACOG/AUGS Practice Bulletin 214 (2019) · NICE NG123 (2019) · FDA 2019 · Sugerencia CaVeSal® para dosis habituales'
     },
 
     vaginitis: {

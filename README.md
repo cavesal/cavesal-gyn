@@ -16,6 +16,9 @@ Con lógica:
 - Masa anexial (solo Full): O-RADS US v2022, reglas simples IOTA y GI-RADS, con marcadores, imagen complementaria y derivación.
 - Mama, cérvix y endometrio (solo Full): BI-RADS v2025, tamizaje ASCCP con conducta por resultado y grosor endometrial con IETA.
 - Útero (solo Full): MUSA revisado 2022 y miomas FIGO con STEP-W.
+- Endometriosis (solo Full): sospecha clínica, IDEA, #Enzian 2021, rASRM, EFI y conducta ESHRE 2022.
+- Prolapso: POP-Q abierto en la Demo; conducta (pesario, cirugía por compartimento) solo Full.
+- Incontinencia (solo Full): tipo, Stamey, Sandvik, diario miccional y conducta con dosis.
 - Oncología (solo Full): estadificación FIGO de cérvix 2018, endometrio 2023 con grupo molecular y ovario 2014, con estudios de extensión y conducta sin dosis.
 
 Próximamente (sin cálculo, solo ficha): el resto de las funciones del catálogo del boceto.
@@ -43,6 +46,9 @@ js/comun.js           ayudantes de formulario de imágenes y oncología
 js/orads.js           O-RADS, IOTA y GI-RADS
 js/estudios.js        BI-RADS, tamizaje de cuello uterino y grosor endometrial
 js/utero.js           MUSA y miomas FIGO con STEP-W
+js/endometriosis.js   Sospecha, IDEA, #Enzian, rASRM, EFI y conducta
+js/incontinencia.js   Tipo, Stamey, Sandvik, diario miccional y conducta
+js/imc.js             IMC con clase OMS (Demo)
 js/onco.js            estadificación FIGO
 js/licencia.js        licencia (producto gyn)
 js/cvs-lic.js         persistencia y reactivación de la clave

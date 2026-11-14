@@ -23,6 +23,8 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/somp.js"></script>
 <script src="js/mrs.js"></script>
 <script src="js/prolapso.js"></script>
+<script src="js/incontinencia.js"></script>
+<script src="js/endometriosis.js"></script>
 <script src="js/vaginitis.js"></script>
 <script src="js/thm.js"></script>
 <script src="js/mec.js"></script>
@@ -406,6 +408,34 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('SAF trombótico → heparina terapéutica', /terapéutica/.test(P.autoinmune({ saft: true })[0].txt[0]), true);
   eq('SAF obstétrico → profiláctica', /profiláctica/.test(P.autoinmune({ safo: true })[0].txt[0]), true);
   eq('TEV previa → trombofilia solo con indicación', P.autoinmune({ tev: true })[0].t, 'Trombofilia');
+
+
+  grupo('Endometriosis');
+  var E = GYN.endometriosis;
+  var ra = E.rasrm({ perSup: '2', perPro: '0', oiSup: '0', oiPro: '16', odSup: '0', odPro: '0', oiAdh: '0', odAdh: '0', tiAdh: '0', tdAdh: '0', doug: '4' });
+  eq('rASRM 2 + 16 + Douglas 4 = 22 · estadio III', [ra.total, ra.estadio, ra.lesion], [22, 3, 18]);
+  eq('rASRM Douglas completo 40 + 1 = 41 · estadio IV', E.rasrm({ perSup: '1', doug: '40' }).estadio, 4);
+  eq('rASRM trompa densa con fimbria cubierta → 16', E.rasrm({ tiAdh: '4d', tiFim: true }).adherencias, 16);
+  var efB = { edad: 33, anios: 2, embarazo: true, quirurgica: true, rasrm: { lesion: 10, total: 20 }, ti: 4, fi: 4, oi: 4, td: 4, fd: 4, od: 4 };
+  eq('EFI máximo = 10', E.efi(efB).total, 10);
+  eq('EFI edad 40, 4 años, sin embarazo, LF 4 → 0 + 2 + 1 + 1 = 4', E.efi({ edad: 40, anios: 4, embarazo: false, quirurgica: true, rasrm: { lesion: 10, total: 20 }, ti: 2, fi: 4, oi: 4, td: 2, fd: 4, od: 4 }).total, 4);
+  eq('EFI sin ovario izquierdo → duplica el derecho (3 × 2 = 6)', E.efi({ edad: 30, anios: 1, quirurgica: true, rasrm: { lesion: 1, total: 1 }, ti: 4, fi: 4, oi: 0, td: 3, fd: 4, od: 4, sinOvI: true }).lf, 6);
+  eq('#Enzian(u) código', E.enzian({ metodo: 'u', p: '', oi: '2', od: '0', ti: '', td: '', pi: '0', pd: '0', a: '', bi: '2', bd: '0', c: '1', f: ['FA'] }).codigo, '#Enzian(u) P0 O2/0 T0/0 A0 B2/0 C1 FA');
+  eq('#Enzian(s) con permeabilidad', E.enzian({ metodo: 's', p: '1', oi: '0', od: '0', ti: '1', td: '0', pi: '-', pd: '+', a: '0', bi: '0', bd: '0', c: '0', f: [] }).codigo, '#Enzian(s) P1 O0/0 T1/0 (-/+) A0 B0/0 C0');
+
+  grupo('Incontinencia');
+  var U = GYN.incontinencia;
+  eq('Sandvik 4 × 3 = 12 muy severa; 2 × 1 leve; 3 × 2 moderada; 3 × 3 severa', [U.sandvik(4, 3).nivel, U.sandvik(2, 1).nivel, U.sandvik(3, 2).nivel, U.sandvik(3, 3).nivel], ['Muy severa', 'Leve', 'Moderada', 'Severa']);
+  eq('Esfuerzo + urgencia con pérdida → mixta', U.tipo({ esf: true, urgP: true }), 'mixta');
+  eq('Solo frecuencia → urgencia', U.tipo({ frec: true }), 'urgencia');
+  eq('Diario 10/día → polaquiuria', /Polaquiuria/.test(U.diario({ micDia: 10, micNoche: null, urg: null, pEsf: null, pUrg: null, vol24: null, volNoche: null, peso: null, edad: null }).h[0][0]), true);
+  eq('Poliuria nocturna 38 % en 70 años', /Poliuria nocturna/.test(U.diario({ micDia: null, micNoche: null, urg: null, pEsf: null, pUrg: null, vol24: 2400, volNoche: 900, peso: null, edad: 70 }).h[0][0]), true);
+  eq('Urgencia en mayor → prefiere β3', /preferir agonista β3/.test(JSON.stringify(U.conducta({ tipo: 'urgencia', alarmas: [], mayor: true, residuo: null }))), true);
+
+  grupo('Prolapso · conducta');
+  var r3 = Q.calcular(base({ ba: 2, aa: 1 }));
+  eq('Sin síntomas → expectante', Q.conducta({ r: r3, sint: false })[0].t, 'Sin síntomas');
+  eq('Cistocele III con cirugía → colporrafia anterior', /colporrafia anterior/.test(JSON.stringify(Q.conducta({ r: r3, sint: true, quiereCir: true }))), true);
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;

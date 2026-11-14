@@ -10,7 +10,7 @@
       '<div class="mrs-total" id="imc-r" aria-live="polite"><span class="mt-etq">Cargá peso y talla</span></div>' +
       c.grupo('Datos', c.campo('imc-peso', 'Peso', 'kg') + c.campo('imc-talla', 'Talla', 'cm')) +
       '<p class="ayuda">Bajo peso &lt; 18,5 · Normal 18,5–24,9 · Sobrepeso 25–29,9 · Obesidad I 30–34,9 · II 35–39,9 · III ≥ 40 kg/m².</p>' +
-      '<p class="fuente">Algoritmo propio CaVeSal® · Basado en: OMS, TRS 894 (2000).</p>';
+      '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: OMS, TRS 894 (2000).</p>';
     function act() {
       var L = c.lector(cont), i = P.imc(L.n('imc-peso'), L.n('imc-talla')), r = cont.querySelector('#imc-r');
       if (i === null) { r.className = 'mrs-total'; r.innerHTML = '<span class="mt-etq">Cargá peso y talla</span>'; return; }
