@@ -139,7 +139,8 @@
   }
 
   function render(cont, T, opts) {
-    var t = T.thm, esFull = opts && opts.esFull;
+    var t = T.thm, esFull = opts && opts.esFull, F = t.flujo, vistaIni = 'completa';
+    try { if (localStorage.getItem('cavesal_gyn_thm_vista') === 'pasos') vistaIni = 'pasos'; } catch (e) {}
     function chk(id, txt) { return '<label class="chk"><input type="checkbox" id="th-' + id + '"> ' + txt + '</label>'; }
     function sel(id, etq, ops, ayuda) {
       return '<label class="campo"><span>' + etq + '</span><select id="th-' + id + '">' + ops.map(function (o) { return '<option value="' + o[0] + '">' + o[1] + '</option>'; }).join('') + '</select>' + (ayuda ? '<small>' + ayuda + '</small>' : '') + '</label>';
@@ -150,36 +151,42 @@
     }
     cont.innerHTML =
       '<p class="ayuda">' + t.ayuda + '</p>' +
-      '<fieldset class="mrs-grupo"><legend>' + t.g.modo + '</legend>' + seg('th-modo', [['segirp', t.modos.segirp], ['combinado', t.modos.combinado + (esFull ? '' : ' · ' + T.app.soloFull)]], esFull ? 'combinado' : 'segirp') +
+      '<div class="th-vista"><span class="ayuda">' + F.vista + ':</span> ' + seg('th-vista', [['completa', F.completa], ['pasos', F.pasos]], vistaIni) + '</div>' +
+      '<div id="th-nav" class="th-nav" hidden><p class="th-paso" id="th-pasoTit"></p><small class="ayuda" id="th-pasoAyuda"></small><p class="ayuda" id="th-pasoAviso" hidden></p></div>' +
+      '<fieldset class="mrs-grupo" data-paso="1"><legend>' + t.g.modo + '</legend>' + seg('th-modo', [['segirp', t.modos.segirp], ['combinado', t.modos.combinado + (esFull ? '' : ' · ' + T.app.soloFull)]], esFull ? 'combinado' : 'segirp') +
         '<small class="ayuda" id="th-modoAyuda"></small></fieldset>' +
-      '<fieldset class="mrs-grupo"><legend>' + t.g.etapa + '</legend>' +
+      '<fieldset class="mrs-grupo" data-paso="1"><legend>' + t.g.etapa + '</legend>' +
         sel('etapa', t.c.etapa, [['', t.elegir], ['transicion', t.etapas.transicion], ['posmeno', t.etapas.posmeno], ['iop', t.etapas.iop]]) +
         '<div class="grid2">' + nro('edad', t.c.edad, '', '52') + nro('anosFum', t.c.anosFum, t.c.anosFumAyuda, '3') + '</div>' +
-        sel('utero', t.c.utero, [['', t.elegir], ['si', t.c.conUtero], ['no', t.c.sinUtero]]) +
+        '<div data-paso="3" data-paso-suelto>' + sel('utero', t.c.utero, [['', t.elegir], ['si', t.c.conUtero], ['no', t.c.sinUtero]]) + '</div>' +
         '<div id="th-wTrans">' + chk('anticoncepcion', t.c.anticoncepcion) + '</div>' +
         '<div id="th-wIop">' + chk('deseoEmbarazo', t.c.deseoEmbarazo) + '</div></fieldset>' +
-      '<fieldset class="mrs-grupo"><legend>' + t.g.objetivo + '</legend>' +
+      '<fieldset class="mrs-grupo" data-paso="4"><legend>' + t.g.objetivo + '</legend>' +
         chk('svm', t.c.svm) + chk('oste', t.c.oste) + chk('sgum', t.c.sgum) + chk('tdsh', t.c.tdsh) + '</fieldset>' +
-      '<fieldset class="mrs-grupo"><legend>' + t.g.mrs + '</legend>' + seg('th-esq', [['nams', T.mrs.esquemas.nams], ['socheg', T.mrs.esquemas.socheg]], 'nams') +
+      '<fieldset class="mrs-grupo" data-paso="4"><legend>' + t.g.mrs + '</legend>' + seg('th-esq', [['nams', T.mrs.esquemas.nams], ['socheg', T.mrs.esquemas.socheg]], 'nams') +
         '<div class="grid3">' + nro('mrsS', t.c.mrsS, '0-16', '0') + nro('mrsP', t.c.mrsP, '0-16', '0') + nro('mrsU', t.c.mrsU, '0-12', '0') + '</div>' +
         '<small class="ayuda">' + t.c.mrsAyuda + '</small></fieldset>' +
-      '<fieldset class="mrs-grupo" id="th-wOste"><legend>' + t.g.oste + '</legend><div class="grid2">' +
+      '<fieldset class="mrs-grupo" id="th-wOste" data-paso="4"><legend>' + t.g.oste + '</legend><div class="grid2">' +
         sel('fractura', t.c.fractura, [['', t.elegir], ['bajo', t.c.fracBajo], ['alto', t.c.fracAlto]], t.c.fracturaAyuda) + nro('tscore', t.c.tscore, '', '-2,0', '0.1') + '</div></fieldset>' +
-      '<fieldset class="mrs-grupo"><legend>' + t.g.contra + '</legend>' + CONTRA.map(function (k) { return chk('c-' + k, t.contra[k]); }).join('') + '</fieldset>' +
-      '<fieldset class="mrs-grupo"><legend>' + t.g.cv + '</legend>' +
+      '<fieldset class="mrs-grupo" data-paso="2"><legend>' + t.g.contra + '</legend>' + CONTRA.map(function (k) { return chk('c-' + k, t.contra[k]); }).join('') + '</fieldset>' +
+      '<fieldset class="mrs-grupo" data-paso="5"><legend>' + t.g.cv + '</legend>' +
         '<div id="th-wCvHerr">' + seg('th-cvHerr', [['hearts', t.c.hearts], ['figo', t.c.figo]], 'hearts') + '</div>' +
         '<div id="th-wHearts">' + nro('cvHearts', t.c.cvHearts, t.c.cvHeartsAyuda, '4', '0.1') + '</div>' +
         '<div id="th-wFigo" class="grid2">' + sel('cvFigo', t.c.cvFigo, [['', t.elegir], ['bajo', t.cat.bajo], ['intermedio', t.cat.intermedio], ['alto', t.cat.alto]]) +
           sel('cac', t.c.cac, [['', t.c.cacNo], ['hasta10', t.c.cacHasta10], ['mas10', t.c.cacMas10]], t.c.cacAyuda) + '</div></fieldset>' +
-      '<fieldset class="mrs-grupo"><legend>' + t.g.mama + '</legend>' +
+      '<fieldset class="mrs-grupo" data-paso="6"><legend>' + t.g.mama + '</legend>' +
         '<div id="th-wGailCat">' + sel('gailCat', t.c.gailCat, [['', t.elegir], ['bajo', t.cat.bajo], ['moderado', t.cat.moderado], ['alto', t.cat.alto]]) + '</div>' +
         '<div id="th-wGail">' + nro('gail', t.c.gail, t.c.gailAyuda, '1,2', '0.01') + '</div></fieldset>' +
-      '<fieldset class="mrs-grupo" id="th-wPato"><legend>' + t.g.pato + '</legend>' + PATO.map(function (k) { return chk('p-' + k, t.pato[k]); }).join('') + '</fieldset>' +
-      '<div id="th-out" class="resultados" aria-live="polite"></div>' +
-      '<div class="pq-acciones"><button type="button" class="btn-sec" id="th-copiar">' + t.copiar + '</button>' +
+      '<fieldset class="mrs-grupo" id="th-wPato" data-paso="7"><legend>' + t.g.pato + '</legend>' + PATO.map(function (k) { return chk('p-' + k, t.pato[k]); }).join('') + '</fieldset>' +
+      '<div id="th-out" class="resultados" aria-live="polite" data-paso="8"></div>' +
+      '<div class="pq-acciones th-navbtn" id="th-navBtn" hidden><button type="button" class="btn-sec" id="th-ant">' + F.anterior + '</button>' +
+      '<button type="button" class="btn" id="th-sig">' + F.siguiente + '</button>' +
+      '<button type="button" class="btn-sec" id="th-imprimir">' + F.imprimir + '</button>' +
+      '<button type="button" class="btn-sec" id="th-abrirCompleta">' + F.abrirCompleta + '</button></div>' +
+      '<div class="pq-acciones" data-paso="8"><button type="button" class="btn-sec" id="th-copiar">' + t.copiar + '</button>' +
       '<button type="button" class="btn-sec" id="th-limpiar">' + T.app.limpiar + '</button></div>' +
-      '<details class="ref"><summary>' + t.tablaTitulo + '</summary>' + t.tabla + '</details>' +
-      '<p class="cita" id="th-cita"></p><p class="etiqueta" id="th-etq"></p>';
+      '<details class="ref" data-paso="8"><summary>' + t.tablaTitulo + '</summary>' + t.tabla + '</details>' +
+      '<p class="cita" id="th-cita" data-paso="8"></p><p class="etiqueta" id="th-etq" data-paso="8"></p>';
 
     var $ = function (id) { return cont.querySelector('#th-' + id); };
     var radio = function (n) { var r = cont.querySelector('input[name=th-' + n + ']:checked'); return r ? r.value : ''; };
@@ -293,8 +300,69 @@
       cont.querySelectorAll('input[type=number]').forEach(function (i) { i.value = ''; });
       actualizar();
     });
+    // Paso a paso: muestra un bloque por vez sobre el mismo formulario y reutiliza calcular(d).
+    var paso = 1;
+    function secuencia(d) {
+      var q = [1];
+      if ((d.etapa === 'transicion' && d.anticoncepcion) || (d.etapa === 'iop' && d.deseoEmbarazo)) return q.concat(8);
+      q.push(2);
+      if (CONTRA.some(function (k) { return d.contra[k]; })) return q.concat(4, 8);
+      q.push(3, 4);
+      var objetivo = d.svm || d.oste || d.tdsh || d.etapa === 'iop';
+      if (!objetivo) return q.concat(8);
+      q.push(5);
+      var r = calcular(d);
+      if (r.cv && r.cv.evitar) return q.concat(8);
+      q.push(6);
+      if (r.mama && r.mama.categoria === 'alto') return q.concat(8);
+      if (d.modo === 'combinado') q.push(7);
+      return q.concat(8);
+    }
+    function vistaPasos() { return radio('vista') === 'pasos'; }
+    function mostrarPaso() {
+      var on = vistaPasos(), d = leer(), q = secuencia(d);
+      if (q.indexOf(paso) < 0) { var p0 = 1; q.forEach(function (x) { if (x < paso) p0 = x; }); paso = p0; }
+      $('nav').hidden = !on; $('navBtn').hidden = !on;
+      cont.querySelectorAll('[data-paso]').forEach(function (el) {
+        if (!on) { el.classList.remove('th-oculto'); return; }
+        var n = Number(el.getAttribute('data-paso'));
+        el.classList.toggle('th-oculto', n !== paso);
+      });
+      if (on) {
+        // El útero está dentro del bloque de etapa: en el paso 3 se muestra solo ese campo.
+        var fsEtapa = $('etapa').closest('fieldset');
+        if (paso === 3) { fsEtapa.classList.remove('th-oculto'); fsEtapa.classList.add('th-solo3'); } else fsEtapa.classList.remove('th-solo3');
+        var i = q.indexOf(paso);
+        $('pasoTit').textContent = F.paso + ' ' + (i + 1) + ' ' + F.de + ' ' + q.length + ': ' + F.titulos[paso];
+        $('pasoAyuda').textContent = F.ayudas[paso] || '';
+        $('ant').disabled = i === 0;
+        $('sig').hidden = paso === 8;
+        $('imprimir').hidden = paso !== 8;
+      }
+    }
+    function mover(dir) {
+      var d = leer(), q = secuencia(d), i = q.indexOf(paso);
+      if (dir > 0 && paso === 1 && !d.etapa) { $('pasoAviso').textContent = F.faltaEtapa; $('pasoAviso').hidden = false; return; }
+      $('pasoAviso').hidden = true;
+      var j = Math.max(0, Math.min(q.length - 1, i + dir));
+      paso = q[j]; mostrarPaso();
+      var top = $('nav'); if (top && top.scrollIntoView) top.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
+    cont.querySelectorAll('input[name=th-vista]').forEach(function (r) {
+      r.addEventListener('change', function () { try { localStorage.setItem('cavesal_gyn_thm_vista', radio('vista')); } catch (e) {} paso = 1; mostrarPaso(); });
+    });
+    $('ant').addEventListener('click', function () { mover(-1); });
+    $('sig').addEventListener('click', function () { mover(1); });
+    $('imprimir').addEventListener('click', function () { w.print(); });
+    $('abrirCompleta').addEventListener('click', function () {
+      cont.querySelector('input[name=th-vista][value=completa]').checked = true;
+      try { localStorage.setItem('cavesal_gyn_thm_vista', 'completa'); } catch (e) {}
+      mostrarPaso();
+    });
+    cont.addEventListener('change', mostrarPaso);
     cont._texto = function () { return ultimo; };
     actualizar();
+    mostrarPaso();
   }
 
   w.GYN = w.GYN || {};

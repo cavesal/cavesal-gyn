@@ -54,6 +54,19 @@
       if (d.p_saf) falta.push('síndrome antifosfolípido (lupus con anticuerpos antifosfolípidos u otra condición)');
       if (d.p_cancer_prev || d.p_cancer_act) falta.push('tipo de cáncer');
       if (d.p_ai) falta.push('enfermedad autoinmune');
+      if (typeof d.partoDias === 'number') {
+        var dd = d.partoDias;
+        if (d.lactancia === true) {
+          if (dd < 21) selCond(cont, 'lactancia', 'l21');
+          else if (dd < 30) selCond(cont, 'lactancia', 'l21_30');
+          else if (dd <= 42) falta.push('lactancia de 30 a 42 días (' + dd + ' días): elegir según otros factores de riesgo de TEV');
+          else selCond(cont, 'lactancia', 'l42');
+        } else if (d.lactancia === false) {
+          if (dd < 21) selCond(cont, 'posparto', 'p21');
+          else if (dd <= 42) falta.push('posparto sin lactancia de 21 a 42 días (' + dd + ' días): elegir según otros factores de riesgo de TEV');
+          else selCond(cont, 'posparto', 'p42');
+        } else falta.push('posparto de ' + dd + ' días: indicar si hay lactancia');
+      }
       return falta.length ? 'Completar a mano: ' + falta.join('; ') + '.' : '';
     },
     thm: function (cont, d) {
@@ -68,7 +81,8 @@
       if (d.p_tvp || d.p_tep) falta.push('si la enfermedad tromboembólica está activa');
       if (d.p_cancer_prev || d.p_cancer_act) falta.push('si el cáncer es de mama o estrógeno-dependiente');
       if (d.p_cardio) falta.push('ACV o IAM previo');
-      return falta.length ? 'Completar a mano: ' + falta.join('; ') + '.' : '';
+      var trh = d.trh ? 'En la HC figura terapia hormonal en curso' + (d.trhCual ? ' (' + esc(d.trhCual) + ')' : '') + ': revisar indicación, vía, dosis y tiempo de uso. ' : '';
+      return trh + (falta.length ? 'Completar a mano: ' + falta.join('; ') + '.' : '');
     },
     incretinas: function (cont, d) {
       fijar(cont.querySelector('#i-talla'), d.talla);
@@ -82,7 +96,9 @@
     }
   };
 
+  function esc(x) { return String(x).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function aviso(cont, nota) {
+    if (datos && datos.motivo) nota = 'Motivo de la última consulta ginecológica: ' + esc(datos.motivo) + '.' + (nota ? ' ' + nota : '');
     var div = document.createElement('div');
     div.className = 'fila neutro';
     div.style.marginBottom = '12px';

@@ -224,3 +224,14 @@ button,input,select{font:inherit;color:inherit}
 .tabla{width:100%;border-collapse:collapse;font-size:.84rem;color:var(--ink)}
 .tabla th{background:var(--surface-2);text-align:left;padding:7px 8px;font-weight:700}
 .tabla td{padding:6px 8px;border-top:1px solid var(--line-soft);vertical-align:top}
+
+/* THM · Paso a paso */
+.th-vista { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; }
+.th-nav { border-left: 4px solid var(--teal); padding: 6px 12px; margin: 0 0 12px; }
+.th-paso { font-weight: 700; margin: 0 0 2px; }
+.th-oculto { display: none !important; }
+.th-solo3 > *:not([data-paso="3"]) { display: none !important; }
+.th-navbtn { margin-top: 8px; }
+@media print {
+  .th-vista, .th-navbtn, .th-nav small, header, nav, .no-print { display: none !important; }
+}

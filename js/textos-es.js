@@ -409,6 +409,10 @@
     },
     thm: {
       titulo: 'Calculadora de THM',
+      flujo: { vista: 'Vista', completa: 'Formulario completo', pasos: 'Paso a paso', paso: 'Paso', de: 'de', anterior: 'Anterior', siguiente: 'Siguiente',
+        imprimir: 'Imprimir', abrirCompleta: 'Abrir calculadora completa', faltaEtapa: 'Elegí la etapa para continuar.',
+        titulos: { 1: 'Modo, etapa, edad y años desde la FUM', 2: 'Contraindicaciones', 3: 'Útero', 4: 'Objetivo del tratamiento', 5: 'Riesgo cardiovascular', 6: 'Riesgo mamario (Gail)', 7: 'Patologías que orientan la vía', 8: 'Resultado' },
+        ayudas: { 2: 'Si marcás alguna, el flujo pasa directo al objetivo y a la rama no hormonal.', 4: 'Solo síndrome genitourinario: el flujo termina en terapia local.', 5: 'Con riesgo intermedio por FIGO/WHF, el calcio coronario (CAC) reclasifica.' } },
       ayuda: 'Elegí el modo y cargá los datos. Cada bloque muestra su propio resultado y al final aparece la conducta.',
       g: { modo: 'Modo de cálculo', etapa: 'Etapa y útero', objetivo: 'Objetivo del tratamiento', mrs: 'Escala MRS', oste: 'Prevención de osteoporosis',
         contra: 'Contraindicaciones de THM', cv: 'Riesgo cardiovascular', mama: 'Riesgo mamario', pato: 'Patologías que orientan la vía', ventana: 'Ventana de tratamiento' },
