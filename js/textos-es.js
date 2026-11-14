@@ -78,13 +78,8 @@
         funciones: [
           { id: 'fertilidad', nombre: 'Fertilidad', estado: 'v1', etapas: ['edad-fertil'],
             resumen: 'Día de ovulación, ventana de progesterona y tamaño folicular para el trigger.' },
-          { id: 'preconcepcional', nombre: 'Preconcepcional: panel hormonal', estado: 'v1', etapas: ['edad-fertil'],
-            resumen: 'Valores del día 2 y del día 21 con su interpretación.' },
-          { id: 'semaforo', nombre: 'Semáforo de riesgo preconcepcional', estado: 'prox', etapas: ['edad-fertil'],
-            resumen: 'Tres niveles (leve, moderado, severo) según factores previos al embarazo.',
-            entra: ['Exposición a GLP-1', 'Ácido fólico', 'Antecedentes familiares', 'Malformaciones y preeclampsia previas', 'Cirugías previas'],
-            sale: ['Nivel leve, moderado o severo'],
-            nota: 'La combinación de factores que da cada nivel la dicta el autor antes de programar.' }
+          { id: 'preconcepcional', nombre: 'Preconcepcional: semáforo, ácido fólico y panel hormonal', estado: 'v1', etapas: ['edad-fertil'],
+            resumen: 'Semáforo de riesgo del MSPBS, dosis y momento del ácido fólico, TSH preconcepcional y valores del día 2 y del día 21.' }
         ] },
       { id: 'climaterio', nombre: 'Climaterio', intro: 'Síntomas climatéricos y decisión sobre terapia hormonal.',
         funciones: [
@@ -138,8 +133,8 @@
     },
 
     preconcepcional: {
-      titulo: 'Preconcepcional: panel hormonal',
-      ayuda: 'Todos los valores son opcionales. FSH, LH, AMH, TSH y prolactina del día 2 a 5 del ciclo; progesterona del día 21.',
+      titulo: 'Preconcepcional: semáforo, ácido fólico y panel hormonal',
+      ayuda: 'Todos los valores son opcionales. FSH, LH, AMH, TSH y prolactina del día 2 a 5 del ciclo; progesterona del día 21. TSH: misma tabla que el 1.er trimestre (ATA 2017).',
       relacion: 'Relación LH/FSH',
       etiqueta: 'Algoritmo propio CaVeSal® · Basado en: ASRM 2020 (reserva ovárica) · ATA 2017 · Guía CaVeSal® "Perfil hormonal femenino en fertilidad"'
     },

@@ -8,7 +8,7 @@ Calculadora gineco-endocrinológica para profesionales de la salud. Sitio estát
 
 Con lógica:
 - Fertilidad: día de ovulación (ciclo − 14), dosaje de progesterona (ovulación + 7 a + 10), fechas si se carga la FUM, y clasificación del folículo líder para el trigger según esquema (letrozol, clomifeno, HMG/FSH).
-- Preconcepcional: panel hormonal (FSH, LH, relación LH/FSH, AMH, TSH, prolactina, progesterona día 21).
+- Preconcepcional: semáforo de riesgo del MSPBS 2022 (ambigüedades de edad, Hb e IMC resueltas con OMS y ACOG), ácido fólico (dosis, momento, MTHFR) y panel hormonal (FSH, LH, relación LH/FSH, AMH, TSH con anti-TPO, levotiroxina y FIV, prolactina, progesterona día 21).
 - Escala MRS (Heinemann 2004): 11 ítems, total sobre 44 y subescalas somática, psicológica y urogenital.
 - Incretinas (solo Full): semaglutida y tirzepatida con indicación por IMC, contraindicaciones y precauciones, escalada cada 4 semanas con fecha, respuesta a 12 semanas (<5 % insuficiente), washout por molécula, anticoncepción, estudios basales y signos de alarma.
 
@@ -28,7 +28,7 @@ index.html            aviso legal, compuerta de licencia y app
 css/estilos.css       paleta, modo claro y oscuro
 js/textos-es.js       catálogo, textos de interfaz, legales y etiquetas
 js/fertilidad.js      ciclo y trigger
-js/preconcepcional.js panel hormonal
+js/preconcepcional.js semáforo MSPBS, ácido fólico y panel hormonal
 js/mrs.js             escala MRS
 js/incretinas.js      incretinas: escalada, contraindicaciones y alarma
 js/licencia.js        licencia (producto gyn)

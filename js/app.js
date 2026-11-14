@@ -76,7 +76,9 @@
     $('pSub').textContent = r.c.nombre + ' · ' + nombresEtapas(r.f.etapas);
     $('pBadge').className = 'badge ' + (r.f.estado === 'v1' ? 'b-v1' : 'b-prox');
     $('pBadge').textContent = r.f.estado === 'v1' ? T.app.conLogica : T.app.proximamente;
-    var cont = $('pCuerpo');
+    // Contenedor nuevo en cada pantalla: evita que los oyentes de un módulo anterior sigan activos.
+    var viejo = $('pCuerpo'), cont = viejo.cloneNode(false);
+    viejo.parentNode.replaceChild(cont, viejo);
     if (bloqueada(r.f)) cont.innerHTML = htmlBloqueo();
     else if (r.f.estado === 'v1' && w.GYN[r.f.id] && w.GYN[r.f.id].render) w.GYN[r.f.id].render(cont, T, { bloqueo: htmlBloqueo, esFull: w.GYN.licencia.esFull() });
     else renderProx(cont, r.f);

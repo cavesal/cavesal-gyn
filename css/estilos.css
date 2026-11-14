@@ -214,3 +214,8 @@ button,input,select{font:inherit;color:inherit}
 .opt-seg span{display:inline-block;padding:8px 12px;border-radius:999px;border:1.5px solid var(--line);font-size:.84rem;font-weight:600;cursor:pointer;min-height:36px}
 .opt-seg input:checked+span{border-color:var(--teal);background:var(--teal);color:#fff}
 .opt-seg input:focus-visible+span{outline:2px solid var(--teal);outline-offset:2px}
+.p-cuerpo h3.sub{margin:4px 0 8px;padding-top:6px}
+.p-cuerpo h3.sub ~ h3.sub{margin-top:26px;border-top:1px solid var(--line);padding-top:18px}
+.fila .lista{margin:4px 0 0;padding-left:18px;font-size:.88rem}
+.fila .lista li{margin:2px 0}
+.chk input{flex:none}
