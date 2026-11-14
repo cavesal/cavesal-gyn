@@ -56,6 +56,8 @@
         ] },
       { id: 'salud-gin', nombre: 'Salud Ginecológica', intro: 'Estudios por imágenes y clasificación de hallazgos.',
         funciones: [
+          { id: 'imc', nombre: 'IMC y clasificación OMS', estado: 'v1', etapas: TODAS,
+            resumen: 'Índice de masa corporal con la clase OMS, de bajo peso a obesidad clase III.' },
           { id: 'estudios', nombre: 'Mama, cérvix y endometrio: BI-RADS, tamizaje y grosor', estado: 'v1', etapas: TODAS,
             resumen: 'BI-RADS v2025 con conducta por categoría, tamizaje de cuello uterino ASCCP con conducta por resultado y grosor endometrial con IETA.' },
           { id: 'utero', nombre: 'Útero: adenomiosis MUSA y miomas FIGO', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
