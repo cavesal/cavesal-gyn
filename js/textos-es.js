@@ -156,10 +156,10 @@
       esquemas: { nams: 'NAMS / Heinemann', socheg: 'SOCHEG (por dominio)' },
       severa: 'Alteración severa', noSevera: 'Sin alteración severa', corte: 'corte ≥',
       aThm: 'Usar en Calculadora de THM',
-      citaSocheg: 'Sociedad Chilena de Climaterio (SOCHEG). Manual para Manejo de la Mujer en Edad del Climaterio, 2.ª ed. 2020.',
+      citaSocheg: 'Sociedad Chilena de Climaterio (SOCHEG). Manual para Manejo de la Mujer en Edad del Climaterio, 2.ª ed. 2020 · MSPyBS Paraguay. Orientaciones Técnicas para la Atención Integral a la Mujer en Climaterio. Res. S.G. N.º 267/2023 (total ≥15).',
       cita: 'Heinemann LAJ, Do MT, Strelow F, Gerbsch S, Schnitker J, Schneider HPG. The Menopause Rating Scale (MRS) as outcome measure for hormone treatment? A validation study. Health Qual Life Outcomes. 2004;2:67.',
       citaUrl: 'https://doi.org/10.1186/1477-7525-2-67',
-      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: Heinemann LAJ et al. Health Qual Life Outcomes 2004;2:67 · SOCHEG 2020'
+      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: Heinemann LAJ et al. Health Qual Life Outcomes 2004;2:67 · SOCHEG 2020 · MSPyBS 2023'
     },
 
     prolapso: {
@@ -456,7 +456,7 @@
       },
       motivo: { contra: 'Motivo: contraindicación de THM.', cv: 'Motivo: riesgo cardiovascular alto.', mama: 'Motivo: riesgo mamario alto.' },
       noHormonalSegirp: ['Fezolinetant', 'ISRS o IRSN', 'Gabapentina'],
-      noHormonalComb: ['2.ª línea (ACP 2026): IRSN, desvenlafaxina o venlafaxina', '3.ª línea: ISRS (escitalopram o paroxetina), gabapentina o antagonistas NK (fezolinetant o elinzanetant)'],
+      noHormonalComb: ['2.ª línea (ACP 2026): IRSN, desvenlafaxina o venlafaxina', '3.ª línea: ISRS (escitalopram o paroxetina), gabapentina o antagonistas NK (fezolinetant o elinzanetant)', 'ACOG 2026: ISRS/IRSN y antagonistas NK con recomendación fuerte; gabapentina condicional si las otras no sirven'],
       esq: { estrogeno: 'estrógeno solo', ciclica: 'terapia cíclica de estrógeno y progestágeno', continua: 'terapia continua de estrógeno y progestágeno' },
       faltaUtero: 'indicar si tiene útero para definir el esquema',
       via: { libre: 'Vía oral o transdérmica, según preferencia', transdermica: 'Vía transdérmica' },
@@ -493,7 +493,7 @@
       tablaTitulo: 'Presentaciones disponibles en Paraguay (SEGIRP 2026)',
       tabla: '<ul class="pq-notas"><li>Estrógeno solo: Ginoderm gel 0,06% (estradiol 0,6 mg/g), transdérmico.</li><li>Combinado continuo: Angeliq y Gadofem (estradiol 1 mg + drospirenona 2 mg); Femoston Conti 1/5 (estradiol 1 mg + didrogesterona 5 mg), orales.</li><li>Combinado secuencial: Femoston 1/10 (estradiol 1 mg; didrogesterona 10 mg en la fase combinada), oral.</li><li>Progesterona micronizada: Progelle, Progendo, Gynprogest 100-200 mg, oral o vaginal.</li><li>Tibolona: Tobe 2,5 mg, oral.</li><li>Testosterona: Androlone 1% crema (tubo 15 g, sobre 5 g), transdérmica.</li><li>DIU-LNG 52 mg: Mirena, Asertia, protección endometrial.</li><li>Local vaginal: estriol (Colpoestriol, Vacidox) óvulos o crema; promestrieno (Antrofi) crema 10 mg; prasterona (DHEA).</li></ul><p class="ayuda">Fuente: SEGIRP 2026.</p>',
       citaSegirp: 'Sociedad Paraguaya de Ginecología Endocrina y Reproductiva (SEGIRP). Manejo de los síntomas en la peri y posmenopausia con terapia hormonal. Algoritmo 2026 · Davis SR et al. The 2023 Practitioner’s Toolkit for Managing Menopause. Climacteric. 2023;26:517-536 · Piasta J, Zewail A. Hormonal Options for Perimenopause: A Clinician Toolkit. Obstet Gynecol. 2026 · Panay N et al. ESHRE/ASRM/CREWHIRL/IMS. Premature ovarian insufficiency. Climacteric. 2024;27:510-520 · OPS. HEARTS · NCI. Breast Cancer Risk Assessment Tool (Gail).',
-      citaComb: 'SEGIRP 2026 · Benedetto C, Gulati M, Khadilkar SS, et al. (FIGO/WHF). Int J Gynecol Obstet. 2026. doi:10.1002/ijgo.71356 · Stute P, et al. (EMAS). Maturitas. 2026;212:109060 · ACOG Clinical Practice Guideline No. 13. Obstet Gynecol. 2026;148(5):e345-e364 · Qaseem A, et al. (ACP). Ann Intern Med. 2026 · The Menopause Society (NAMS). The 2022 hormone therapy position statement. Menopause. 2022;29:767-794 · FDA. Labeling changes for menopausal hormone therapy, 2025-2026 · Panay N et al. (ESHRE). Climacteric. 2024;27:510-520 · USPSTF. Medication use to reduce risk of breast cancer. JAMA. 2019;322:857-867 · Heinemann 2004 · SOCHEG 2020.',
+      citaComb: 'SEGIRP 2026 · Benedetto C, Gulati M, Khadilkar SS, et al. (FIGO/WHF). Int J Gynecol Obstet. 2026. doi:10.1002/ijgo.71356 · Stute P, et al. (EMAS). Maturitas. 2026;212:109060 · ACOG Clinical Practice Guideline No. 13. Obstet Gynecol. 2026;148(5):e345-e369 · Qaseem A, et al. (ACP). Ann Intern Med. 2026 · The Menopause Society (NAMS). The 2022 hormone therapy position statement. Menopause. 2022;29:767-794 · FDA. Labeling changes for menopausal hormone therapy, 2025-2026 · Panay N et al. (ESHRE). Climacteric. 2024;27:510-520 · USPSTF. Medication use to reduce risk of breast cancer. JAMA. 2019;322:857-867 · Heinemann 2004 · SOCHEG 2020.',
       etqSegirp: 'Algoritmo propio CaVeSal® · Basado en: SEGIRP 2026',
       etqComb: 'Algoritmo propio CaVeSal® · Basado en: SEGIRP 2026 · FIGO/WHF 2026 · EMAS 2026 · ACOG 2026 · ACP 2026 · NAMS 2022 · FDA 2025-2026 · ESHRE 2024 · USPSTF 2019'
     },

@@ -143,10 +143,15 @@
       '<div id="i-out" class="resultados" aria-live="polite"></div>' +
       '<details class="ref"><summary>Estudios basales</summary><ul>' + ESTUDIOS.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul></details>' +
       '<details class="ref" open><summary>Signos de alarma: suspender y consultar</summary><ul>' + ALARMAS.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul></details>' +
+      '<details class="ref"><summary>Respuesta, mantenimiento y menopausia (ensayos)</summary><ul>' +
+      '<li>Sin respuesta (pérdida &lt;5 %): STEP 1 13,6 % (Wilding, NEJM 2021;384:989-1002) · STEP 2, con diabetes, 31,2 % (Davies, Lancet 2021;397:971-984) · STEP TEENS 27 % (Weghuber, NEJM 2022;387:2245-2257) · SURMOUNT-1 9 % (Jastreboff, NEJM 2022;387:205-216).</li>' +
+      '<li>Mantenimiento: STEP 4, semanas 20-68, −7,9 % al continuar vs. +6,9 % al pasar a placebo (Rubino, JAMA 2021;325:1414-1425) · SURMOUNT-4, semanas 36-88, −5,5 % vs. +14,0 % (Aronne, JAMA 2024;331:38-48).</li>' +
+      '<li>Menopausia: en la transición, según SWAN, la ganancia de masa grasa aumenta 2,5 veces y la pérdida de masa magra 3 veces (Hurtado Andrade, Menopause 2024;31:737-739). Con tirzepatida, 19,2 % vs. 14,0 % de pérdida de peso con y sin THM (Castaneda, Lancet Obstet Gynaecol Womens Health 2026;2:e118-e128). Datos observacionales: no son una regla para indicar THM.</li>' +
+      '</ul></details>' +
       '<div class="pq-acciones"><a class="btn-sec" href="#mec">Elegibilidad de métodos (MEC)</a><button type="button" class="btn-sec" id="i-limpiar">' + T.app.limpiar + '</button></div>' +
       '<p class="orientativa">' + T.app.orientativa + '</p>' +
       '<p class="cita">Fichas: Wegovy (FDA 2026) <a href="https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=ee06186f-2aa3-4990-a760-757579d8f77b" target="_blank" rel="noopener">DailyMed</a> · Zepbound (FDA) <a href="https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=487cd7e7-434c-4925-99fa-aa80b1cc776b" target="_blank" rel="noopener">DailyMed</a> · Mounjaro (MHRA/EMA, rev. 29/08/2026) <a href="https://www.medicines.org.uk/emc/medicine/44434/spc" target="_blank" rel="noopener">emc</a>. Ver bibliografía completa.</p>' +
-      '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: fichas FDA de Wegovy y Zepbound · ficha británica/EMA de Mounjaro · Sugerencia CaVeSal® en el corte de respuesta</p>';
+      '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: fichas FDA de Wegovy y Zepbound · ficha británica/EMA de Mounjaro · STEP 1, 2, 4 y TEENS · SURMOUNT-1 y 4 · Hurtado Andrade 2024 · Castaneda 2026 · Sugerencia CaVeSal® en el corte de respuesta</p>';
 
     var q = function (s) { return cont.querySelector(s); };
     function leer() {
