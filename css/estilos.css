@@ -219,3 +219,8 @@ button,input,select{font:inherit;color:inherit}
 .fila .lista{margin:4px 0 0;padding-left:18px;font-size:.88rem}
 .fila .lista li{margin:2px 0}
 .chk input{flex:none}
+/* Tablas de referencia (marcadores) */
+.tabla-scroll{overflow-x:auto;margin:6px 0 10px;border:1px solid var(--line);border-radius:10px}
+.tabla{width:100%;border-collapse:collapse;font-size:.84rem;color:var(--ink)}
+.tabla th{background:var(--surface-2);text-align:left;padding:7px 8px;font-weight:700}
+.tabla td{padding:6px 8px;border-top:1px solid var(--line-soft);vertical-align:top}

@@ -279,6 +279,8 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('IOTA: solo M → maligno; B y M → inconcluso', [O.iota({ m1: true }).res, O.iota({ b1: true, m2: true }).res], ['maligno', 'inconcluso']);
   eq('GI-RADS: 2 rasgos → 4; 3 rasgos → 5', [O.girads('otra', { g1: true, g3: true }).cat, O.girads('otra', { g1: true, g3: true, g5: true }).cat], [4, 5]);
 
+  eq('Marcadores: 16 tumores, saco vitelino → AFP', [O.MARC.length, O.MARC[6][2]], [16, 'AFP']);
+
   grupo('BI-RADS v2025');
   var ES = GYN.estudios;
   eq('BI-RADS 0 imagen adicional, 25 años → ecografía', /ecografía mamaria dirigida/i.test(ES.birads({ cat: '0i', edad: 25 }).con[0]), true);

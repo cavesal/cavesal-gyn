@@ -127,6 +127,25 @@
     return { cat: cat, prob: GIR_PROB[cat], n: n };
   }
 
+  /* ---------- Tumores de ovario por origen y marcadores (Tabla propia CaVeSal®) ---------- */
+  var MARC = [
+    ['Epitelial', 'Seroso de alto grado', 'CA-125 (HE4 de apoyo)'], ['Epitelial', 'Seroso de bajo grado', 'CA-125'],
+    ['Epitelial', 'Endometrioide y células claras', 'CA-125 (HE4)'], ['Epitelial', 'Mucinoso', 'CEA y CA 19-9; descartar primario digestivo'],
+    ['Epitelial', 'Brenner', 'Sin marcador propio'],
+    ['Germinal', 'Disgerminoma', 'LDH (hCG si tiene sincitiotrofoblasto)'], ['Germinal', 'Saco vitelino', 'AFP'],
+    ['Germinal', 'Carcinoma embrionario', 'AFP y hCG'], ['Germinal', 'Coriocarcinoma no gestacional', 'hCG'],
+    ['Germinal', 'Teratoma inmaduro', 'AFP a veces'], ['Germinal', 'Teratoma maduro (dermoide)', 'Sin marcador; CA 19-9 puede subir'],
+    ['Cordones sexuales', 'Células de la granulosa', 'Inhibina B, AMH, estradiol'], ['Cordones sexuales', 'Sertoli-Leydig', 'Testosterona; AFP a veces'],
+    ['Cordones sexuales', 'Tecoma / fibroma', 'Estrógenos (tecoma); CA-125 puede subir en Meigs'],
+    ['Metastásico', 'Digestivo (Krukenberg)', 'CEA y CA 19-9'], ['Metastásico', 'Mama', 'CA 15-3']
+  ];
+  var MARC_NOTAS = [
+    'CA-125 sube también con endometriosis, menstruación, embarazo, EPI, miomas, ascitis de cualquier causa y cirrosis; es normal en cerca de la mitad de los estadios I.',
+    'β-hCG elevada: descartar siempre embarazo y enfermedad trofoblástica. AFP: también hígado y embarazo. CEA: sube con el tabaco.',
+    'CA 15-3 sirve para el seguimiento del cáncer de mama metastásico, no para tamizaje ni diagnóstico. SCC: seguimiento del carcinoma escamoso de cérvix.',
+    'Ningún marcador solo diferencia benigno de maligno (ESGO-ESMO-ESP 2024). Gonadoblastoma sospechado en premenárquica: cariotipo antes de la cirugía (ESMO).'
+  ];
+
   /* ---------- Conducta común: marcadores, imagen, derivación ---------- */
   // nivel: 'bajo' | 'intermedio' | 'alto'; p: { edad, meno, ca125, solida, fija, meta }
   function conducta(nivel, p) {
@@ -195,6 +214,11 @@
       '<span id="g-wr" hidden>' + c.grupo('Rasgos de malignidad', GIR_RASGOS.map(function (x) { return c.chk('g-' + x[0], x[1]); }).join('')) + '</span>' +
       '<div id="g-out" class="resultados" aria-live="polite"></div>' +
       '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: Amor F et al. J Ultrasound Med 2009;28:285-291 · Amor F et al. UOG 2011;38:450-455 · ACOG PB 174 · RCOG GTG 62</p>' +
+      '<h3 class="sub">Tumores de ovario por origen y marcadores</h3>' +
+      '<div class="tabla-scroll"><table class="tabla"><thead><tr><th>Origen</th><th>Tumor</th><th>Marcador</th></tr></thead><tbody>' +
+      MARC.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>'; }).join('') + '</tbody></table></div>' +
+      C().ul(MARC_NOTAS) +
+      '<p class="etiqueta">Tabla propia CaVeSal® · Basada en: OMS 2020 · ESMO no epiteliales (Ray-Coquard I et al. Ann Oncol 2018;29 Suppl 4:iv1-iv18) · ESGO-ESMO-ESP 2024 · RCOG GTG 62 · ACOG PB 174</p>' +
       '<p class="orientativa">' + T.app.orientativa + '</p>';
 
     var L = c.lector(cont), q = function (s) { return cont.querySelector(s); };
@@ -267,5 +291,5 @@
   }
 
   w.GYN = w.GYN || {};
-  w.GYN.orads = { orads: orads, iota: iota, girads: girads, conducta: conducta, render: render, TIPOS: TIPOS };
+  w.GYN.orads = { MARC: MARC, orads: orads, iota: iota, girads: girads, conducta: conducta, render: render, TIPOS: TIPOS };
 })(window);
