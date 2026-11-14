@@ -82,6 +82,7 @@
     if (bloqueada(r.f)) cont.innerHTML = htmlBloqueo();
     else if (r.f.estado === 'v1' && w.GYN[r.f.id] && w.GYN[r.f.id].render) w.GYN[r.f.id].render(cont, T, { bloqueo: htmlBloqueo, esFull: w.GYN.licencia.esFull() });
     else renderProx(cont, r.f);
+    if (w.GYN.puente && !bloqueada(r.f)) w.GYN.puente.aplicar(r.f.id, cont);
     w.scrollTo(0, 0);
     $('pTitulo').focus({ preventScroll: true });
   }

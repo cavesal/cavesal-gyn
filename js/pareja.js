@@ -1,7 +1,8 @@
 /* CaVeSal® GYN · Estudio de la pareja infértil: espermograma, REM, ovulación, reserva ovárica, útero y trompas, y siguiente paso.
    Algoritmo propio CaVeSal® · Basado en: OMS Manual de semen 6.ª ed. (2021) · OMS Guía de infertilidad (2025) ·
    ASRM 2026 (evaluación de la mujer infértil) · ASRM 2020 (reserva ovárica) · ASRM 2021 (cirugía tubaria) ·
-   AUA/ASRM 2024 (infertilidad masculina) · ESHRE 2023 (esterilidad sin causa aparente) · ESHRE 2024 (IOP) ·
+   AUA/ASRM 2024 (infertilidad masculina) · ESHRE 2023 (esterilidad sin causa aparente) ·
+   ESHRE 2022 (pérdida recurrente del embarazo) · ESHRE 2023 (falla recurrente de implantación) · Heller y Clermont 1964 · ESHRE 2024 (IOP) ·
    POSEIDON · ESHRE Bologna 2011 · Guía internacional SOMP 2023 (Teede) · RCPI 2023 · Guías CaVeSal® de HC.
    © 2026 Dr. Carlos Vera Salerno · Ley N.º 1328/1998 (Paraguay). Prohibida su copia o reproducción. */
 (function (w) {
@@ -166,6 +167,25 @@
     return { color: color, con: con, intra: !!intra, hidro: !!hidro, bil: d.res === 'bil', perm: d.res === 'perm', pendiente: !d.prueba || d.prueba === 'no', uni: d.res === 'uni' };
   }
 
+  /* ---------- Pérdida recurrente, falla de implantación y ventana espermatogénica ---------- */
+  // d: { rpl, rif, hab, es } — Algoritmo propio CaVeSal® · Basado en: AUA/ASRM 2024 · ESHRE RPL 2022 · ESHRE FRI 2023 · ESHRE 2023 · OMS 2025
+  function paterno(d) {
+    if (!d.rpl && !d.rif && !d.hab && !d.es) return null;
+    var con = [], color = 'neutro';
+    if (d.rpl) {
+      color = 'ambar';
+      con.push('Pérdida recurrente del embarazo: evaluar también al varón con fragmentación del ADN espermático (AUA/ASRM 2024: recomendación moderada, grado C) y cariotipo (AUA/ASRM 2024: opinión de expertos).');
+      con.push('ESHRE 2022: la fragmentación puede considerarse con fines explicativos (recomendación condicional); no hay prueba de referencia, usar un método validado. El cariotipo parental no es de rutina: tras evaluación individual.');
+    } else if (d.rif) {
+      con.push('Falla recurrente de implantación: la fragmentación del ADN espermático no se recomienda (ESHRE 2023, buenas prácticas en FRI).');
+    } else if (d.es && d.es.normal) {
+      con.push('Espermograma normal sin pérdida recurrente: la fragmentación del ADN espermático no se recomienda de rutina (ESHRE 2023, esterilidad sin causa aparente).');
+    }
+    if (d.hab) con.push('Hábitos paternos: dejar de fumar, reducir el alcohol, peso saludable y actividad física; evitar calor testicular y tóxicos (OMS 2025).');
+    if (d.hab || (d.es && !d.es.normal)) con.push('Ventana espermatogénica: la espermatogénesis dura unos 74 días (Heller y Clermont 1964), más el tránsito epididimario: en total unos 72 a 90 días. Los cambios de hábitos o tratamientos se ven en el semen a los 3 meses aproximadamente; por eso se repite tras 11 semanas o más (OMS 2025). Sugerencia CaVeSal®: reevaluar el semen al completar esa ventana.');
+    return { con: con, color: color };
+  }
+
   /* ---------- Siguiente paso de la pareja ---------- */
   // x: { es, rm, ov, rs, ut, cervical, sexual, edad, prono: 'bueno'|'malo'|'' }
   function siguiente(x) {
@@ -182,6 +202,7 @@
     if (x.rs && x.rs.cat === 'baja' && x.edad !== null && x.edad >= 35) pasos.push(['naranja', 'Reserva baja con 35 años o más: derivar a reproducción asistida sin demora.']);
     if (x.cervical || x.sexual) pasos.push(['ambar', 'Factor cervical o disfunción sexual: IIU (RCPI 2023).']);
     if (x.rm && x.rm.tecnica === 'IIU' && x.es && !x.es.normal && !x.es.azoo) pasos.push([x.rm.color, 'Factor masculino leve: ' + x.rm.tit + ' (Sugerencia CaVeSal®).']);
+    if (x.rpl) pasos.push(['ambar', 'Pérdida recurrente: estudio de ambos miembros de la pareja; en el varón, fragmentación del ADN espermático y cariotipo (AUA/ASRM 2024).']);
     if (x.ut && x.ut.uni && !pasos.length) pasos.push(['ambar', 'Obstrucción unilateral: individualizar.']);
     var esca = !pasos.length && !faltan.length && x.es && x.es.normal && x.ov && !x.ov.anov && x.ut && x.ut.perm && !x.ut.intra;
     if (esca) {
@@ -209,6 +230,13 @@
       '<div class="form">' + c.campo('pa-rem', 'REM tras capacitación', 'millones') + '</div>' +
       '<div id="pa-o2" class="resultados" aria-live="polite"></div>' +
       '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: OMS Manual de semen 6.ª ed. (2021) · OMS 2025 · AUA/ASRM 2024 · EAU · REM: Sugerencia CaVeSal® (guía HC Espermiograma y REM)</p>' +
+
+      '<h3 class="sub">Pérdida recurrente, implantación y ventana espermatogénica</h3>' +
+      c.chk('pa-rpl', 'Pérdida recurrente del embarazo (2 o más pérdidas)') + c.chk('pa-rif', 'Falla recurrente de implantación') +
+      c.chk('pa-hab', 'Factores paternos modificables (tabaco, alcohol, sobrepeso u obesidad, sedentarismo, calor o tóxicos)') +
+      '<div id="pa-o7" class="resultados" aria-live="polite"></div>' +
+      '<p class="ayuda">KIR materno y HLA-C paterno: tema de investigación; no se recomienda para diagnóstico ni tratamiento (ESHRE 2022).</p>' +
+      '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: AUA/ASRM 2024 · ESHRE RPL 2022 · ESHRE FRI 2023 · ESHRE 2023 · OMS 2025 · Heller y Clermont 1964</p>' +
 
       '<h3 class="sub">Factor ovulatorio</h3>' +
       '<div class="form">' + c.sel('pa-ciclo', [['', 'Elegí'], ['reg', 'Regulares (21 a 35 días)'], ['irreg', 'Irregulares'], ['amen', 'Amenorrea']], 'Ciclos') +
@@ -254,6 +282,9 @@
       var rm = rem(L.n('pa-rem'));
       q('#pa-o2').innerHTML = rm ? F('REM', '<strong>' + rm.tit + '</strong> · Sugerencia CaVeSal®', 'Escala de la guía HC: más de 3 a 5 M → IIU · 1 a 3 M → FIV · menos de 1 M → ICSI directo. ' + rm.nota, rm.color) : '';
 
+      var pt = paterno({ rpl: L.c('pa-rpl'), rif: L.c('pa-rif'), hab: L.c('pa-hab'), es: es });
+      q('#pa-o7').innerHTML = pt && pt.con.length ? F('Varón', c.ul(pt.con), '', pt.color) : '';
+
       var ov = ovulacion({ ciclo: L.v('pa-ciclo'), p4: L.n('pa-p4'), edad: edad, fsh: L.n('pa-fsh'), prl: L.n('pa-prl'), tsh: L.n('pa-tsh'), hipo: L.c('pa-hipo'), hiperA: L.c('pa-ha'), mop: L.c('pa-mop') });
       q('#pa-o3').innerHTML = ov ? F('Ovulación', '<strong>' + ov.tit + '</strong>', ov.con.join(' '), ov.color) + (ov.causas.length ? F('Causa y conducta', c.ul(ov.causas.map(function (x) { return x.txt; })), '', ov.color) : '') : F('Ovulación', 'Elegí el patrón de ciclos o cargá la progesterona.', '', 'neutro');
 
@@ -263,7 +294,7 @@
       var ut = uteroTrompas({ eco: { polipo: L.c('pa-e1'), mioma: L.c('pa-e2'), septo: L.c('pa-e3'), sineq: L.c('pa-e4'), hidro: L.c('pa-e5'), endom: L.c('pa-e6'), adeno: L.c('pa-e7') }, prueba: L.v('pa-prueba'), res: L.v('pa-res'), riesgo: L.c('pa-rt'), clam: L.v('pa-clam') });
       q('#pa-o5').innerHTML = F('Útero y trompas', c.ul(ut.con), '', ut.color);
 
-      var sg = siguiente({ es: es, rm: rm, ov: ov, rs: rs, ut: ut, cervical: L.c('pa-cerv'), sexual: L.c('pa-sex'), edad: edad, prono: L.v('pa-prono') });
+      var sg = siguiente({ es: es, rm: rm, ov: ov, rs: rs, ut: ut, cervical: L.c('pa-cerv'), sexual: L.c('pa-sex'), rpl: L.c('pa-rpl'), edad: edad, prono: L.v('pa-prono') });
       var h = sg.pasos.map(function (p, i) { return F(i === 0 ? 'Siguiente paso' : 'Además', p[1], '', p[0]); });
       if (sg.faltan.length) h.push(F('Falta para completar el estudio', sg.faltan.join(', ').replace(/^./, function (x) { return x.toUpperCase(); }) + '.', '', 'neutro'));
       if (!h.length) h.push(F('Siguiente paso', 'Cargá los resultados del estudio.', '', 'neutro'));
@@ -275,5 +306,5 @@
   }
 
   w.GYN = w.GYN || {};
-  w.GYN.pareja = { OMS: OMS, cuando: cuando, espermo: espermo, rem: rem, ovulacion: ovulacion, reserva: reserva, uteroTrompas: uteroTrompas, siguiente: siguiente, render: render };
+  w.GYN.pareja = { OMS: OMS, cuando: cuando, espermo: espermo, rem: rem, ovulacion: ovulacion, reserva: reserva, uteroTrompas: uteroTrompas, siguiente: siguiente, paterno: paterno, render: render };
 })(window);
