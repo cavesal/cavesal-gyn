@@ -15,7 +15,7 @@ Próximamente (sin cálculo, solo ficha): el resto de las funciones del catálog
 
 ## Demo y versión completa
 
-- Demo: abiertas la escala MRS y el día de ovulación con la ventana de progesterona (`ABIERTAS_DEMO` en `js/licencia.js`).
+- Demo: abiertas la escala MRS, el día de ovulación con la ventana de progesterona y la Calculadora de THM en modo SEGIRP 2026 (el modo combinado es Full) (`ABIERTAS_DEMO` en `js/licencia.js`).
 - Versión completa: trigger por esquema, panel hormonal y todas las funciones nuevas.
 - Mientras `REQUIERE_LICENCIA = false` todo queda abierto; `?demo=1` muestra la Demo para revisarla.
 - La clave activada se guarda en `cavesal_gyn_full_unlocked`, que también abre Academy (`?desde=gyn`).

@@ -208,3 +208,9 @@ button,input,select{font:inherit;color:inherit}
 .pq-acciones{display:flex;gap:10px;flex-wrap:wrap}
 .vg-tto{margin:-4px 0 12px;padding:8px 12px;border-left:3px solid var(--line);font-size:.88rem}
 .vg-tto p{margin:6px 0 2px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.opt-seg{position:relative}
+.opt-seg input{position:absolute;opacity:0;pointer-events:none}
+.opt-seg span{display:inline-block;padding:8px 12px;border-radius:999px;border:1.5px solid var(--line);font-size:.84rem;font-weight:600;cursor:pointer;min-height:36px}
+.opt-seg input:checked+span{border-color:var(--teal);background:var(--teal);color:#fff}
+.opt-seg input:focus-visible+span{outline:2px solid var(--teal);outline-offset:2px}

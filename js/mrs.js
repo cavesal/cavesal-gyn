@@ -31,6 +31,14 @@
     return n;
   }
 
+  // Esquema SOCHEG 2020: alteración severa por dominio.
+  var SOCHEG = { somatico: 8, psicologico: 6, urogenital: 3, total: 15 };
+  function socheg(c) {
+    var o = {};
+    Object.keys(SOCHEG).forEach(function (k) { o[k] = c[k].puntaje >= SOCHEG[k]; });
+    return o;
+  }
+
   function calcular(resp) {
     var r = { somatico: 0, psicologico: 0, urogenital: 0, total: 0 };
     ITEMS.forEach(function (it, i) { var v = Number(resp[i]) || 0; r[it.dominio] += v; r.total += v; });
@@ -44,6 +52,8 @@
     var resp = ITEMS.map(function () { return 0; });
     var grupos = ['somatico', 'psicologico', 'urogenital'];
     cont.innerHTML =
+      '<div class="seg" role="radiogroup" aria-label="' + t.esquema + '"><label class="opt-seg"><input type="radio" name="m-esq" value="nams" checked><span>' + t.esquemas.nams + '</span></label>' +
+        '<label class="opt-seg"><input type="radio" name="m-esq" value="socheg"><span>' + t.esquemas.socheg + '</span></label></div>' +
       '<div class="mrs-total" id="m-total" aria-live="polite"></div>' +
       '<p class="ayuda">' + t.ayuda + '</p>' +
       grupos.map(function (g) {
@@ -58,20 +68,34 @@
       '<p class="leyenda">' + t.puntajes.join(' · ') + '</p>' +
       '<div id="m-sub" class="resultados"></div>' +
       '<details class="ref" open><summary>' + t.resumen + '</summary><ol id="m-lista" class="mrs-lista"></ol></details>' +
-      '<button type="button" class="btn-sec" id="m-limpiar">' + T.app.limpiar + '</button>' +
-      '<p class="cita">' + t.cita + ' <a href="' + t.citaUrl + '" target="_blank" rel="noopener">' + t.citaUrl + '</a></p>' +
+      '<div class="pq-acciones"><a class="btn-sec" href="#thm" id="m-thm">' + t.aThm + '</a>' +
+      '<button type="button" class="btn-sec" id="m-limpiar">' + T.app.limpiar + '</button></div>' +
+      '<p class="cita">' + t.cita + ' <a href="' + t.citaUrl + '" target="_blank" rel="noopener">' + t.citaUrl + '</a> · ' + t.citaSocheg + '</p>' +
       '<p class="etiqueta">' + t.etiqueta + '</p>';
 
+    function esquema() { var r = cont.querySelector('input[name=m-esq]:checked'); return r ? r.value : 'nams'; }
     function actualizar() {
-      var c = calcular(resp);
-      cont.querySelector('#m-total').className = 'mrs-total ' + COLORES[c.total.nivel];
-      cont.querySelector('#m-total').innerHTML = '<span class="mt-num">' + t.total + ': ' + c.total.puntaje + ' / ' + MAXIMO.total + '</span><span class="mt-etq">' + t.gravedad[c.total.nivel] + '</span>';
-      cont.querySelector('#m-sub').innerHTML = grupos.map(function (g) {
-        return w.GYN.fertilidad.fila(t.dominios[g], c[g].puntaje + ' / ' + MAXIMO[g] + ' · <strong>' + t.gravedad[c[g].nivel] + '</strong>', 'Rango ' + c[g].rango, COLORES[c[g].nivel]);
-      }).join('');
+      var c = calcular(resp), esq = esquema(), F = w.GYN.fertilidad.fila;
+      var tot = cont.querySelector('#m-total');
+      if (esq === 'socheg') {
+        var s = socheg(c);
+        tot.className = 'mrs-total ' + (s.total ? 'rojo' : 'verde');
+        tot.innerHTML = '<span class="mt-num">' + t.total + ': ' + c.total.puntaje + ' / ' + MAXIMO.total + '</span><span class="mt-etq">' + (s.total ? t.severa : t.noSevera) + ' (' + t.corte + ' ' + SOCHEG.total + ')</span>';
+        cont.querySelector('#m-sub').innerHTML = grupos.map(function (g) {
+          return F(t.dominios[g], c[g].puntaje + ' / ' + MAXIMO[g] + ' · <strong>' + (s[g] ? t.severa : t.noSevera) + '</strong>', t.corte + ' ' + SOCHEG[g], s[g] ? 'rojo' : 'verde');
+        }).join('');
+      } else {
+        tot.className = 'mrs-total ' + COLORES[c.total.nivel];
+        tot.innerHTML = '<span class="mt-num">' + t.total + ': ' + c.total.puntaje + ' / ' + MAXIMO.total + '</span><span class="mt-etq">' + t.gravedad[c.total.nivel] + '</span>';
+        cont.querySelector('#m-sub').innerHTML = grupos.map(function (g) {
+          return F(t.dominios[g], c[g].puntaje + ' / ' + MAXIMO[g] + ' · <strong>' + t.gravedad[c[g].nivel] + '</strong>', 'Rango ' + c[g].rango, COLORES[c[g].nivel]);
+        }).join('');
+      }
+      try { localStorage.setItem('cavesal_gyn_mrs', JSON.stringify({ somatico: c.somatico.puntaje, psicologico: c.psicologico.puntaje, urogenital: c.urogenital.puntaje, esquema: esq })); } catch (e) {}
       cont.querySelector('#m-lista').innerHTML = ITEMS.map(function (it, i) { return '<li>' + it.texto + ': <strong>' + resp[i] + '</strong></li>'; }).join('');
     }
     cont.addEventListener('change', function (e) {
+      if (e.target.name === 'm-esq') { actualizar(); return; }
       var m = /^m(\d+)$/.exec(e.target.name || '');
       if (m) { resp[Number(m[1]) - 1] = Number(e.target.value); actualizar(); }
     });
@@ -84,5 +108,5 @@
   }
 
   w.GYN = w.GYN || {};
-  w.GYN.mrs = { ITEMS: ITEMS, calcular: calcular, nivel: nivel, RANGOS: RANGOS, render: render };
+  w.GYN.mrs = { ITEMS: ITEMS, calcular: calcular, nivel: nivel, socheg: socheg, SOCHEG: SOCHEG, RANGOS: RANGOS, render: render };
 })(window);

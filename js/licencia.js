@@ -1,5 +1,5 @@
 /* CaVeSal® GYN · Licencia: una sola app con modo Demo y versión completa.
-   Demo: abiertos la escala MRS y el día de ovulación. El resto se habilita con la clave.
+   Demo: abiertos la escala MRS, el día de ovulación y la Calculadora de THM en modo SEGIRP. El resto se habilita con la clave.
    Mismo patrón que CaVeSal® Emergencias: activación de clave contra el Apps Script de licencias,
    con resguardo de la clave y pedido de reactivación (js/cvs-lic.js, fase 1).
    © 2026 Dr. Carlos Vera Salerno · Ley N.º 1328/1998 (Paraguay). Prohibida su copia o reproducción. */
@@ -15,7 +15,7 @@
   var PRODUCTO = 'gyn';
 
   // Funciones abiertas en la Demo (la Fertilidad abre solo el ciclo; el trigger queda en la completa).
-  var ABIERTAS_DEMO = ['mrs', 'fertilidad'];
+  var ABIERTAS_DEMO = ['mrs', 'fertilidad', 'thm'];
 
   function gate() { return d.getElementById('license_gate'); }
   function ocultarGate() { var g = gate(); if (g) g.hidden = true; d.body.style.overflow = ''; }

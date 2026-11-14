@@ -8,7 +8,7 @@
   w.GYN_TEXTOS = {
     app: {
       bloqTitulo: 'Función de la versión completa',
-      bloqTexto: 'Esta función se habilita con la clave de CaVeSal® GYN. En la Demo quedan abiertas la escala MRS y el día de ovulación.',
+      bloqTexto: 'Esta función se habilita con la clave de CaVeSal® GYN. En la Demo quedan abiertas la escala MRS, el día de ovulación y la Calculadora de THM con el algoritmo SEGIRP 2026.',
       activar: 'Activar versión completa',
       comprarTarjeta: 'Comprar con tarjeta',
       comprarTransf: 'Comprar por transferencia',
@@ -93,11 +93,8 @@
         funciones: [
           { id: 'mrs', nombre: 'Escala MRS', estado: 'v1', etapas: ['climaterio', 'postmenopausia'],
             resumen: 'Once ítems, subtotales por dominio y total con su gravedad.' },
-          { id: 'thm', nombre: 'Candidatura a THM (SEGIRP 2026)', estado: 'prox', etapas: ['climaterio', 'postmenopausia'],
-            resumen: 'Árbol de decisión de terapia hormonal con laboratorio y marcas disponibles en Paraguay.',
-            entra: ['STRAW+10', 'Contraindicaciones', 'Riesgo cardiovascular y mamario', 'FSH y estradiol'],
-            sale: ['Esquema de inicio según útero presente o ausente'],
-            nota: 'El autor decide si la candidatura sale solo del puntaje MRS o del árbol completo de SEGIRP.' }
+          { id: 'thm', nombre: 'Calculadora de THM', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
+            resumen: 'Conducta de terapia hormonal según etapa, síntomas, contraindicaciones y riesgo cardiovascular y mamario. Algoritmo SEGIRP 2026 en la Demo y algoritmo combinado en la versión completa.' }
         ] },
       { id: 'endocrino', nombre: 'Endocrinología', intro: 'Seguimiento metabólico de la paciente no embarazada.',
         funciones: [
@@ -161,9 +158,14 @@
       dominios: { somatico: 'Somático-vegetativo', psicologico: 'Psicológico', urogenital: 'Urogenital' },
       gravedad: ['Sin o pocos síntomas', 'Leve', 'Moderado', 'Severo'],
       resumen: 'Puntaje por ítem',
+      esquema: 'Esquema de lectura',
+      esquemas: { nams: 'NAMS / Heinemann', socheg: 'SOCHEG (por dominio)' },
+      severa: 'Alteración severa', noSevera: 'Sin alteración severa', corte: 'corte ≥',
+      aThm: 'Usar en Calculadora de THM',
+      citaSocheg: 'Sociedad Chilena de Climaterio (SOCHEG). Manual para Manejo de la Mujer en Edad del Climaterio, 2.ª ed. 2020.',
       cita: 'Heinemann LAJ, Do MT, Strelow F, Gerbsch S, Schnitker J, Schneider HPG. The Menopause Rating Scale (MRS) as outcome measure for hormone treatment? A validation study. Health Qual Life Outcomes. 2004;2:67.',
       citaUrl: 'https://doi.org/10.1186/1477-7525-2-67',
-      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: Heinemann LAJ et al. Health Qual Life Outcomes 2004;2:67'
+      etiqueta: 'Algoritmo propio CaVeSal® · Basado en: Heinemann LAJ et al. Health Qual Life Outcomes 2004;2:67 · SOCHEG 2020'
     },
 
     prolapso: {
@@ -272,6 +274,97 @@
       copiar: 'Copiar resultado', copiado: 'Copiado',
       cita: 'Workowski KA, Bachmann LH, Chan PA, et al. Sexually Transmitted Infections Treatment Guidelines, 2021. MMWR Recomm Rep. 2021;70(4):1-187 · Amsel R, Totten PA, Spiegel CA, et al. Nonspecific vaginitis. Am J Med. 1983;74:14-22 · Nugent RP, Krohn MA, Hillier SL. J Clin Microbiol. 1991;29:297-301 · Donders GG, Vereecken A, Bosmans E, et al. Definition of a type of abnormal vaginal flora that is distinct from bacterial vaginosis: aerobic vaginitis. BJOG. 2002;109:34-43.',
       etiqueta: 'Algoritmo propio CaVeSal® · Basado en: CDC STI 2021 · Amsel 1983 · Nugent 1991 · Donders 2002'
+    },
+
+    thm: {
+      titulo: 'Calculadora de THM',
+      ayuda: 'Elegí el modo y cargá los datos. Cada bloque muestra su propio resultado y al final aparece la conducta.',
+      g: { modo: 'Modo de cálculo', etapa: 'Etapa y útero', objetivo: 'Objetivo del tratamiento', mrs: 'Escala MRS', oste: 'Prevención de osteoporosis',
+        contra: 'Contraindicaciones de THM', cv: 'Riesgo cardiovascular', mama: 'Riesgo mamario', pato: 'Patologías que orientan la vía', ventana: 'Ventana de tratamiento' },
+      modos: { segirp: 'Algoritmo SEGIRP 2026', combinado: 'Algoritmo combinado CaVeSal®' },
+      modoAyuda: {
+        segirp: 'Sigue el algoritmo de la Sociedad Paraguaya de Ginecología Endocrina y Reproductiva (SEGIRP) 2026.',
+        combinado: 'Integra SEGIRP con FIGO/WHF, EMAS, ACOG, ACP y NAMS, la FDA y ESHRE, con selectores donde las guías difieren.'
+      },
+      bloqComb: 'El algoritmo combinado es de la versión completa',
+      elegir: 'Elegir',
+      etapas: { transicion: 'Transición a la menopausia temprana o tardía (STRAW+10 -2 / -1)', posmeno: 'Posmenopausia', iop: 'Insuficiencia ovárica prematura (IOP)' },
+      c: {
+        etapa: 'Etapa reproductiva (STRAW+10)', edad: 'Edad (años)', anosFum: 'Años desde la FUM', anosFumAyuda: 'Solo en posmenopausia',
+        utero: 'Útero', conUtero: 'Con útero', sinUtero: 'Sin útero (histerectomía)',
+        anticoncepcion: 'Necesita anticoncepción o tiene sangrado uterino anormal', deseoEmbarazo: 'Deseo de embarazo',
+        svm: 'Síntomas vasomotores', oste: 'Prevención de osteoporosis', sgum: 'Síndrome genitourinario (SGUM)', tdsh: 'Trastorno del deseo sexual hipoactivo (TDSH, por DSDS)',
+        mrsS: 'Somático', mrsP: 'Psicológico', mrsU: 'Urogenital', mrsAyuda: 'Se completa solo si antes usaste la escala MRS. Podés editarlo.',
+        fractura: 'Riesgo de fractura (FRAX)', fracBajo: 'Bajo', fracAlto: 'Alto', fracturaAyuda: 'Según FRAX y Davis 2023', tscore: 'T-score',
+        hearts: 'HEARTS OPS (%)', figo: 'FIGO/WHF (categoría)',
+        cvHearts: 'Riesgo CV a 10 años, HEARTS OPS (%)', cvHeartsAyuda: 'Menos de 5 bajo · 5 a 10 intermedio · más de 10 alto',
+        cvFigo: 'Categoría FIGO/WHF', cac: 'Calcio coronario (CAC-CT)', cacNo: 'No realizado', cacHasta10: 'CAC 0 a 10', cacMas10: 'CAC más de 10', cacAyuda: 'Reclasifica el riesgo intermedio',
+        gailCat: 'Riesgo mamario (Gail)', gail: 'Gail a 5 años (%)', gailAyuda: 'Menos de 1,67 bajo · 1,67 a 2,99 moderado · 3 o más alto'
+      },
+      cat: { bajo: 'Riesgo bajo', intermedio: 'Riesgo intermedio', moderado: 'Riesgo moderado', alto: 'Riesgo alto' },
+      contra: {
+        sangrado: 'Sangrado vaginal inexplicado no investigado', mama: 'Cáncer de mama o neoplasia estrógeno-dependiente activa',
+        tev: 'Enfermedad tromboembólica arterial o venosa activa', trombofilia: 'Riesgo aumentado de trombosis (trombofilia, lupus)',
+        hepatica: 'Enfermedad hepática aguda', acv: 'ACV o IAM', porfiria: 'Porfiria aguda'
+      },
+      pato: { obesidad: 'Obesidad (IMC > 30)', hta: 'Hipertensión', tg: 'Hipertrigliceridemia', riesgoTev: 'Riesgo de TEV', tabaco: 'Tabaquismo', migrana: 'Migraña', glp1: 'En tratamiento con GLP-1 o tirzepatida', cerebro: 'Alto riesgo cerebrovascular' },
+      osteo: { manejoOsteo: 'Manejo de osteoporosis', thm: 'THM indicada para prevención', control: 'Control periódico', faltaFractura: 'Falta el riesgo de fractura', faltaT: 'Falta el T-score' },
+      hayContra: 'Hay contraindicación',
+      cv: {
+        hearts: { bajo: 'THM posible, oral o transdérmica según preferencia', intermedio: 'THM posible, preferir vía transdérmica', alto: 'Evitar THM sistémica; considerar opciones no hormonales' },
+        figo: { bajo: 'Sin restricción de tipo, dosis ni vía', intermedio: 'Vía transdérmica; pedir CAC-CT si es factible', alto: 'Estrógeno transdérmico en dosis baja con progesterona micronizada o didrogesterona' }
+      },
+      reclasificado: 'reclasificado por CAC',
+      mama: { bajo: 'THM posible', moderado: 'Discutir riesgos y beneficios; THM posible', alto: 'La THM no es de primera línea; valorar opción no hormonal' },
+      dentro: 'Dentro de la ventana', fuera: 'Fuera de la ventana', ventanaDef: 'Menos de 60 años y menos de 10 años desde la FUM',
+      conducta: 'Conducta',
+      cond: {
+        anticoncepcion: 'Anticoncepción: AOC o anticonceptivo solo de progestágeno', anticoncepcionDet: 'Elegir el método con la elegibilidad MEC. La THM se plantea cuando ya no haga falta anticoncepción.',
+        tra: 'Derivar a técnicas de reproducción asistida', sinIndicacion: 'Sin indicación de THM con los datos cargados',
+        noHormonal: 'Tratamiento no hormonal', thm: 'Iniciar THM', soloLocal: 'Sin THM sistémica'
+      },
+      motivo: { contra: 'Motivo: contraindicación de THM.', cv: 'Motivo: riesgo cardiovascular alto.', mama: 'Motivo: riesgo mamario alto.' },
+      noHormonalSegirp: ['Fezolinetant', 'ISRS o IRSN', 'Gabapentina'],
+      noHormonalComb: ['2.ª línea (ACP 2026): IRSN, desvenlafaxina o venlafaxina', '3.ª línea: ISRS (escitalopram o paroxetina), gabapentina o antagonistas NK (fezolinetant o elinzanetant)'],
+      esq: { estrogeno: 'estrógeno solo', ciclica: 'terapia cíclica de estrógeno y progestágeno', continua: 'terapia continua de estrógeno y progestágeno' },
+      faltaUtero: 'indicar si tiene útero para definir el esquema',
+      via: { libre: 'Vía oral o transdérmica, según preferencia', transdermica: 'Vía transdérmica' },
+      dosisBaja: 'dosis baja',
+      progSeguro: 'Progestágeno: progesterona micronizada o didrogesterona (menor riesgo trombótico).',
+      sinTibolona: 'Evitar tibolona: aumenta el riesgo de ACV.',
+      porPato: 'Vía transdérmica por',
+      avisos: {
+        mamaModerado: 'Riesgo mamario moderado: discutir riesgos y beneficios.',
+        fueraVentana: 'Fuera de la ventana: discutir riesgos y beneficios. No iniciar con fin cardioprotector (FIGO/WHF 2026).',
+        mrsLeve: 'MRS sin síntomas moderados a severos: la indicación aprobada de THM sistémica es para síntomas vasomotores moderados a severos (FDA 2025).',
+        iopHasta: 'IOP: mantener la terapia al menos hasta la edad promedio de la menopausia (ESHRE 2024).'
+      },
+      presentaciones: 'Presentaciones disponibles en Paraguay (Fuente: SEGIRP 2026)',
+      prod: {
+        ginoderm: 'Ginoderm gel 0,06% (estradiol 0,6 mg/g), transdérmico',
+        femoston: 'Femoston 1/10 (estradiol 1 mg; con didrogesterona 10 mg en la fase combinada), oral',
+        ginodermP4ciclica: 'Ginoderm gel + progesterona micronizada (Progelle, Progendo, Gynprogest) en forma cíclica',
+        angeliq: 'Angeliq o Gadofem (estradiol 1 mg + drospirenona 2 mg), oral',
+        femostonConti: 'Femoston Conti 1/5 (estradiol 1 mg + didrogesterona 5 mg), oral',
+        tibolona: 'Tibolona 2,5 mg (Tobe), oral',
+        ginodermP4continua: 'Ginoderm gel + progesterona micronizada (Progelle, Progendo, Gynprogest) en forma continua',
+        diuLng: 'Ginoderm gel + DIU-LNG 52 mg (Mirena, Asertia) como protección endometrial',
+        androlone: 'Androlone 1% crema, transdérmica'
+      },
+      dosisRef: 'Dosis de referencia (guías de la HC): gel de estradiol 0,75-1,25 g/día · progesterona micronizada 200 mg/día 10-14 días por mes (cíclica) o 100 mg/día (continua) · didrogesterona 10-20 mg/día · DIU-LNG: recambio a los 5 años cuando se usa para protección endometrial.',
+      terapiaLocal: 'Terapia local',
+      localSi: 'Estrógeno o prasterona vaginal.', localNo: 'Con contraindicación, SEGIRP indica opciones no hormonales.',
+      localBaja: 'Terapia local de baja dosis posible aun con contraindicación sistémica.', localOnco: 'Con cáncer de mama, decidir la terapia local junto con oncología.',
+      prodLocal: ['Estriol óvulos o crema vaginal (Colpoestriol, Vacidox)', 'Promestrieno crema vaginal 10 mg (Antrofi)', 'Prasterona (DHEA) vaginal'],
+      testosterona: 'Testosterona transdérmica',
+      faltan: 'Elegí la etapa reproductiva para ver la conducta.',
+      copiar: 'Copiar resultado', copiado: 'Copiado',
+      tablaTitulo: 'Presentaciones disponibles en Paraguay (SEGIRP 2026)',
+      tabla: '<ul class="pq-notas"><li>Estrógeno solo: Ginoderm gel 0,06% (estradiol 0,6 mg/g), transdérmico.</li><li>Combinado continuo: Angeliq y Gadofem (estradiol 1 mg + drospirenona 2 mg); Femoston Conti 1/5 (estradiol 1 mg + didrogesterona 5 mg), orales.</li><li>Combinado secuencial: Femoston 1/10 (estradiol 1 mg; didrogesterona 10 mg en la fase combinada), oral.</li><li>Progesterona micronizada: Progelle, Progendo, Gynprogest 100-200 mg, oral o vaginal.</li><li>Tibolona: Tobe 2,5 mg, oral.</li><li>Testosterona: Androlone 1% crema (tubo 15 g, sobre 5 g), transdérmica.</li><li>DIU-LNG 52 mg: Mirena, Asertia, protección endometrial.</li><li>Local vaginal: estriol (Colpoestriol, Vacidox) óvulos o crema; promestrieno (Antrofi) crema 10 mg; prasterona (DHEA).</li></ul><p class="ayuda">Fuente: SEGIRP 2026.</p>',
+      citaSegirp: 'Sociedad Paraguaya de Ginecología Endocrina y Reproductiva (SEGIRP). Manejo de los síntomas en la peri y posmenopausia con terapia hormonal. Algoritmo 2026 · Davis SR et al. The 2023 Practitioner’s Toolkit for Managing Menopause. Climacteric. 2023;26:517-536 · Piasta J, Zewail A. Hormonal Options for Perimenopause: A Clinician Toolkit. Obstet Gynecol. 2026 · Panay N et al. ESHRE/ASRM/CREWHIRL/IMS. Premature ovarian insufficiency. Climacteric. 2024;27:510-520 · OPS. HEARTS · NCI. Breast Cancer Risk Assessment Tool (Gail).',
+      citaComb: 'SEGIRP 2026 · Benedetto C, Gulati M, Khadilkar SS, et al. (FIGO/WHF). Int J Gynecol Obstet. 2026. doi:10.1002/ijgo.71356 · Stute P, et al. (EMAS). Maturitas. 2026;212:109060 · ACOG Clinical Practice Guideline No. 13. Obstet Gynecol. 2026;148(5):e345-e364 · Qaseem A, et al. (ACP). Ann Intern Med. 2026 · The Menopause Society (NAMS). The 2022 hormone therapy position statement. Menopause. 2022;29:767-794 · FDA. Labeling changes for menopausal hormone therapy, 2025-2026 · Panay N et al. (ESHRE). Climacteric. 2024;27:510-520 · USPSTF. Medication use to reduce risk of breast cancer. JAMA. 2019;322:857-867 · Heinemann 2004 · SOCHEG 2020.',
+      etqSegirp: 'Algoritmo propio CaVeSal® · Basado en: SEGIRP 2026',
+      etqComb: 'Algoritmo propio CaVeSal® · Basado en: SEGIRP 2026 · FIGO/WHF 2026 · EMAS 2026 · ACOG 2026 · ACP 2026 · NAMS 2022 · FDA 2025-2026 · ESHRE 2024 · USPSTF 2019'
     },
 
     legal: {

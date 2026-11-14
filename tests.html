@@ -22,6 +22,7 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/mrs.js"></script>
 <script src="js/prolapso.js"></script>
 <script src="js/vaginitis.js"></script>
+<script src="js/thm.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -138,6 +139,40 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Vaginosis + tricomonas → mixta', V.calcular(vb({ nugent: 8, tricomonas: 'si' })).mixta, true);
   eq('Hipoestrogenismo + sequedad sin agente → atrofia', V.calcular(vb({ hipoestro: true, sequedad: true, ph: 6 })).atrofia, true);
   eq('pH 4 y KOH negativo → sin criterios', V.calcular(vb({ ph: 4, levaduras: 'no' })).sinCriterios, true);
+
+  grupo('MRS · esquema SOCHEG');
+  var cs = M.calcular(resp({ 1: 2, 2: 2, 3: 2, 4: 2 }));
+  eq('Somático 8 → alteración severa SOCHEG', M.socheg(cs).somatico, true);
+  cs = M.calcular(resp({ 1: 2, 2: 2, 3: 2, 4: 1 }));
+  eq('Somático 7 → sin alteración severa', M.socheg(cs).somatico, false);
+  eq('Urogenital 3 → severa', M.socheg(M.calcular(resp({ 9: 1, 10: 1, 11: 1 }))).urogenital, true);
+
+  grupo('Calculadora de THM');
+  var H = GYN.thm, hb = function (o) { var d = { modo: 'segirp', esqMrs: 'nams', cvHerr: 'hearts', etapa: 'posmeno', utero: 'si', fractura: '', cvFigo: '', cac: '', gailCat: '', edad: 52, anosFum: 2, mrsS: null, mrsP: null, mrsU: null, tscore: null, cvHearts: null, gail: null, anticoncepcion: false, deseoEmbarazo: false, svm: true, oste: false, sgum: false, tdsh: false, contra: {}, pato: {} }; for (var k in o) d[k] = o[k]; return d; };
+  var h1 = H.calcular(hb({}));
+  eq('Posmenopausia con útero y SVM → THM continua', [h1.conducta, h1.esquema], ['thm', 'continua']);
+  eq('Sin útero → estrógeno solo', H.calcular(hb({ utero: 'no' })).esquema, 'estrogeno');
+  eq('Transición con útero → cíclica', H.calcular(hb({ etapa: 'transicion' })).esquema, 'ciclica');
+  eq('Transición con anticoncepción → AOC/ASP', H.calcular(hb({ etapa: 'transicion', anticoncepcion: true })).conducta, 'anticoncepcion');
+  eq('IOP con deseo de embarazo → TRA', H.calcular(hb({ etapa: 'iop', deseoEmbarazo: true })).conducta, 'tra');
+  eq('Contraindicación → no hormonal', H.calcular(hb({ contra: { mama: true } })).conducta, 'noHormonal');
+  eq('HEARTS 4,9 → bajo, vía libre', [H.calcular(hb({ cvHearts: 4.9 })).cv.categoria, H.calcular(hb({ cvHearts: 4.9 })).via], ['bajo', 'libre']);
+  eq('HEARTS 5 → intermedio, transdérmica', H.calcular(hb({ cvHearts: 5 })).via, 'transdermica');
+  eq('HEARTS 10 → intermedio (límite)', H.calcular(hb({ cvHearts: 10 })).cv.categoria, 'intermedio');
+  eq('HEARTS 10,1 → no hormonal', H.calcular(hb({ cvHearts: 10.1 })).conducta, 'noHormonal');
+  eq('FIGO alto (combinado) → THM transdérmica dosis baja', (function () { var r = H.calcular(hb({ modo: 'combinado', cvHerr: 'figo', cvFigo: 'alto' })); return [r.conducta, r.via, r.dosisBaja, r.progSeguro]; })(), ['thm', 'transdermica', true, true]);
+  eq('FIGO intermedio + CAC ≤10 → bajo', H.calcular(hb({ modo: 'combinado', cvHerr: 'figo', cvFigo: 'intermedio', cac: 'hasta10' })).cv.categoria, 'bajo');
+  eq('Gail 1,66 → bajo; 1,67 → moderado; 3 → alto', [H.calcular(hb({ modo: 'combinado', gail: 1.66 })).mama.categoria, H.calcular(hb({ modo: 'combinado', gail: 1.67 })).mama.categoria, H.calcular(hb({ modo: 'combinado', gail: 3 })).mama.categoria], ['bajo', 'moderado', 'alto']);
+  eq('Gail alto → no hormonal', H.calcular(hb({ modo: 'combinado', gail: 3.2 })).conducta, 'noHormonal');
+  eq('Obesidad (combinado) → transdérmica', H.calcular(hb({ modo: 'combinado', pato: { obesidad: true } })).via, 'transdermica');
+  eq('Edad 60 → fuera de ventana', H.calcular(hb({ edad: 60 })).avisos.indexOf('fueraVentana') >= 0, true);
+  eq('FUM hace 10 años → fuera de ventana', H.calcular(hb({ anosFum: 10 })).ventana.dentro, false);
+  eq('Osteo: bajo riesgo sin SVM, T -2,0 → THM', H.calcular(hb({ svm: false, oste: true, fractura: 'bajo', tscore: -2 })).conducta, 'thm');
+  eq('Osteo: T -1,5 → control periódico', H.calcular(hb({ svm: false, oste: true, fractura: 'bajo', tscore: -1.5 })).osteo.conducta, 'control');
+  eq('Osteo: alto riesgo → manejo de osteoporosis', H.calcular(hb({ svm: false, oste: true, fractura: 'alto' })).conducta, 'osteo');
+  eq('Osteo: T -1,8 → THM (límite)', H.calcular(hb({ svm: false, oste: true, fractura: 'bajo', tscore: -1.8 })).osteo.conducta, 'thm');
+  eq('Solo SGUM con contraindicación (SEGIRP) → local no', H.calcular(hb({ svm: false, sgum: true, contra: { tev: true } })).localCondicion, 'no');
+  eq('Riesgo cerebrovascular (combinado) → sin tibolona', H.presentaciones(H.calcular(hb({ modo: 'combinado', pato: { cerebro: true } })), GYN_TEXTOS.thm).join('').indexOf('Tibolona') < 0, true);
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;
