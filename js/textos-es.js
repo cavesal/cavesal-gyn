@@ -56,18 +56,19 @@
         ] },
       { id: 'salud-gin', nombre: 'Salud Ginecológica', intro: 'Estudios por imágenes y clasificación de hallazgos.',
         funciones: [
-          { id: 'estudios', nombre: 'Ecografía ginecológica y estudios', estado: 'prox', etapas: TODAS,
-            resumen: 'Carga de hallazgos y conducta sugerida, con puente a CaVeSal® IA.',
-            entra: ['Hallazgos ecográficos', 'HSG, HyFoSy y otros estudios del catálogo'],
-            sale: ['Conducta sugerida', 'Resumen para CaVeSal® IA'],
-            nota: 'El catálogo exacto de estudios está abierto.' },
+          { id: 'estudios', nombre: 'Mama, cérvix y endometrio: BI-RADS, tamizaje y grosor', estado: 'v1', etapas: TODAS,
+            resumen: 'BI-RADS v2025 con conducta por categoría, tamizaje de cuello uterino ASCCP con conducta por resultado y grosor endometrial con IETA.' },
+          { id: 'utero', nombre: 'Útero: adenomiosis MUSA y miomas FIGO', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
+            resumen: 'Adenomiosis por MUSA revisado y miomas por tipo FIGO con STEP-W, con conducta.' },
           { id: 'prolapso', nombre: 'Prolapso genital: POP-Q', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
             resumen: 'Estadio POP-Q global y por compartimento: anterior, apical (C y D) y posterior.' },
-          { id: 'orads', nombre: 'Masa anexial: O-RADS / IOTA', estado: 'prox', etapas: TODAS,
-            resumen: 'Checklist de hallazgos que devuelve una categoría de riesgo.',
-            entra: ['Tamaño, componente sólido, vascularización, septos'],
-            sale: ['Categoría O-RADS 2 a 5', 'Reglas simples / grupos IOTA'],
-            nota: 'Falta la bibliografía exacta (ACR e IOTA) que el autor quiera usar.' }
+          { id: 'orads', nombre: 'Masa anexial: O-RADS, IOTA y GI-RADS', estado: 'v1', etapas: TODAS,
+            resumen: 'O-RADS US v2022, reglas simples IOTA y GI-RADS, con marcadores tumorales, imagen complementaria y derivación.' }
+        ] },
+      { id: 'onco', nombre: 'Oncología ginecológica', intro: 'Estadificación FIGO con estudios de extensión, derivación y conducta general.',
+        funciones: [
+          { id: 'onco', nombre: 'Estadificación FIGO: cérvix, endometrio y ovario', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'],
+            resumen: 'Cérvix FIGO 2018, endometrio FIGO 2023 con grupo molecular y ovario FIGO 2014, sin dosis.' }
         ] },
       { id: 'infecciones', nombre: 'Infecciones genitales', intro: 'Flujo vaginal: diagnóstico por clínica y laboratorio, con tratamiento oral y local sugerido.',
         funciones: [

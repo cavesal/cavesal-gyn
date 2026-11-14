@@ -11,6 +11,10 @@ Con lógica:
 - Preconcepcional: semáforo de riesgo del MSPBS 2022 (ambigüedades de edad, Hb e IMC resueltas con OMS y ACOG), ácido fólico (dosis, momento, MTHFR) y panel hormonal (FSH, LH, relación LH/FSH, AMH, TSH con anti-TPO, levotiroxina y FIV, prolactina, progesterona día 21).
 - Escala MRS (Heinemann 2004): 11 ítems, total sobre 44 y subescalas somática, psicológica y urogenital.
 - Incretinas (solo Full): semaglutida y tirzepatida con indicación por IMC, contraindicaciones y precauciones, escalada cada 4 semanas con fecha, respuesta a 12 semanas (<5 % insuficiente), washout por molécula, anticoncepción, estudios basales y signos de alarma.
+- Masa anexial (solo Full): O-RADS US v2022, reglas simples IOTA y GI-RADS, con marcadores, imagen complementaria y derivación.
+- Mama, cérvix y endometrio (solo Full): BI-RADS v2025, tamizaje ASCCP con conducta por resultado y grosor endometrial con IETA.
+- Útero (solo Full): MUSA revisado 2022 y miomas FIGO con STEP-W.
+- Oncología (solo Full): estadificación FIGO de cérvix 2018, endometrio 2023 con grupo molecular y ovario 2014, con estudios de extensión y conducta sin dosis.
 
 Próximamente (sin cálculo, solo ficha): el resto de las funciones del catálogo del boceto.
 
@@ -31,6 +35,11 @@ js/fertilidad.js      ciclo y trigger
 js/preconcepcional.js semáforo MSPBS, ácido fólico y panel hormonal
 js/mrs.js             escala MRS
 js/incretinas.js      incretinas: escalada, contraindicaciones y alarma
+js/comun.js           ayudantes de formulario de imágenes y oncología
+js/orads.js           O-RADS, IOTA y GI-RADS
+js/estudios.js        BI-RADS, tamizaje de cuello uterino y grosor endometrial
+js/utero.js           MUSA y miomas FIGO con STEP-W
+js/onco.js            estadificación FIGO
 js/licencia.js        licencia (producto gyn)
 js/cvs-lic.js         persistencia y reactivación de la clave
 js/app.js             rutas, filtros y pantallas

@@ -25,6 +25,11 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/thm.js"></script>
 <script src="js/mec.js"></script>
 <script src="js/incretinas.js"></script>
+<script src="js/comun.js"></script>
+<script src="js/orads.js"></script>
+<script src="js/estudios.js"></script>
+<script src="js/utero.js"></script>
+<script src="js/onco.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -263,6 +268,83 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Washout: semaglutida 60 días, tirzepatida 30 días', [I.calcular(ib({ objetivo: 'embarazo' })).washout.desde.getMonth(), I.calcular(ib({ objetivo: 'embarazo', mol: 'tirze' })).washout.desde.getDate()], [0, 13]);
   eq('Anticoncepción: tirzepatida + oral → ámbar; sin método → rojo; semaglutida + oral → verde', [I.calcular(ib({ mol: 'tirze', metodo: 'oral', semanasDosis: '1' })).anticoncepcion.color, I.calcular(ib({ metodo: 'ninguno' })).anticoncepcion.color, I.calcular(ib({ metodo: 'oral' })).anticoncepcion.color], ['ambar', 'rojo', 'verde']);
   eq('Precaución no bloquea', I.calcular(ib({ contra: { bil: true } })).bloqueo, false);
+
+  grupo('O-RADS, IOTA y GI-RADS');
+  var O = GYN.orads;
+  eq('O-RADS: quiste simple 4 cm premenopausia → 2', O.orads({ meno: 'pre', tipo: 'simple', tam: 4 }).cat, 2);
+  eq('O-RADS: quiste simple 11 cm → 3', O.orads({ meno: 'pre', tipo: 'simple', tam: 11 }).cat, 3);
+  eq('O-RADS: unilocular sólido con 4 papilas → 5', O.orads({ meno: 'pre', tipo: 'unisol', pp4: true }).cat, 5);
+  eq('O-RADS: multilocular sólido CS 2 → 4; CS 3 → 5', [O.orads({ meno: 'pre', tipo: 'multisol', cs: 2 }).cat, O.orads({ meno: 'pre', tipo: 'multisol', cs: 3 }).cat], [4, 5]);
+  eq('O-RADS: ascitis → 5', O.orads({ meno: 'pre', ascitis: true }).cat, 5);
+  eq('IOTA: solo M → maligno; B y M → inconcluso', [O.iota({ m1: true }).res, O.iota({ b1: true, m2: true }).res], ['maligno', 'inconcluso']);
+  eq('GI-RADS: 2 rasgos → 4; 3 rasgos → 5', [O.girads('otra', { g1: true, g3: true }).cat, O.girads('otra', { g1: true, g3: true, g5: true }).cat], [4, 5]);
+
+  grupo('BI-RADS v2025');
+  var ES = GYN.estudios;
+  eq('BI-RADS 0 imagen adicional, 25 años → ecografía', /ecografía mamaria dirigida/i.test(ES.birads({ cat: '0i', edad: 25 }).con[0]), true);
+  eq('BI-RADS 0 imagen adicional, 45 años → mamografía diagnóstica', /Mamografía diagnóstica/.test(ES.birads({ cat: '0i', edad: 45 }).con[0]), true);
+  eq('BI-RADS 0 comparación → estudios previos', /previos/.test(ES.birads({ cat: '0c', edad: 50 }).con[0]), true);
+  eq('BI-RADS 4B → biopsia, rojo', [/aguja gruesa/.test(ES.birads({ cat: '4B', edad: 50 }).con[0]), ES.birads({ cat: '4B', edad: 50 }).color], [true, 'rojo']);
+  eq('Densidad D → aviso', ES.birads({ cat: '1', edad: 50, densidad: 'd' }).dens !== '', true);
+  eq('Alto riesgo → RM anual', /RM anual/.test(ES.birads({ cat: '1', edad: 35, altoRiesgo: true }).ar), true);
+
+  grupo('Cuello uterino');
+  var cx = function (o) { var d = { edad: 35, cito: '', vph: '', autotoma: false, doble: '', inmuno: false, previoOk: false }; for (var k in o) d[k] = o[k]; return ES.cervix(d); };
+  eq('20 años sin resultados → no tamizar', cx({ edad: 20 }).tit, 'No tamizar');
+  eq('35 años sin resultados → VPH', cx({}).tit, 'Tamizaje con VPH');
+  eq('VPH 16 con NILM → colposcopía', cx({ cito: 'nilm', vph: '16' }).con[0], 'Colposcopía, aunque la citología sea negativa.');
+  eq('VPH otros + NILM → repetir en 1 año', /1 año/.test(cx({ cito: 'nilm', vph: 'otros' }).con[0]), true);
+  eq('VPH otros + doble tinción positiva → colposcopía', /Colposcopía/.test(cx({ vph: 'otros', doble: 'pos' }).con[0]), true);
+  eq('Autotoma otros → muestra por profesional', /profesional/.test(cx({ vph: 'otros', autotoma: true }).con[0]), true);
+  eq('ASC-US VPH negativo → 3 años', /3 años/.test(cx({ cito: 'ascus', vph: 'neg' }).con[0]), true);
+  eq('ASC-US VPH positivo en 23 años → citología 1 año', /1 año/.test(cx({ edad: 23, cito: 'ascus', vph: 'otros' }).con[0]), true);
+  eq('LSIL 30 años → colposcopía', cx({ edad: 30, cito: 'lsil' }).con[0], 'Colposcopía.');
+  eq('HSIL 22 años → colposcopía sin escisión', /No escisión/.test(cx({ edad: 22, cito: 'hsil' }).con[0]), true);
+  eq('AGC → muestreo endocervical', /endocervical/.test(cx({ cito: 'agc' }).con[0]), true);
+
+  grupo('Grosor endometrial');
+  var en = function (o) { var d = { etapa: 'post', edad: 60, grosor: null, sangrado: 'no', thm: 'no', tamox: false, fr: false, falla: false, noVisible: false, ieta: {} }; for (var k in o) d[k] = o[k]; return ES.endometrio(d); };
+  eq('Posmenopausia con sangrado, 3 mm → verde', en({ sangrado: 'si', grosor: 3 }).color, 'verde');
+  eq('Posmenopausia con sangrado, 6 mm → biopsia', /Biopsia/.test(en({ sangrado: 'si', grosor: 6 }).con[0]), true);
+  eq('Sangrado persistente 3 mm → biopsia', en({ sangrado: 'persiste', grosor: 3 }).color, 'rojo');
+  eq('Asintomática 12 mm → individualizar', en({ grosor: 12 }).color, 'ambar');
+  eq('Fértil 46 años con SUA → biopsia', /Biopsia/.test(en({ etapa: 'fertil', edad: 46, sangrado: 'si' }).con[0]), true);
+  eq('Fértil 30 años con SUA sin riesgo → tratamiento médico', en({ etapa: 'fertil', edad: 30, sangrado: 'si' }).color, 'ambar');
+  eq('IETA vasos múltiples → histeroscopía', /histeroscopía/.test(en({ grosor: 8, ieta: { multi: true } }).con.join(' ')), true);
+
+  grupo('Útero');
+  var U = GYN.utero;
+  eq('MUSA: un directo → adenomiosis', U.musa({ directos: ['quistes'], indirectos: [] }).dx, 'si');
+  eq('MUSA: solo indirectos → no concluyente', U.musa({ directos: [], indirectos: ['globular', 'asim'] }).dx, 'indet');
+  eq('MUSA: ninguno → sin', U.musa({ directos: [], indirectos: [] }).dx, 'sin');
+  eq('STEP-W 0+1+1+1 = 3 → grupo I', [U.stepw({ tam: 0, topo: 1, base: 1, pen: 1 }).puntos, U.stepw({ tam: 0, topo: 1, base: 1, pen: 1 }).grupo], [3, 1]);
+  eq('STEP-W 2+2+1+1 = 6 → grupo II', U.stepw({ tam: 2, topo: 2, base: 1, pen: 1 }).grupo, 2);
+  eq('STEP-W 2+2+2+2+1 = 9 → grupo III', U.stepw({ tam: 2, topo: 2, base: 2, pen: 2, lateral: true }).grupo, 3);
+  eq('Mioma con sospecha de sarcoma → rojo', U.mioma({ tipo: '4', sarcoma: true }).color, 'rojo');
+  eq('Mioma tipo 4 asintomático → expectante', /expectante/.test(U.mioma({ tipo: '4' }).con[0]), true);
+
+  grupo('Oncología · FIGO');
+  var N = GYN.onco;
+  var c0 = function (o) { var d = { micro: false, prof: null, tam: null, ext: 'cervix', gang: 'no', metodo: 'r' }; for (var k in o) d[k] = o[k]; return N.cervix(d); };
+  eq('Cérvix: micro 2 mm → IA1; 4 mm → IA2', [c0({ micro: true, prof: 2 }), c0({ micro: true, prof: 4 })], ['IA1', 'IA2']);
+  eq('Cérvix: 1,5 / 3 / 5 cm → IB1 / IB2 / IB3', [c0({ tam: 1.5 }), c0({ tam: 3 }), c0({ tam: 5 })], ['IB1', 'IB2', 'IB3']);
+  eq('Cérvix: vagina superior 5 cm → IIA2', c0({ ext: 'vagsup', tam: 5 }), 'IIA2');
+  eq('Cérvix: IB2 con ganglios pélvicos por patología → IIIC1p', c0({ tam: 3, gang: 'pelv', metodo: 'p' }), 'IIIC1p');
+  eq('Cérvix: mucosa vesical → IVA', c0({ ext: 'mucosa', gang: 'pa' }), 'IVA');
+  var e0 = function (o) { var d = { agresivo: false, mio: 'no', estroma: false, lvsi: 'no', ovario: false, ovarioIA3: false, serosa: false, vagpar: false, peritPelv: false, mucosa: false, peritAbd: false, dist: false, gang: 'no', mol: '' }; for (var k in o) d[k] = o[k]; return N.endometrio(d).estadio; };
+  eq('Endometrio: IA1 / IA2 / IB', [e0({}), e0({ mio: 'menos50' }), e0({ mio: '50omas' })], ['IA1', 'IA2', 'IB']);
+  eq('Endometrio: ovario con criterios → IA3; sin criterios → IIIA1', [e0({ mio: 'menos50', ovario: true, ovarioIA3: true }), e0({ ovario: true })], ['IA3', 'IIIA1']);
+  eq('Endometrio: agresivo sin invasión → IC; con invasión → IIC', [e0({ agresivo: true }), e0({ agresivo: true, mio: 'menos50' })], ['IC', 'IIC']);
+  eq('Endometrio: LVSI sustancial → IIB; estroma → IIA', [e0({ lvsi: 'sust' }), e0({ estroma: true })], ['IIB', 'IIA']);
+  eq('Endometrio: IB POLEmut → IAm POLEmut', e0({ mio: '50omas', mol: 'pole' }), 'IAm POLEmut');
+  eq('Endometrio: IA2 p53abn → IICm p53abn; IA1 p53abn sigue IA1', [e0({ mio: 'menos50', mol: 'p53' }), e0({ mol: 'p53' })], ['IICm p53abn', 'IA1']);
+  eq('Endometrio: IIIC1ii con POLEmut no cambia', e0({ gang: 'p-mac', mol: 'pole' }), 'IIIC1ii');
+  eq('Endometrio: peritoneo abdominal → IVB; distancia → IVC', [e0({ peritAbd: true }), e0({ dist: true })], ['IVB', 'IVC']);
+  var o0 = function (o) { var d = { lado: 'uno', ic1: false, ic2: false, ic3: false, pelv: 'no', gang: 'no', perit: 'no', pleura: false, dist: false }; for (var k in o) d[k] = o[k]; return N.ovario(d); };
+  eq('Ovario: IA / IB / IC2', [o0({}), o0({ lado: 'ambos' }), o0({ ic2: true })], ['IA', 'IB', 'IC2']);
+  eq('Ovario: ganglios 12 mm → IIIA1(ii)', o0({ gang: 'mas10' }), 'IIIA1(ii)');
+  eq('Ovario: peritoneo 3 cm → IIIC; pleura → IVA', [o0({ perit: 'mas2' }), o0({ pleura: true })], ['IIIC', 'IVA']);
+  eq('Ovario: bajo grado IA → sin quimioterapia', /sin quimioterapia/.test(N.ovarioConducta('IA', { histo: 'bg' }).tto.join(' ')), true);
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;
