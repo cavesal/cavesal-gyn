@@ -43,11 +43,8 @@
     categorias: [
       { id: 'adolescencia', nombre: 'Adolescencia', intro: 'Evaluación de la pubertad en la paciente adolescente.',
         funciones: [
-          { id: 'pubertad', nombre: 'Pubertad precoz', estado: 'prox', etapas: ['adolescencia'],
-            resumen: 'Evaluación de pubertad precoz a partir de datos cargados por el médico.',
-            entra: ['Edad de telarca y pubarca', 'Velocidad de crecimiento', 'Edad ósea, si se solicitó'],
-            sale: ['Sugerencia de estudio o derivación'],
-            nota: 'Las variables definitivas y el umbral que dispara la derivación los dicta el autor. No se programa hasta entonces.' }
+          { id: 'pubertad', nombre: 'Pubertad precoz: Tanner, edad ósea, ecografía y perfil hormonal', estado: 'v1', etapas: ['adolescencia'],
+            resumen: 'Estadios de Tanner, adelanto de edad ósea, ecografía pélvica (útero, relación cuerpo/cuello, ovarios y folículos) con informe, perfil hormonal, origen probable (central, adrenal, ovárico o variante no progresiva) y conducta: freno del eje.' }
         ] },
       { id: 'anticoncepcion', nombre: 'Anticoncepción', intro: 'Elegibilidad de métodos según criterios médicos, con las dos guías lado a lado cuando divergen.',
         funciones: [
@@ -103,11 +100,8 @@
         funciones: [
           { id: 'incretinas', nombre: 'Incretinas: escalada, contraindicaciones y alarma', estado: 'v1', etapas: ['edad-fertil', 'climaterio'],
             resumen: 'Semaglutida y tirzepatida: indicación por IMC, contraindicaciones, escalada con fecha, respuesta a 12 semanas, washout, anticoncepción y signos de alarma.' },
-          { id: 'dm', nombre: 'Diabetes fuera del embarazo', estado: 'prox', etapas: ['edad-fertil', 'climaterio'],
-            resumen: 'Prediabetes y diabetes tipo 2 con criterio para no gestante.',
-            entra: ['Glucemia en ayunas, PTOG, HbA1c'],
-            sale: ['Normal, prediabetes o diabetes'],
-            nota: 'Hay que confirmar que el criterio es ADA/OMS y no los cortes IADPSG de la gestante.' }
+          { id: 'dm', nombre: 'Diabetes fuera del embarazo', estado: 'v1', etapas: ['edad-fertil', 'climaterio'],
+            resumen: 'Normoglucemia, prediabetes o diabetes con criterio ADA 2026 para la no gestante (diferencias con OMS), confirmación con segunda prueba y conducta.' }
         ] }
     ],
 

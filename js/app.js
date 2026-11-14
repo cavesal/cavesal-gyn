@@ -55,6 +55,12 @@
       '<a href="https://cavesal.app/comprar.html?producto=gyn" target="_blank" rel="noopener">' + esc(T.app.comprarTransf) + ' ↗</a></div></div>';
   }
 
+  var ejSel = null;
+  function barraEjemplos(ejs, bloq) {
+    return '<div class="ej-barra"><span class="ej-etq">' + (bloq ? 'Mirá cómo funciona con un caso de ejemplo:' : 'Cargar ejemplo:') + '</span>' +
+      ejs.map(function (e, i) { return '<button type="button" class="btn-sec ej-btn" data-ej="' + i + '">' + esc(e.t) + '</button>'; }).join('') + '</div>';
+  }
+
   function renderProx(cont, f) {
     cont.innerHTML = '<p class="prox-aviso">' + esc(T.app.prox) + '</p>' +
       '<h3>' + esc(T.app.queCarga) + '</h3><ul>' + f.entra.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>' +
@@ -79,10 +85,29 @@
     // Contenedor nuevo en cada pantalla: evita que los oyentes de un módulo anterior sigan activos.
     var viejo = $('pCuerpo'), cont = viejo.cloneNode(false);
     viejo.parentNode.replaceChild(cont, viejo);
-    if (bloqueada(r.f)) cont.innerHTML = htmlBloqueo();
-    else if (r.f.estado === 'v1' && w.GYN[r.f.id] && w.GYN[r.f.id].render) w.GYN[r.f.id].render(cont, T, { bloqueo: htmlBloqueo, esFull: w.GYN.licencia.esFull() });
+    var ejs = w.GYN.ejemplos ? w.GYN.ejemplos.de(r.f.id) : null;
+    var iEj = ejSel && ejSel.id === r.f.id && ejs && ejs[ejSel.i] ? ejSel.i : null;
+    var full = w.GYN.licencia.esFull(), soloLectura = iEj !== null && !full;
+    if (bloqueada(r.f) && iEj === null) cont.innerHTML = htmlBloqueo() + (ejs ? barraEjemplos(ejs, true) : '');
+    else if (r.f.estado === 'v1' && w.GYN[r.f.id] && w.GYN[r.f.id].render) w.GYN[r.f.id].render(cont, T, { bloqueo: htmlBloqueo, esFull: full || soloLectura });
     else renderProx(cont, r.f);
-    if (w.GYN.puente && !bloqueada(r.f)) w.GYN.puente.aplicar(r.f.id, cont);
+    if (iEj !== null) {
+      w.GYN.ejemplos.aplicar(cont, ejs[iEj]);
+      var cab = d.createElement('div');
+      cab.className = 'ej-aviso';
+      cab.innerHTML = '<strong>Ejemplo ilustrativo:</strong> ' + esc(ejs[iEj].t) + '. Paciente ficticia.' +
+        (soloLectura ? '<br>Así funciona la versión completa. Para cargar los datos de tus pacientes, activá tu clave.' +
+          '<div class="ej-acc"><button type="button" class="btn-activar" data-activar>' + esc(T.app.activar) + '</button>' +
+          '<a class="btn-sec" href="https://cavesal.app/comprar.html?producto=gyn" target="_blank" rel="noopener">' + esc(T.app.comprarTransf) + ' ↗</a></div>' : '') +
+        ' <button type="button" class="btn-sec" data-ej-salir>' + (soloLectura ? 'Salir del ejemplo' : 'Limpiar y cargar mis datos') + '</button>';
+      cont.insertBefore(cab, cont.firstChild);
+      if (soloLectura) cont.querySelectorAll('input,select,textarea').forEach(function (e) { e.disabled = true; });
+    } else if (ejs && !bloqueada(r.f)) {
+      var bar = d.createElement('div');
+      bar.innerHTML = barraEjemplos(ejs, false);
+      cont.insertBefore(bar.firstChild, cont.firstChild);
+    }
+    if (w.GYN.puente && !bloqueada(r.f) && iEj === null) w.GYN.puente.aplicar(r.f.id, cont);
     w.scrollTo(0, 0);
     $('pTitulo').focus({ preventScroll: true });
   }
@@ -136,7 +161,12 @@
     function banner() { $('demoBanner').hidden = w.GYN.licencia.esFull(); }
     w.addEventListener('gyn:licencia', function () { banner(); router(); });
     banner();
-    w.addEventListener('hashchange', router);
+    w.addEventListener('hashchange', function () { ejSel = null; router(); });
+    d.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-ej]');
+      if (b) { ejSel = { id: (location.hash || '').replace('#', ''), i: +b.getAttribute('data-ej') }; router(); return; }
+      if (e.target.closest('[data-ej-salir]')) { ejSel = null; router(); }
+    });
     router();
   });
 })(window, document);

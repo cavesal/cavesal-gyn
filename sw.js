@@ -1,5 +1,5 @@
 /* CaVeSal® GYN — service worker. Subir VERSION en cada publicación. */
-const VERSION = "cavesal-gyn-v2";
+const VERSION = "cavesal-gyn-v3";
 const PRECACHE = [
   "./",
   "./acerca.html",
@@ -32,6 +32,8 @@ const PRECACHE = [
   "./js/app.js",
   "./js/comun.js",
   "./js/cvs-lic.js",
+  "./js/dm.js",
+  "./js/ejemplos.js",
   "./js/endometriosis.js",
   "./js/estudios.js",
   "./js/fertilidad.js",
@@ -46,8 +48,10 @@ const PRECACHE = [
   "./js/pareja.js",
   "./js/preconcepcional.js",
   "./js/prolapso.js",
+  "./js/pubertad.js",
   "./js/puente.js",
   "./js/pwa.js",
+  "./js/sim-gyn.js",
   "./js/somp.js",
   "./js/textos-es.js",
   "./js/thm.js",
@@ -55,6 +59,7 @@ const PRECACHE = [
   "./js/vaginitis.js",
   "./manifest.json",
   "./manual.html",
+  "./simulador.html",
   "./og-cover-gyn.jpg"
 ];
 

@@ -235,3 +235,14 @@ button,input,select{font:inherit;color:inherit}
 @media print {
   .th-vista, .th-navbtn, .th-nav small, header, nav, .no-print { display: none !important; }
 }
+
+/* Casos de ejemplo */
+.ej-barra{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 14px;padding:10px 12px;border:1px dashed var(--borde,#c9d6dc);border-radius:10px}
+.ej-etq{font-size:.85rem;font-weight:700;width:100%}
+.ej-btn{font-size:.82rem;text-align:left}
+.bloqueo + .ej-barra{margin-top:14px}
+.ej-aviso{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:#eef7f8;border:1px solid #0e7490;color:#0d3b46;font-size:.88rem;line-height:1.45}
+[data-theme="dark"] .ej-aviso{background:#123038;color:#d7eef2}
+.ej-acc{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 6px}
+.ej-aviso [data-ej-salir]{margin-top:8px}
+.ej-barra .btn-sec,.ej-acc .btn-sec{margin-top:0;text-decoration:none;display:inline-block}

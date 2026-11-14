@@ -21,7 +21,12 @@ Con lógica:
 - Incontinencia (solo Full): tipo, Stamey, Sandvik, diario miccional y conducta con dosis.
 - Oncología (solo Full): estadificación FIGO de cérvix 2018, endometrio 2023 con grupo molecular y ovario 2014, con estudios de extensión y conducta sin dosis.
 
-Próximamente (sin cálculo, solo ficha): el resto de las funciones del catálogo del boceto.
+- Pubertad precoz (js/pubertad.js): Tanner, edad ósea, ecografía pélvica con informe, perfil hormonal y conducta (freno del eje). Full.
+- Diabetes fuera del embarazo (js/dm.js): ADA 2026 y OMS. Full.
+- Casos de ejemplo (js/ejemplos.js): en Full cargan los campos; en Demo los módulos cerrados muestran el ejemplo en solo lectura.
+- Simulador (simulador.html + js/sim-gyn.js): 14 casos ficticios por sector, libre en Demo.
+
+Ya no quedan funciones Próximamente.
 
 ## Demo y versión completa
 

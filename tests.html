@@ -34,6 +34,8 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/estudios.js"></script>
 <script src="js/utero.js"></script>
 <script src="js/onco.js"></script>
+<script src="js/pubertad.js"></script>
+<script src="js/dm.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -436,6 +438,23 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   var r3 = Q.calcular(base({ ba: 2, aa: 1 }));
   eq('Sin síntomas → expectante', Q.conducta({ r: r3, sint: false })[0].t, 'Sin síntomas');
   eq('Cistocele III con cirugía → colporrafia anterior', /colporrafia anterior/.test(JSON.stringify(Q.conducta({ r: r3, sint: true, quiereCir: true }))), true);
+
+  grupo('Pubertad precoz');
+  var PU = GYN.pubertad;
+  eq('Telarquia M3 a los 6,8 años → precoz', PU.definicion({ edad: 6.8, m: 3, p: 1, menarca: false }).precoz, true);
+  eq('Edad ósea +2,5 → adelantada; +0,5 → no', [PU.edadOsea(6.8, 9.3).adelantada, PU.edadOsea(7, 7.5).adelantada], [true, false]);
+  var ecoP = PU.ecografia({ long: 45, ap: null, tr: null, volU: null, rel: '2:1', conf: null, endo: 'visible', endoMm: 3, ovD: 3, ovI: null, fol: null, folMax: null });
+  eq('Útero 45 mm 2:1 con endometrio → estrogenizada', ecoP.estrogenizada, true);
+  var nul = { lh: null, lhPico: null, e2alto: false, ohp: null, ohpActh: null, dheasAlto: false, menarca: false, virilizacion: false };
+  eq('LH 0,6 + útero estrogenizado → PPC', PU.origen(Object.assign({}, nul, { m: 3, p: 2, lh: 0.6 }), ecoP, null).tipo, 'ppc');
+  eq('17-OHP 4 con pubarca → adrenal', PU.origen(Object.assign({}, nul, { m: 1, p: 2, ohp: 4 }), null, null).tipo, 'adrenal');
+
+  grupo('Diabetes fuera del embarazo');
+  var DM = GYN.dm;
+  eq('Ayunas 134 + HbA1c 7,1 → Diabetes', DM.clasificar({ ay: 134, h2: null, a1c: 7.1, azar: null, sintomas: false, embarazo: false }).tit, 'Diabetes');
+  eq('Ayunas 130 sola → confirmar', DM.clasificar({ ay: 130, h2: null, a1c: null, azar: null, sintomas: false, embarazo: false }).tit, 'Rango de diabetes: confirmar');
+  eq('Ayunas 112 + HbA1c 6 → Prediabetes', DM.clasificar({ ay: 112, h2: null, a1c: 6, azar: null, sintomas: false, embarazo: false }).tit, 'Prediabetes');
+  eq('Azar 250 con síntomas → Diabetes', DM.clasificar({ ay: null, h2: null, a1c: null, azar: 250, sintomas: true, embarazo: false }).tit, 'Diabetes');
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;

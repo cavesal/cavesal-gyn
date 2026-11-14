@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulador · CaVeSal® GYN</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b8e9f">
+<link rel="stylesheet" href="css/estilos.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="manifest" href="manifest.json">
+<style>
+.sim-intro{color:var(--ink-soft);margin:6px 0 14px}
+.sim-filtros{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.sim-filtros button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:.88rem;cursor:pointer}
+.sim-filtros button.on{background:var(--teal);color:var(--on-teal);border-color:var(--teal)}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.sim-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);cursor:pointer;text-align:left;font:inherit;color:var(--ink)}
+.sim-card:hover{border-color:var(--teal)}
+.sim-sector{display:inline-block;font-size:.75rem;font-weight:700;color:var(--teal-ink);background:var(--teal-soft);border-radius:999px;padding:2px 9px;margin-bottom:6px}
+.sim-card h3{font-size:1rem;margin:0 0 4px}
+.sim-card p{font-size:.88rem;color:var(--ink-soft);margin:0}
+.sim-caso{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.sim-relato{background:var(--surface-2);border-radius:10px;padding:12px;margin:10px 0 14px;line-height:1.5}
+.sim-q{margin:14px 0}
+.sim-q h4{margin:0 0 8px;font-size:.98rem}
+.sim-op{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 12px;margin:6px 0;font:inherit;cursor:pointer}
+.sim-op:hover:not([disabled]){border-color:var(--teal)}
+.sim-op.ok{background:var(--ok-soft);border-color:var(--ok-line)}
+.sim-op.mal{background:var(--bad-soft);border-color:var(--bad-line)}
+.sim-op[disabled]{cursor:default}
+.sim-fb{font-size:.9rem;padding:8px 10px;border-radius:8px;margin-top:6px}
+.sim-fb.ok{background:var(--ok-soft);color:var(--ok)}
+.sim-fb.mal{background:var(--bad-soft);color:var(--bad)}
+.sim-fb a{color:inherit;font-weight:700}
+.sim-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.sim-acc a,.sim-acc button{border:1px solid var(--teal);background:var(--teal);color:var(--on-teal);border-radius:10px;padding:8px 14px;font:inherit;text-decoration:none;cursor:pointer}
+.sim-acc .sec{background:var(--surface);color:var(--teal-ink)}
+.sim-puntaje{font-weight:700;margin-top:10px}
+.sim-nota{font-size:.8rem;color:var(--ink-faint);margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar">
+    <a class="brand" href="./">
+      <img class="logo" src="assets/logo-gyn-icono.png" alt="" width="40" height="40">
+      <span><span class="name">CaVeSal<sup>®</sup> <b>GYN</b></span><span class="tag">Simulador de casos clínicos</span></span>
+    </a>
+    <button id="btnTema" class="btn-tema" type="button" aria-label="Cambiar tema claro u oscuro">◐</button>
+  </header>
+  <nav class="topnav" aria-label="Secciones">
+    <a class="pill" href="./">Inicio</a>
+    <a class="pill" href="simulador.html">Simulador</a>
+    <a class="pill" href="manual.html">Tutorial</a>
+    <a class="pill" href="acerca.html">Acerca</a>
+  </nav>
+  <main id="sim"></main>
+  <p class="sim-nota">Casos ficticios con fines de entrenamiento. Cada respuesta se respalda en la bibliografía del módulo correspondiente. No reemplaza el juicio clínico. Simulador libre también en la versión Demo. © 2026 Dr. Carlos Vera Salerno · CaVeSal® · Ley N.º 1328/1998 (Paraguay).</p>
+</div>
+<script src="js/sim-gyn.js"></script>
+<script>
+(function () {
+  var C = window.SIM_GYN, el = document.getElementById('sim'), filtro = 'Todos';
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  (function tema() {
+    var g = null; try { g = localStorage.getItem('cavesal_gyn_tema'); } catch (e) {}
+    if (g) document.documentElement.setAttribute('data-theme', g);
+    document.getElementById('btnTema').addEventListener('click', function () {
+      var a = document.documentElement.getAttribute('data-theme'), osc = a ? a === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches, n = osc ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', n); try { localStorage.setItem('cavesal_gyn_tema', n); } catch (e) {}
+    });
+  })();
+  function mezcla(a) { for (var i = a.length - 1; i > 0; i--) { var k = Math.floor(Math.random() * (i + 1)), x = a[i]; a[i] = a[k]; a[k] = x; } return a; }
+  function lista() {
+    var sec = ['Todos']; C.forEach(function (c) { if (sec.indexOf(c.sector) < 0) sec.push(c.sector); });
+    el.innerHTML = '<h1 style="font-family:var(--display);margin:14px 0 0">Simulador GYN</h1>' +
+      '<p class="sim-intro">' + C.length + ' casos ficticios por sector. Elegí un caso, respondé y mirá el fundamento de cada respuesta.</p>' +
+      '<div class="sim-filtros">' + sec.map(function (s) { return '<button type="button" data-f="' + esc(s) + '" class="' + (s === filtro ? 'on' : '') + '">' + esc(s) + '</button>'; }).join('') + '</div>' +
+      '<div class="sim-grid">' + C.filter(function (c) { return filtro === 'Todos' || c.sector === filtro; }).map(function (c) {
+        return '<button type="button" class="sim-card" data-caso="' + c.id + '"><span class="sim-sector">' + esc(c.sector) + '</span><h3>' + esc(c.titulo) + '</h3><p>' + esc(c.resumen) + '</p></button>';
+      }).join('') + '</div>';
+  }
+  function caso(id) {
+    var c = C.filter(function (x) { return x.id === id; })[0]; if (!c) return lista();
+    el.innerHTML = '<div class="sim-caso" data-id="' + c.id + '"><span class="sim-sector">' + esc(c.sector) + '</span><h2 style="margin:4px 0">' + esc(c.titulo) + '</h2>' +
+      '<div class="sim-relato">' + esc(c.relato) + '</div>' +
+      c.preguntas.map(function (p, i) {
+        return '<div class="sim-q" data-q="' + i + '"><h4>' + (i + 1) + '. ' + esc(p.q) + '</h4>' +
+          mezcla(p.ops.map(function (o, j) { return j; })).map(function (j) { return '<button type="button" class="sim-op" data-o="' + j + '">' + esc(p.ops[j].t) + '</button>'; }).join('') + '<div class="sim-res"></div></div>';
+      }).join('') +
+      '<div class="sim-puntaje" id="simPts"></div>' +
+      '<div class="sim-acc"><a href="./#' + c.modulo + '">Calcularlo en la app</a><button type="button" class="sec" data-volver>Otros casos</button></div></div>';
+    window.scrollTo(0, 0);
+  }
+  el.addEventListener('click', function (ev) {
+    var t = ev.target.closest('button'); if (!t) return;
+    if (t.dataset.f) { filtro = t.dataset.f; lista(); return; }
+    if (t.dataset.caso) { location.hash = t.dataset.caso; return; }
+    if (t.hasAttribute('data-volver')) { location.hash = ''; return; }
+    if (t.classList.contains('sim-op')) {
+      var qd = t.closest('.sim-q'), cd = t.closest('.sim-caso');
+      var c = C.filter(function (x) { return x.id === cd.dataset.id; })[0], p = c.preguntas[+qd.dataset.q], o = p.ops[+t.dataset.o];
+      qd.querySelectorAll('.sim-op').forEach(function (b) { b.disabled = true; if (p.ops[+b.dataset.o].ok) b.classList.add('ok'); });
+      if (!o.ok) t.classList.add('mal');
+      qd.dataset.ok = o.ok ? '1' : '0';
+      qd.querySelector('.sim-res').innerHTML = '<div class="sim-fb ' + (o.ok ? 'ok' : 'mal') + '">' + esc(o.fb) + '<br><a href="' + p.url + '">' + esc(p.ref) + '</a></div>';
+      var hechas = cd.querySelectorAll('.sim-q[data-ok]'), bien = cd.querySelectorAll('.sim-q[data-ok="1"]');
+      if (hechas.length === c.preguntas.length) document.getElementById('simPts').textContent = 'Resultado: ' + bien.length + ' de ' + c.preguntas.length + ' correctas.';
+    }
+  });
+  function ruta() { var h = location.hash.slice(1); if (h) caso(h); else lista(); }
+  window.addEventListener('hashchange', ruta); ruta();
+})();
+</script>
+</body>
+</html>
