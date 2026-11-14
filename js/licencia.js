@@ -8,7 +8,7 @@
 
   // En false mientras el repo es privado y el backend no reconoce producto=gyn.
   // Antes de publicar: poner en true (ver README, "Antes de publicar").
-  var REQUIERE_LICENCIA = false;
+  var REQUIERE_LICENCIA = true;
 
   var LICENSE_API = 'https://script.google.com/macros/s/AKfycbzMHJG48y5W0sIadQxrrFx78Toge2FRBIMRDqKe5GQmvmnpDory1ftALVfJCvZX2WK6/exec';
   var LICENSE_STORAGE_KEY = 'cavesal_gyn_full_unlocked';
