@@ -111,6 +111,7 @@
       viejo.parentNode.replaceChild(cont, viejo);
       w.GYN.ficha.render(cont, T, {});
       if (w.GYN.puente) w.GYN.puente.aplicar('ficha', cont);
+      if (w.GYN.ia) w.GYN.ia.barra(cont, 'ficha', 'Ficha de la paciente');
       w.scrollTo(0, 0); $('pTitulo').focus({ preventScroll: true });
       return;
     }
@@ -157,6 +158,7 @@
       cont.insertBefore(bar.firstChild, cont.firstChild);
     }
     if (w.GYN.puente && !bloqueada(r.f) && iEj === null) w.GYN.puente.aplicar(r.f.id, cont);
+    if (w.GYN.ia && !bloqueada(r.f) && iEj === null) w.GYN.ia.barra(cont, r.f.id, r.f.nombre);
     if (iEj === null && !bloqueada(r.f)) {
       if (full) actual = r.f.id;
       var cs = w.GYN.ficha && w.GYN.ficha.consulta(r.f.id), fp = w.GYN.ficha && w.GYN.ficha.actual();

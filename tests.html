@@ -54,6 +54,7 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/genetica.js"></script>
 <script src="js/progestagenos.js"></script>
 <script src="js/aemergencia.js"></script>
+<script src="js/ia.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -766,6 +767,16 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Derivación → panel multigén', /Panel multigén/.test(gn0({ ovario: true }).conducta.join(' ')), true);
   eq('BRCA1 → SOB 35-40', /35 y 40/.test(gn0({ resultado: 'brca1' }).portadora.join(' ')), true);
   eq('Lynch MLH1 → colonoscopía 20-25', /20 a 25/.test(gn0({ resultado: 'lynch1' }).portadora.join(' ')), true);
+  (function () {
+    var IA = window.GYN.ia, c = document.createElement('div');
+    c.innerHTML = '<label class="campo"><span>Edad</span><input id="xa" value="52"></label><label class="chk"><input type="checkbox" id="xb" checked> Sofocos intensos</label><label class="chk"><input type="checkbox" id="xc"> No marcado</label><div class="resultados">THM indicada · ñandú á</div>';
+    var ctx = IA.armarContexto('thm', 'Calculadora de THM', c);
+    var dec = JSON.parse(decodeURIComponent(escape(atob(IA.codificar(ctx)))));
+    eq('IA: origen gyn y alcance calculo_actual', [dec.source_module, dec.scope_authorized], ['gyn', 'calculo_actual']);
+    eq('IA: decodifica igual que chat.html (acentos)', dec.risk_calculations[0].resultado, 'THM indicada · ñandú á');
+    eq('IA: datos positivos, sin los no marcados', dec.clinical_findings.map(function (x) { return x.descripcion; }).slice(0, 2), ['Edad: 52', 'Sofocos intensos']);
+    eq('IA: URL a chat.html con context', /^https:\/\/ia\.cavesal\.app\/chat\.html\?context=/.test(IA.url(ctx)), true);
+  })();
   eq('MLH1 metilado → esporádico, sin derivar', /Derivar/.test(gn0({ dmmr: true, metilMlh1: true }).conducta.join(' ')), false);
 
   var res = document.getElementById('resumen');
