@@ -114,7 +114,29 @@
       if (btn) { ev.preventDefault(); btn.click(); }
     });
   }
-  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', botonSuperior); else botonSuperior();
+  // Robotita debajo de las pestañas: en una pantalla envía esa pantalla; en el inicio pide elegir una.
+  function tarjetaRobot() {
+    var nav = d.querySelector('.topnav');
+    if (!nav || d.querySelector('.ia-mz-card') || !w.GYN.licencia) return;
+    var full = w.GYN.licencia.esFull();
+    var c = d.createElement('div');
+    c.className = 'ia-mz-card';
+    c.innerHTML = '<div class="ia-mz"><span class="ia-mz-anim" role="img" aria-label="Robotita de CaVeSal® IA"></span>' +
+      '<div class="ia-mz-body"><div class="ia-mz-title">Analizar con CaVeSal® IA</div>' +
+      '<p class="ia-mz-bub">¿Querés ir más a fondo? Enviame los datos de esta pantalla y los analizo con las guías ACOG, FIGO, ESHRE, NAMS y OMS. Vos decidís; yo te ayudo a pensar cada caso.</p>' +
+      '<div class="ia-mz-priv">' + (full ? 'No se envían nombre ni documento.' : 'Disponible en la versión completa.') + '</div></div></div>' +
+      '<button type="button" class="btn-ia">' + (full ? 'Analizar' : 'Activar versión completa') + '</button>';
+    c.querySelector('button').addEventListener('click', function () {
+      if (!w.GYN.licencia.esFull()) { w.GYN.licencia.abrir(); return; }
+      var pant = d.getElementById('pantalla');
+      var btn = pant && !pant.hidden && d.querySelector('#pCuerpo .ia-bar .btn-ia');
+      if (btn) btn.click();
+      else alert('Elegí una pantalla, cargá los datos y tocá Analizar para enviarme el caso.');
+    });
+    nav.parentNode.insertBefore(c, nav.nextSibling);
+  }
+  function iniciarUI() { botonSuperior(); tarjetaRobot(); }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', iniciarUI); else iniciarUI();
 
   w.GYN = w.GYN || {};
   w.GYN.ia = { barra: barra, armarContexto: armarContexto, codificar: codificar, url: url, URL_IA: URL_IA };

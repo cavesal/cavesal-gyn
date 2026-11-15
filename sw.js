@@ -1,5 +1,5 @@
 /* CaVeSal® GYN — service worker. Subir VERSION en cada publicación. */
-const VERSION = "cavesal-gyn-v19";
+const VERSION = "cavesal-gyn-v20";
 const PRECACHE = [
   "./",
   "./acerca.html",

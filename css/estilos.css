@@ -306,3 +306,18 @@ button,input,select{font:inherit;color:inherit}
 .ia-bar span{font-size:.82rem;opacity:.85}
 .btn-ia{background:#7c3aed;color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
 .btn-ia:hover{background:#6d28d9}
+/* Robotita de CaVeSal® IA debajo de las pestañas (mismo diseño que Prenatal, HC y Emergencias) */
+.ia-mz-card{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:12px 14px;border-radius:14px;background:linear-gradient(135deg,#f5f0ff,#faf7ff);border:1.5px solid #c9b3f5}
+.ia-mz{display:flex;align-items:flex-end;gap:10px;flex:1 1 300px;min-width:0}
+.ia-mz-anim{display:block;flex-shrink:0;width:48px;aspect-ratio:120/256;background:url(https://cavesal.app/img/landing/mascota-ia-anim.webp) 0 0/800% 100% no-repeat;animation:iaMzOrb 1.6s steps(8) infinite,iaMzBob 3.2s ease-in-out infinite;filter:drop-shadow(0 2px 3px rgba(13,27,45,.22))}
+@keyframes iaMzOrb{to{background-position:114.2857% 0}}
+@keyframes iaMzBob{50%{transform:translateY(-4px)}}
+.ia-mz-body{min-width:0;flex:1}
+.ia-mz-title{font-size:.9rem;font-weight:700;color:#5b21b6;margin-bottom:4px}
+.ia-mz-bub{position:relative;background:#fff;border:1.5px solid #c9b3f5;border-radius:14px;padding:9px 12px;font-size:.8rem;line-height:1.4;color:#1e293b;margin:0 0 8px 6px}
+.ia-mz-bub::before{content:"";position:absolute;left:-8px;bottom:12px;width:13px;height:13px;background:#fff;border-left:1.5px solid #c9b3f5;border-bottom:1.5px solid #c9b3f5;transform:rotate(45deg)}
+.ia-mz-priv{font-size:.7rem;color:#64748b;margin-left:6px}
+[data-theme="dark"] .ia-mz-card{background:linear-gradient(135deg,#2a1f45,#231a3a);border-color:#5b4a8a}
+[data-theme="dark"] .ia-mz-title{color:#c4b5fd}
+[data-theme="dark"] .ia-mz-priv{color:#a8b3c4}
+@media (prefers-reduced-motion:reduce){.ia-mz-anim{animation:none;background-position:57.14% 0}}
