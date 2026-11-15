@@ -108,4 +108,5 @@ Mega Combo (Calculadora + Historia Clínica + Emergencias + GYN), aprobado el 13
 
 - Laboratorio por cuadro (8 cuadros) y Marcadores tumorales con ROMA (js/laboratorio.js, js/marcadores.js). Capítulo "Laboratorio e imágenes". sw v5.
 - Entrega C (sw v6): Eco ginecológica (js/ecogin.js), Densitometría (js/densitometria.js), Inducción de la ovulación (js/induccion.js), SHO (js/sho.js), Métodos anticonceptivos con índice de Pearl (js/metodos.js), Cáncer hereditario BRCA y síndrome de Lynch (js/genetica.js) y norma MSPBS 2025 de cuello uterino en js/estudios.js (selector; ASCCP sin cambios).
+- Pestaña Pacientes (sw v10, js/pacientes.js): lista, backup .json, Google Drive e importación combinar o reemplazar; solo Full.
 - Entrega D (sw v8): Elección del progestágeno para THM y anticoncepción oral (js/progestagenos.js) y Anticoncepción de emergencia (js/aemergencia.js).

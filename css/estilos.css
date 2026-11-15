@@ -277,3 +277,10 @@ button,input,select{font:inherit;color:inherit}
 .mec-c.c1{background:#2e7d32}.mec-c.c2{background:#9a6b00}.mec-c.c3{background:#c25a00}.mec-c.c4{background:#b3261e}
 .tabla tr.mt-uso td{border-top:0;padding-top:0;font-size:.84rem;color:var(--ink-soft)}
 .tabla tr.mt-uso .lista{margin:0}
+
+/* Mis pacientes */
+.pc-top{display:flex;gap:8px;margin:0 0 12px}.pc-top input{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font:inherit}
+.pc-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.pc-2 .btn-sec{text-align:center;text-decoration:none;padding:12px 8px}
+.pc-sub{margin:12px 0 4px}.pc-file{display:block;text-align:center;margin-top:8px;cursor:pointer}
+.pc-lock{text-align:center;padding:18px;border:1px solid var(--line);border-radius:14px}.pc-lock .lista{text-align:left;display:inline-block}.pc-ic{font-size:1.8rem}
+@media (max-width:420px){.pc-2{grid-template-columns:1fr}}

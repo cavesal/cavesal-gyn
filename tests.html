@@ -43,6 +43,7 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/epi.js"></script>
 <script src="js/dolor.js"></script>
 <script src="js/ficha.js"></script>
+<script src="js/pacientes.js"></script>
 <script src="js/laboratorio.js"></script>
 <script src="js/marcadores.js"></script>
 <script src="js/ecogin.js"></script>
@@ -666,6 +667,18 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Cobre-plata 5 años', /5 años/.test(MT.METODOS.filter(function (m) { return m.id === 'cuag'; })[0].dur), true);
   eq('Pearl AOC 0,3 / 9', MT.METODOS.filter(function (m) { return m.id === 'aoc'; })[0].p.slice(0, 2).join('/'), '0.3/9');
   eq('VIH suprimida → lactancia OMS', /lactancia materna/.test(mt0({ vih: true, lact: 'l42' }).sugerencias.join(' ')), true);
+
+  grupo('Mis pacientes');
+  var PC = GYN.pacientes;
+  var pa = { 'A': { id: 'A', campos: { edad: '30' }, actualizada: '2026-01-01', consultas: { mec: { fecha: '2026-01-01' } } } };
+  var pb = { 'A': { id: 'A', campos: { edad: '31' }, actualizada: '2026-02-01', consultas: { thm: { fecha: '2026-02-01' } } }, 'B': { id: 'B', campos: {} } };
+  var cb = PC.combinar(JSON.parse(JSON.stringify(pa)), JSON.parse(JSON.stringify(pb)));
+  eq('Combinar suma pacientes nuevas', Object.keys(cb).sort().join(','), 'A,B');
+  eq('Combinar deja la más reciente', cb.A.campos.edad, '31');
+  eq('Combinar suma consultas', Object.keys(cb.A.consultas).sort().join(','), 'mec,thm');
+  eq('Lee backup completo', Object.keys(PC.leerArchivo({ app: 'cavesal-gyn-pacientes', pacientes: pb })).length, 2);
+  eq('Lee archivo de una paciente', Object.keys(PC.leerArchivo({ app: 'cavesal-gyn', paciente: pa.A }))[0], 'A');
+  eq('Rechaza archivo ajeno', PC.leerArchivo({ app: 'otra', x: 1 }), null);
 
   grupo('Elección del progestágeno');
   var PG = GYN.progestagenos, pg0 = function (o) { var d = { uso: 'thm', edad: 52 }; for (var k in o) d[k] = o[k]; return PG.evaluar(d); };

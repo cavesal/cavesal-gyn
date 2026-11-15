@@ -111,6 +111,16 @@
       w.scrollTo(0, 0); $('pTitulo').focus({ preventScroll: true });
       return;
     }
+    if (id === 'pacientes' && w.GYN.pacientes) {
+      capturarActual();
+      $('inicio').hidden = true; $('pantalla').hidden = false;
+      $('pTitulo').textContent = 'Mis pacientes';
+      $('pSub').textContent = 'Lista, backup y Google Drive · versión completa';
+      viejo.parentNode.replaceChild(cont, viejo);
+      w.GYN.pacientes.render(cont, T, {});
+      w.scrollTo(0, 0); $('pTitulo').focus({ preventScroll: true });
+      return;
+    }
     var r = id ? buscar(id) : null;
     if (!r) {
       $('inicio').hidden = false; $('pantalla').hidden = true;
