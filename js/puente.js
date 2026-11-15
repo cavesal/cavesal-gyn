@@ -2,11 +2,13 @@
    (sin nombre ni documento) y precarga MRS, MEC, THM, Incretinas y el semáforo preconcepcional.
    Fase 2: Incontinencia (Diario Miccional), IMC, Fertilidad (FUM y ciclo), SOMP, Pareja, Endometriosis (EFI),
    masa anexial y estudios (edad).
+   Fase 3: Métodos anticonceptivos, Elección del progestágeno, Anticoncepción de emergencia, Ficha de la paciente,
+   Densitometría y Sangrado uterino anormal.
    Solo precarga: cada dato queda editable y la conducta la sigue definiendo el profesional.
    © 2026 Dr. Carlos Vera Salerno · Ley N.º 1328/1998 (Paraguay). Prohibida su copia o reproducción. */
 (function (w) {
   'use strict';
-  var KEY = 'cavesal_gyn_hc', datos = null;
+  var KEY = 'cavesal_gyn_hc', datos = null, hcSolo = null;
 
   function leerUrl() {
     try {
@@ -25,13 +27,13 @@
     var hc = null, fi = null;
     try { hc = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) { hc = null; }
     try { fi = w.GYN && w.GYN.ficha ? w.GYN.ficha.comoHC() : null; } catch (e) { fi = null; }
-    origenHC = !!hc;
+    origenHC = !!hc; hcSolo = hc;
     if (!hc && !fi) { datos = null; return null; }
     datos = {};
     [fi, hc].forEach(function (o) { if (o) Object.keys(o).forEach(function (k) { datos[k] = o[k]; }); });
     return datos;
   }
-  function descartar() { try { sessionStorage.removeItem(KEY); } catch (e) {} datos = null; }
+  function descartar() { try { sessionStorage.removeItem(KEY); sessionStorage.removeItem(KEY + '_ficha'); } catch (e) {} datos = null; }
 
   function fijar(el, v) {
     if (!el || v === undefined || v === null || v === '') return false;
@@ -167,6 +169,101 @@
       if (d.edad === undefined) return null;
       ['#b-edad', '#c-edad', '#e-edad'].forEach(function (s) { fijar(cont.querySelector(s), d.edad); });
       return '';
+    },
+    metodos: function (cont, d) {
+      var falta = [], q = function (s) { return cont.querySelector(s); }, ms = d.mecSel || {};
+      fijar(q('#mt-edad'), d.edad);
+      // Lactancia
+      if (ms.lactancia) fijar(q('#mt-lact'), ms.lactancia);
+      else if (typeof d.partoDias === 'number' && d.lactancia === true) {
+        var dd = d.partoDias; fijar(q('#mt-lact'), dd < 21 ? 'l21' : dd < 30 ? 'l21_30' : dd <= 42 ? 'l30_42' : 'l42');
+      } else if (typeof d.partoDias === 'number' && d.lactancia === undefined) falta.push('posparto de ' + d.partoDias + ' días: indicar si hay lactancia');
+      // Tabaco
+      if (ms.tabaco) fijar(q('#mt-tab'), ms.tabaco);
+      else if (d.tabaco) {
+        if (d.edad !== undefined && d.edad < 35) fijar(q('#mt-tab'), 'menor35');
+        else if (d.edad !== undefined && d.cigDia) fijar(q('#mt-tab'), d.cigDia >= 15 ? 'mayor35mas15' : 'mayor35menos15');
+        else falta.push('cigarrillos por día (tabaquismo con 35 años o más)');
+      }
+      // HTA y TEV: la HC no informa el grado; la ficha sí.
+      if (ms.hta) fijar(q('#mt-hta'), ms.hta); else if (d.p_hta) falta.push('grado de control de la hipertensión');
+      if (ms.tev && q('#mt-tev option[value="' + ms.tev + '"]')) fijar(q('#mt-tev'), ms.tev);
+      else if (d.p_tvp || d.p_tep) falta.push('tipo de trombosis o embolia previa (riesgo de recurrencia o anticoagulación)');
+      fijar(q('#mt-aura'), d.p_migrana_aura || ms.cefalea === 'migranaCon');
+      fijar(q('#mt-tro'), d.p_trombo || ms.trombofilia === 'si');
+      fijar(q('#mt-aaf'), ms.les === 'aaf');
+      fijar(q('#mt-mama'), ms.mama === 'actual');
+      fijar(q('#mt-obe'), (d.imc !== undefined && d.imc >= 30) || d.p_obesidad);
+      if (d.p_saf && ms.les !== 'aaf') falta.push('síndrome antifosfolípido: marcar si corresponde a lupus con anticuerpos antifosfolipídicos');
+      if ((d.p_cancer_act || d.p_cancer_prev) && !ms.mama) falta.push('tipo de cáncer (marcar si es cáncer de mama actual)');
+      if (d.p_dm) falta.push('diabetes: ver detalle en Elegibilidad de métodos (MEC)');
+      if (d.p_cardio) falta.push('cardiopatía: ver detalle en Elegibilidad de métodos (MEC)');
+      return falta.length ? 'Completar a mano: ' + falta.join('; ') + '.' : '';
+    },
+    progestagenos: function (cont, d) {
+      var falta = [], q = function (s) { return cont.querySelector(s); };
+      if (d.trh) fijar(q('#pg-uso'), 'thm');
+      fijar(q('#pg-edad'), d.edad);
+      fijar(q('#pg-sinut'), d.utero === 'no');
+      fijar(q('#pg-hta'), d.p_hta);
+      fijar(q('#pg-tev'), d.p_tvp || d.p_tep || d.p_trombo || d.p_saf);
+      fijar(q('#pg-cmama'), d.mecSel && d.mecSel.mama === 'previo5');
+      fijar(q('#pg-endo'), d.mecSel && d.mecSel.endometriosis === 'si');
+      if ((d.p_cancer_prev || d.p_cancer_act) && !(d.mecSel && d.mecSel.mama)) falta.push('tipo de cáncer (marcar si es cáncer de mama previo)');
+      if (d.utero === undefined) falta.push('útero conservado o histerectomía');
+      var trh = d.trh ? 'En la HC figura terapia hormonal en curso' + (d.trhCual ? ' (' + esc(d.trhCual) + ')' : '') + '. ' : '';
+      return trh + (falta.length ? 'Completar a mano: ' + falta.join('; ') + '.' : '');
+    },
+    aemergencia: function (cont, d) {
+      if (d.peso === undefined && d.imc === undefined) return null;
+      fijar(cont.querySelector('#ae-peso'), d.peso);
+      fijar(cont.querySelector('#ae-imc'), d.imc);
+      var n = ['Completar las horas desde la relación.'];
+      if (d.lactancia === true) n.push('Lactancia en la HC.');
+      if (d.p_epi) n.push('Epilepsia en la HC: marcar si usa inductores enzimáticos.');
+      return n.join(' ');
+    },
+    ficha: function (cont, d) {
+      var h = hcSolo; if (!h) return null; // la ficha solo se precarga desde la HC
+      // No mezclar con una ficha que ya tiene datos de otra paciente.
+      var ya = sessionStorage.getItem(KEY + '_ficha') === '1';
+      if (!ya && w.GYN.ficha && w.GYN.ficha.comoHC()) return 'La ficha abierta ya tiene datos: no se mezcló con la HC. Abrí una ficha nueva para precargarla.';
+      var q = function (s) { return cont.querySelector(s); }, falta = [];
+      var vac = function (s, v) { var el = q(s); if (el && (el.type === 'checkbox' ? !el.checked : el.value === '')) fijar(el, v); };
+      try { sessionStorage.setItem(KEY + '_ficha', '1'); } catch (e) {}
+      vac('#fi-edad', h.edad); vac('#fi-peso', h.peso); vac('#fi-talla', h.talla);
+      vac('#fi-fum', h.fum); vac('#fi-ciclo', h.ciclo);
+      if (h.ritmo) vac('#fi-ritmo', h.ritmo === 'Regular' ? 'reg' : 'irr');
+      if (typeof h.partoDias === 'number') { vac('#fi-partoDias', h.partoDias); if (h.lactancia === true) vac('#fi-lactancia', true); }
+      if (h.p_trombo) vac('#fi-m_trombofilia', 'si');
+      if (h.p_migrana_aura) vac('#fi-m_cefalea', 'migranaCon'); else if (h.p_migrana_sinaura) vac('#fi-m_cefalea', 'migranaSin');
+      if (h.p_epi) vac('#fi-m_epilepsia', 'si');
+      if (h.tabaco) falta.push('cigarrillos por día y años fumando');
+      if (h.p_hta) falta.push('grado de control de la hipertensión');
+      if (h.p_dm) falta.push('tipo de diabetes');
+      if (h.p_tvp || h.p_tep) falta.push('tipo de trombosis o embolia');
+      if (h.p_cardio) falta.push('cardiopatía isquémica o ACV');
+      if (h.p_saf || h.p_ai) falta.push('lupus o enfermedad autoinmune');
+      if (h.p_cancer_prev || h.p_cancer_act) falta.push('tipo de cáncer (enfermedad mamaria)');
+      if (h.embPrevio) falta.push('gestas, partos, cesáreas y abortos');
+      falta.push('código de la paciente (sin nombre)');
+      return 'Completar a mano: ' + falta.join('; ') + '.';
+    },
+    densitometria: function (cont, d) {
+      if (d.edad === undefined) return null;
+      fijar(cont.querySelector('#dx-edad'), d.edad);
+      var f = [];
+      if (d.peso) f.push('peso ' + d.peso + ' kg');
+      if (d.talla) f.push('talla ' + d.talla + ' cm');
+      if (d.tabaco) f.push('tabaquismo actual');
+      return f.length ? 'Para el FRAX, en la HC: ' + f.join(', ') + '.' : '';
+    },
+    hua: function (cont, d) {
+      if (d.edad === undefined && !d.ciclo) return null;
+      fijar(cont.querySelector('#hu-edad'), d.edad);
+      fijar(cont.querySelector('#hu-frec'), d.ciclo);
+      fijar(cont.querySelector('#hu-eso'), (d.imc !== undefined && d.imc >= 30) || d.p_obesidad);
+      return d.ritmo === 'Irregular' ? 'Ritmo irregular en la HC: cargar la diferencia entre el ciclo más corto y el más largo.' : '';
     }
   };
 

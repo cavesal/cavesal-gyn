@@ -29,7 +29,7 @@ Con lógica:
 - Amenorrea (js/amenorrea.js): primaria y secundaria, ASRM 2008, ESHRE POI, Endocrine Society 2017. Full.
 - EPI (js/epi.js): CDC 2021, internación, esquemas y seguimiento. Full.
 - Dolor pélvico agudo y crónico (js/dolor.js): ectópico, torsión, EPI y causas del dolor crónico. Full.
-- Ficha de la paciente (js/ficha.js, ruta #ficha): antecedentes, semáforo y MEC; libre en Demo. Guardar, abrir, exportar e importar JSON (localStorage cavesal_gyn_pacientes) y guardar consultas por módulo: Full. El puente usa la ficha con la HC por encima.
+- Ficha de la paciente (js/ficha.js, ruta #ficha): antecedentes, semáforo y MEC; libre en Demo. Guardar, abrir, exportar e importar JSON (localStorage cavesal_gyn_pacientes) y guardar consultas por módulo: Full. El puente usa la ficha con la HC por encima. Puente HC → GYN fase 3 (js/puente.js): métodos, progestágenos, emergencia, ficha (solo si está vacía), densitometría y SUA.
 - Inicio: buscador y pestañas Motivo de consulta, Etapa de vida y Capítulo (textos-es.js: capitulos, motivos, caps, kw).
 
 Ya no quedan funciones Próximamente.

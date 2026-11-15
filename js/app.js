@@ -108,6 +108,7 @@
       $('pSub').textContent = 'Antecedentes, factores de riesgo y anticoncepción · libre en la Demo';
       viejo.parentNode.replaceChild(cont, viejo);
       w.GYN.ficha.render(cont, T, {});
+      if (w.GYN.puente) w.GYN.puente.aplicar('ficha', cont);
       w.scrollTo(0, 0); $('pTitulo').focus({ preventScroll: true });
       return;
     }
