@@ -84,18 +84,17 @@
   function url(ctx) { return URL_IA + '?context=' + encodeURIComponent(codificar(ctx)); }
 
   function enviar(modulo, nombre, cont) {
-    if (!w.GYN.licencia.esFull()) { w.GYN.licencia.abrir(); return; }
     w.open(url(armarContexto(modulo, nombre, cont)), '_blank', 'noopener,noreferrer');
   }
 
   // Barra al pie de cada pantalla, también con un ejemplo cargado.
   function barra(cont, modulo, nombre) {
     if (!cont || cont.querySelector('.ia-bar')) return;
-    var full = w.GYN.licencia.esFull();
+    var full = true; // el puente funciona también en la demo: la IA pide su cuenta al llegar
     var b = d.createElement('div');
     b.className = 'ia-bar';
     b.innerHTML = '<div><strong>Analizar con CaVeSal® IA</strong><span>' +
-      (full ? 'Envía los datos cargados, el resultado y la conducta de esta pantalla, con los antecedentes de la ficha. No viajan nombre ni documento.'
+      (full ? 'Envía los datos cargados, el resultado y la conducta de esta pantalla, con los antecedentes de la ficha. No viajan nombre ni documento. Requiere una cuenta de CaVeSal® IA.'
             : 'Disponible en la versión completa de CaVeSal® GYN y requiere una cuenta de CaVeSal® IA.') +
       '</span></div><button type="button" class="btn-ia">' + (full ? 'Analizar con CaVeSal® IA ↗' : 'Activar versión completa') + '</button>';
     b.querySelector('button').addEventListener('click', function () { enviar(modulo, nombre, cont); });
@@ -106,7 +105,7 @@
   // Dentro de una pantalla envía esa pantalla; en el inicio abre la IA sin datos.
   function botonSuperior() {
     var a = d.querySelector('.topnav .pill-ia');
-    if (!a || !w.GYN.licencia || !w.GYN.licencia.esFull()) return;
+    if (!a) return;
     a.textContent = 'Analizar con CaVeSal® IA';
     a.addEventListener('click', function (ev) {
       var pant = d.getElementById('pantalla');
@@ -118,16 +117,15 @@
   function tarjetaRobot() {
     var nav = d.querySelector('.topnav');
     if (!nav || d.querySelector('.ia-mz-card') || !w.GYN.licencia) return;
-    var full = w.GYN.licencia.esFull();
+    var full = true;
     var c = d.createElement('div');
     c.className = 'ia-mz-card';
     c.innerHTML = '<div class="ia-mz"><span class="ia-mz-anim" role="img" aria-label="Robotita de CaVeSal® IA"></span>' +
       '<div class="ia-mz-body"><div class="ia-mz-title">Analizar con CaVeSal® IA</div>' +
       '<p class="ia-mz-bub">¿Querés ir más a fondo? Enviame los datos de esta pantalla y los analizo con las guías ACOG, FIGO, ESHRE, NAMS y OMS. Vos decidís; yo te ayudo a pensar cada caso.</p>' +
-      '<div class="ia-mz-priv">' + (full ? 'No se envían nombre ni documento.' : 'Disponible en la versión completa.') + '</div></div></div>' +
+      '<div class="ia-mz-priv">' + (full ? 'No se envían nombre ni documento. Requiere una cuenta de CaVeSal® IA.' : '') + '</div></div></div>' +
       '<button type="button" class="btn-ia">' + (full ? 'Analizar' : 'Activar versión completa') + '</button>';
     c.querySelector('button').addEventListener('click', function () {
-      if (!w.GYN.licencia.esFull()) { w.GYN.licencia.abrir(); return; }
       var pant = d.getElementById('pantalla');
       var btn = pant && !pant.hidden && d.querySelector('#pCuerpo .ia-bar .btn-ia');
       if (btn) btn.click();
