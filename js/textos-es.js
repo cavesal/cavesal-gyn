@@ -80,12 +80,10 @@
           { id: 'sho', nombre: 'Síndrome de hiperestimulación ovárica (SHO)', estado: 'v1', etapas: ['edad-fertil'], caps: ['endocrino'], motivos: ['infertilidad', 'dolor'], kw: 'hiperestimulacion ohss ascitis hematocrito cabergolina',
             resumen: 'Factores de riesgo (ASRM 2024), gravedad leve, moderada, severa o crítica (RCOG), signos de alarma, internación y conducta.' }
         ] },
-      { id: 'anticoncepcion', nombre: 'Anticoncepción', intro: 'Métodos, índice de Pearl y elegibilidad según criterios médicos.',
+      { id: 'anticoncepcion', nombre: 'Anticoncepción', intro: 'Elegibilidad y métodos en un solo módulo, y anticoncepción de emergencia.',
         funciones: [
-          { id: 'mec', nombre: 'Elegibilidad de métodos (MEC)', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: [], motivos: ['anticoncepcion'], kw: 'anticonceptivo diu implante pildora oms',
-            resumen: 'Categoría 1 a 4 de seis métodos con 67 condiciones del US MEC 2024, notas de la OMS 2025, más de 40 años (SIC 2025) y cuándo suspender la anticoncepción y pasar a THM.' },
-          { id: 'metodos', nombre: 'Métodos anticonceptivos: catálogo, índice de Pearl y elección', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: ['fertilidad'], motivos: ['anticoncepcion'], kw: 'pastilla aoc continua extendida inyectable mesigyna cyclofem ampd parche anillo implante jadelle nexplanon diu cobre plata oro mirena pearl calendario collar billings sintotermico mela lactancia emergencia ligadura vasectomia',
-            resumen: 'Todos los métodos por duración (corta, LARC, barrera, naturales, MELA, emergencia y definitivos) con índice de Pearl perfecto y típico, esquemas (21/7, 24/4, extendido y continuo), duración, alertas para estrógenos y categoría US MEC según el perfil.' },
+          { id: 'mec', nombre: 'Anticoncepción: elegibilidad y métodos', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: ['fertilidad'], motivos: ['anticoncepcion'], kw: 'anticonceptivo mec elegibilidad diu implante pildora oms pastilla aoc continua extendida flexible estetrol e4 drospirenona estradiol inyectable mesigyna cyclofem ampd parche anillo annovera nestorona progesterona progering spray implante jadelle nexplanon diu cobre plata oro mirena pearl barrera preservativo diafragma espermicida calendario collar billings sintotermico mela lactancia emergencia ulipristal yuzpe ligadura salpingectomia vasectomia tirzepatida semaglutida incretinas',
+            resumen: 'En 3 pasos: datos, condiciones clicables (US MEC 2024, con barrera, naturales y emergencia) y todos los métodos por familia con categoría 1 a 4, A/C/D o A/C/D/S, ficha con Pearl, duración y formas de uso (FSRH 2023, OMS 2026), estetrol, anillo anual, anillo de progesterona, incretinas (FDA), más de 40 años y cuándo suspender.' },
           { id: 'aemergencia', nombre: 'Anticoncepción de emergencia', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: [], motivos: ['anticoncepcion'], kw: 'pildora del dia despues emergencia levonorgestrel ulipristal yuzpe mifepristona diu cobre violacion',
             resumen: 'Opciones ordenadas por eficacia según horas, IMC, inductores y violación: DIU de cobre, ulipristal, mifepristona, levonorgestrel (dosis doble si corresponde) y Yuzpe con píldoras por toma. Mecanismo de cada uno.' }
         ] },
@@ -323,9 +321,16 @@
       no: 'No', si: 'Sí', elegir: 'Elegir',
       grupos: { personal: 'Características personales y reproductivas', cv: 'Enfermedad cardiovascular', renal: 'Enfermedad renal', reuma: 'Enfermedades reumáticas',
         neuro: 'Neurológicas y depresión', repro: 'Tracto reproductivo y mama', vih: 'VIH', infec: 'Otras infecciones', endo: 'Endocrinas',
-        gi: 'Gastrointestinales y hepáticas', resp: 'Respiratorias', hemato: 'Hematológicas y trasplante', inter: 'Interacciones con fármacos' },
+        gi: 'Gastrointestinales y hepáticas', resp: 'Respiratorias', hemato: 'Hematológicas y trasplante', otros: 'Otras situaciones (barrera, naturales y emergencia)', inter: 'Interacciones con fármacos' },
       cond: {
         embarazo: { n: 'Embarazo' },
+        cirugiaPelvica: { n: 'Antecedente de cirugía pélvica (incluye cesárea)' },
+        violacion: { n: 'Agresión sexual (violación)' },
+        alergiaLatex: { n: 'Alergia al látex' },
+        sst: { n: 'Antecedente de síndrome de shock tóxico' },
+        itu: { n: 'Infección urinaria (ITU)' },
+        drogasCiclo: { n: 'Fármacos que alteran el ciclo o los signos de fertilidad' },
+        fiebre: { n: 'Enfermedad con fiebre', o: { aguda: 'Aguda', cronica: 'Crónica que eleva la temperatura' } },
         paridad: { n: 'Paridad', o: { nulipara: 'Nulípara', multipara: 'Con partos previos' } },
         lactancia: { n: 'Lactancia (posparto)', o: { l21: 'Menos de 21 días', l21_30: '21 a 29 días', l30_42r: '30 a 42 días, con otros factores de riesgo de TEV', l30_42: '30 a 42 días, sin otros factores de riesgo de TEV', l42: 'Más de 42 días' } },
         posparto: { n: 'Posparto sin lactancia', o: { p21: 'Menos de 21 días', p21_42r: '21 a 42 días, con otros factores de riesgo de TEV', p21_42: '21 a 42 días, sin otros factores de riesgo de TEV', p42: 'Más de 42 días' } },
@@ -400,7 +405,11 @@
       segunGravedad: 'según gravedad', aclaracion: 'tiene aclaración en el US MEC 2024',
       faltan: 'Cargá la edad o al menos una condición para ver la categoría de cada método.',
       notasTit: 'Notas', omsNotasTit: 'Diferencias con la OMS 2025',
-      alertas: { tirzepatida: 'Tirzepatida: puede bajar la eficacia de los anticonceptivos orales (combinados y solo progestágeno). Usar un método no oral o agregar barrera durante 4 semanas tras el inicio y tras cada aumento de dosis (prospecto FDA).' },
+      alertas: {
+        tirzepatida: 'Tirzepatida (prospecto FDA de Mounjaro, 08/2026): retrasa el vaciamiento gástrico. Con una dosis de 5 mg, el pico del anticonceptivo oral bajó 59 % (etinilestradiol) y 66 % (norgestimato), y la exposición total alrededor de 20 %. Sugerencia CaVeSal®: cambiar a un método no oral o sumar barrera durante 4 semanas tras el inicio y tras cada aumento de dosis. Los hormonales no orales no se afectan.',
+        tirzEstable: 'Tirzepatida con dosis estable hace más de 4 semanas: el prospecto FDA no pide barrera. Si hay vómitos o diarrea, usar respaldo como en cualquier cuadro digestivo.',
+        glp1: 'Semaglutida (prospecto FDA de Ozempic, 05/2026): sin interacción clínicamente relevante con etinilestradiol/levonorgestrel. Por el vaciamiento gástrico lento, precaución con fármacos orales: si hay vómitos o diarrea, usar respaldo como en cualquier cuadro digestivo.'
+      },
       duracion: 'Duración: implante de etonogestrel aprobado por 5 años (ANMAT 2025; los ya colocados también cumplen los 5 años).',
       oms: {
         ampdLactancia: 'OMS 2025: el inyectable de progestágeno con lactancia antes de las 6 semanas pasó de categoría 3 a 2 y puede ofrecerse inmediatamente después del parto.',

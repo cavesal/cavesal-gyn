@@ -101,6 +101,8 @@
 
   function router() {
     var id = (location.hash || '').replace('#', '');
+    // Métodos quedó unificado con la elegibilidad (opción A).
+    if (id === 'metodos') { history.replaceState(null, '', '#mec'); id = 'mec'; }
     var viejo = $('pCuerpo'), cont = viejo.cloneNode(false);
     if (id === 'ficha' && w.GYN.ficha) {
       $('inicio').hidden = true; $('pantalla').hidden = false;

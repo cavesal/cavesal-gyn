@@ -268,6 +268,18 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Rifampicina → combinados 3, implante 2', [E.calcular(mb({ sel: { antimicrobianos: 'rifampicina' } })).metodos.ahc.cat, E.calcular(mb({ sel: { antimicrobianos: 'rifampicina' } })).metodos.imp.cat], [3, 2]);
   eq('Nota OMS con antirretrovirales', E.calcular(mb({ sel: { arv: 'ipr' } })).notasOms, ['arv']);
   eq('Alerta tirzepatida', E.calcular(mb({ tirzepatida: true, edad: 30 })).alertas, ['tirzepatida']);
+  eq('Incretina: tirzepatida en aumento → alerta; estable → sin barrera; semaglutida → GLP-1', [E.calcular(mb({ incretina: 'tirz_aumento', edad: 30 })).alertas[0], E.calcular(mb({ incretina: 'tirz_estable', edad: 30 })).alertas[0], E.calcular(mb({ incretina: 'sema', edad: 30 })).alertas[0]], ['tirzepatida', 'tirzEstable', 'glp1']);
+  eq('Barrera: alergia al látex → preservativo 3, preservativo interno 1, diafragma 3', (function (b) { return [b.condon.cat, b.condonInt.cat, b.diaf.cat]; })(E.calcular(mb({ edad: 30, sel: { alergiaLatex: 'si' } })).barrera), [3, 1, 3]);
+  eq('Barrera: riesgo alto de VIH → espermicida 4; VIH → 3', [E.calcular(mb({ edad: 30, sel: { riesgoVih: 'si' } })).barrera.esperm.cat, E.calcular(mb({ edad: 30, sel: { vih: 'bien' } })).barrera.esperm.cat], [4, 3]);
+  eq('Barrera: lactancia <6 semanas → diafragma NA; sin condiciones → 1', [E.calcular(mb({ edad: 30, sel: { lactancia: 'l21' } })).barrera.diaf.cat, E.calcular(mb({ edad: 30 })).barrera.condon.cat], ['NA', 1]);
+  eq('Naturales: lactancia ≥6 semanas → síntomas C, calendario D', (function (f) { return [f.sin.cat, f.cal.cat]; })(E.calcular(mb({ edad: 30, sel: { lactancia: 'l42' } })).naturales), ['C', 'D']);
+  eq('Naturales: fiebre aguda → D/A; posparto sin lactancia ≥21 días → A/D', [E.calcular(mb({ edad: 30, sel: { fiebre: 'aguda' } })).naturales.sin.cat, E.calcular(mb({ edad: 30, sel: { fiebre: 'aguda' } })).naturales.cal.cat, E.calcular(mb({ edad: 30, sel: { posparto: 'p21_42' } })).naturales.sin.cat, E.calcular(mb({ edad: 30, sel: { posparto: 'p21_42' } })).naturales.cal.cat], ['D', 'A', 'A', 'D']);
+  eq('Naturales: 46 años → precaución (perimenopausia)', E.calcular(mb({ edad: 46 })).naturales.sin.cat, 'C');
+  eq('Emergencia: IMC ≥30 → DIU 1, UPA/LNG/Yuzpe 2', (function (a) { return [a.cu.cat, a.upa.cat, a.lng.cat, a.yuzpe.cat]; })(E.calcular(mb({ edad: 30, sel: { obesidad: 'imc30' } })).emergencia), [1, 2, 2, 2]);
+  eq('Emergencia: migraña → solo Yuzpe 2; agresión sexual → DIU 2; embarazo → DIU 4', [E.calcular(mb({ edad: 30, sel: { cefalea: 'migranaSin' } })).emergencia.yuzpe.cat, E.calcular(mb({ edad: 30, sel: { cefalea: 'migranaSin' } })).emergencia.lng.cat, E.calcular(mb({ edad: 30, sel: { violacion: 'si' } })).emergencia.cu.cat, E.calcular(mb({ edad: 30, sel: { embarazo: 'si' } })).emergencia.cu.cat], [2, 1, 2, 4]);
+  eq('Emergencia: rifampicina (inductor CYP3A4) → LNG 2', E.calcular(mb({ edad: 30, sel: { antimicrobianos: 'rifampicina' } })).emergencia.lng.cat, 2);
+  eq('Esterilización: EPI actual → D; HTA ≥160 → S; obesidad → C; sin condiciones → A', [E.calcular(mb({ edad: 30, sel: { epi: 'actual' } })).esterilizacion.cat, E.calcular(mb({ edad: 30, sel: { hta: 'h160' } })).esterilizacion.cat, E.calcular(mb({ edad: 30, sel: { obesidad: 'imc30' } })).esterilizacion.cat, E.calcular(mb({ edad: 30 })).esterilizacion.cat], ['D', 'S', 'C', 'A']);
+  eq('Cirugía pélvica previa → todos 1', E.METODOS.map(function (m) { return E.calcular(mb({ sel: { cirugiaPelvica: 'si' } })).metodos[m].cat; }).join(''), '111111');
   eq('Suspensión: 55 años → suspender', E.calcular(mb({ edad: 55 })).suspension.clave, 'suspender55');
   eq('Suspensión: 50 con combinado → cambiar', E.calcular(mb({ edad: 50, metodoActual: 'ahc' })).suspension.clave, 'ahc50');
   eq('Suspensión: 51 con implante y FSH >30 → 1 año más', E.calcular(mb({ edad: 51, metodoActual: 'imp', fsh30: 'si' })).suspension.clave, 'pocFshAlta');
@@ -666,6 +678,12 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('DIU-LNG 52 mg 8 años', /8 años/.test(MT.METODOS.filter(function (m) { return m.id === 'lng52'; })[0].dur), true);
   eq('Cobre-plata 5 años', /5 años/.test(MT.METODOS.filter(function (m) { return m.id === 'cuag'; })[0].dur), true);
   eq('Pearl AOC 0,3 / 9', MT.METODOS.filter(function (m) { return m.id === 'aoc'; })[0].p.slice(0, 2).join('/'), '0.3/9');
+  var mid = function (id) { return MT.METODOS.filter(function (m) { return m.id === id; })[0]; };
+  eq('Estetrol: combinado, Pearl de los ensayos 0,47 y 2,65', [mid('aoce4').mec, /0,47/.test(mid('aoce4').pt) && /2,65/.test(mid('aoce4').pt)], ['ahc', true]);
+  eq('Annovera: 13 ciclos, Pearl 2,98', [/13 ciclos/.test(mid('annov').dur), /2,98/.test(mid('annov').pt)], [true, true]);
+  eq('Anillo de progesterona y spray en Lactancia; spray en investigación', [mid('anprog').f, mid('spray').f, mid('spray').pt], ['lact', 'lact', 'En investigación']);
+  eq('Familias: 8, todos los métodos con familia', [MT.FAMILIAS.length, MT.METODOS.every(function (m) { return !!m.f; })], [8, true]);
+  eq('Orales para incretinas: AOC, estradiol, estetrol, solo progestágeno', MT.METODOS.filter(function (m) { return m.oral; }).map(function (m) { return m.id; }).join(','), 'aoc,aoce2,aoce4,pop');
   eq('VIH suprimida → lactancia OMS', /lactancia materna/.test(mt0({ vih: true, lact: 'l42' }).sugerencias.join(' ')), true);
 
   grupo('Mis pacientes');

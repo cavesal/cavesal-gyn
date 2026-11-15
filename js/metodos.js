@@ -9,14 +9,23 @@
   // O = OMS, Planificación familiar: manual mundial 2018 (apéndice A). T = Trussell J. Contraception 2011;83:397-404.
   var GRUPOS = [['corta', 'Hormonales de corta duración'], ['larga', 'Larga duración (LARC)'], ['barrera', 'Barrera'], ['natural', 'Naturales (conocimiento de la fertilidad)'], ['mela', 'Lactancia (MELA)'], ['emergencia', 'Emergencia'], ['definitivo', 'Definitivos']];
   var M = [
-    { id: 'aoc', g: 'corta', n: 'Píldora combinada (AOC)', mec: 'ahc', p: [0.3, 9, 'T'], dur: 'Diaria', comp: 'Etinilestradiol 20 a 35 µg o estradiol/valerato de estradiol + progestágeno',
+    { id: 'aoc', g: 'corta', n: 'Píldora combinada (AOC)', mec: 'ahc', p: [0.3, 9, 'T'], dur: 'Diaria', comp: 'Etinilestradiol 15 a 35 µg + progestágeno (levonorgestrel, norgestimato, desogestrel, gestodeno, drospirenona, dienogest, acetato de ciproterona, clormadinona)',
       uso: ['Secuencial 21/7: 21 activas y 7 días de descanso.', 'Secuencial 24/4: 24 activas y 4 de descanso o placebo (menos fluctuación hormonal).', 'Extendido: hasta 6 meses seguidos con descanso breve (OMS 2026).', 'Continuo: sin descanso hasta 1 año, luego reevaluar (OMS 2026). Sangrado irregular frecuente al inicio.'] },
+    { id: 'aoce2', g: 'corta', n: 'Píldora combinada con estradiol', mec: 'ahc', p: [0.3, 9, 'T'], dur: 'Diaria', comp: 'Valerato de estradiol + dienogest (régimen dinámico 26/2) o 17β-estradiol 1,5 mg + acetato de nomegestrol 2,5 mg (24/4)',
+      uso: ['Estrógeno idéntico al natural: menor impacto hepático que el etinilestradiol.', 'Eficacia de la categoría AOC (tabla de Trussell).', 'Mismas categorías del US MEC que cualquier combinado.'] },
+    { id: 'aoce4', g: 'corta', n: 'Píldora combinada con estetrol (E4)', mec: 'ahc', pt: '0,47 Europa y Rusia (IC 0,15–1,11) · 2,65 EE. UU. y Canadá (IC 1,73–3,88)', dur: 'Diaria, 24/4', comp: 'Estetrol 15 mg + drospirenona 3 mg (24 activas + 4 placebo)',
+      uso: ['Estetrol: estrógeno natural fetal, el primero con acción selectiva en tejidos (NEST). Vida media de unas 24 h; se elimina sobre todo por glucuronidación y, a diferencia del etinilestradiol, casi no depende del citocromo P450.',
+        'Menor impacto hepático y sobre la coagulación: la SHBG sube 55 % con E4/drospirenona, 74 % con EE/levonorgestrel y 251 % con EE/drospirenona (Douxfils 2020).',
+        'Ensayos de fase 3: Pearl 0,47 en Europa y Rusia, 18 a 35 años (Gemzell-Danielsson 2022) y 2,65 en EE. UU. y Canadá, 16 a 35 años (Creinin 2021).',
+        'Todavía no hay datos epidemiológicos de TEV: el US MEC lo clasifica como cualquier combinado.'] },
     { id: 'pop', g: 'corta', n: 'Píldora de solo progestágeno', mec: 'pop', p: [0.3, 7, 'O'], dur: 'Diaria, sin descanso', comp: 'Desogestrel 75 µg, drospirenona 4 mg, levonorgestrel o linestrenol',
       uso: ['Toma continua sin pausa.', 'De elección en la lactancia y cuando hay contraindicación de estrógenos.', 'Desogestrel y drospirenona inhiben la ovulación y toleran 12 a 24 h de retraso; las de levonorgestrel, solo 3 h.'] },
     { id: 'parche', g: 'corta', n: 'Parche combinado', mec: 'ahc', p: [0.3, 7, 'O'], dur: 'Semanal', comp: 'Etinilestradiol + norelgestromina',
       uso: ['Un parche por semana durante 3 semanas y 1 semana libre.', 'Menor eficacia con peso de 90 kg o más.'] },
     { id: 'anillo', g: 'corta', n: 'Anillo vaginal combinado', mec: 'ahc', p: [0.3, 7, 'O'], dur: 'Mensual', comp: 'Etinilestradiol + etonogestrel',
       uso: ['3 semanas colocado y 1 semana sin anillo.'] },
+    { id: 'annov', g: 'corta', n: 'Anillo vaginal anual (Annovera)', mec: 'ahc', pt: '2,98 (IC 2,13–4,06) · FDA 2018', dur: '1 año: 13 ciclos con el mismo anillo', comp: 'Acetato de segesterona (Nestorona) 0,15 mg/día + etinilestradiol 0,013 mg/día',
+      uso: ['21 días colocado y 7 días fuera; se lava y se vuelve a colocar. Un solo anillo para 13 ciclos.', 'Aprobado por la FDA en 2018; no estudiado de forma adecuada con IMC mayor de 29.', 'Mismas categorías del US MEC que los combinados.'] },
     { id: 'inymes', g: 'corta', n: 'Inyectable mensual combinado', mec: 'ahc', cic: true, p: [0.05, 3, 'O'], dur: 'Cada 30 días (± 3 días)', comp: 'Mesigyna: enantato de noretisterona 50 mg + valerato de estradiol 5 mg (Bayer, ex Schering). Cyclofem: acetato de medroxiprogesterona 25 mg + cipionato de estradiol 5 mg',
       uso: ['Inyección intramuscular el mismo día de cada mes.', 'No comercializados en Estados Unidos (Lunelle fue retirado); aprobados en América Latina.', 'El US MEC no los evalúa y la OMS los clasifica aparte: se muestra la categoría de los combinados como referencia de precaución.'] },
     { id: 'ampd', g: 'corta', n: 'Inyectable trimestral (AMPD)', mec: 'ampd', p: [0.2, 6, 'T'], dur: 'Cada 13 semanas (hasta 15)', comp: 'Acetato de medroxiprogesterona 150 mg IM o 104 mg SC',
@@ -47,12 +56,47 @@
     { id: 'coito', g: 'natural', n: 'Coito interrumpido', mec: null, p: [4, 20, 'O'], dur: 'Cada relación', comp: '—', uso: ['No protege de ITS.'] },
     { id: 'mela', g: 'mela', n: 'Método de la lactancia y amenorrea (MELA)', mec: null, p: [0.9, 2, 'O'], dur: 'Hasta 6 meses posparto', comp: 'Tres condiciones simultáneas',
       uso: ['1) Amenorrea. 2) Lactancia exclusiva o casi exclusiva, día y noche. 3) Menos de 6 meses posparto.', 'Si falla cualquiera de las tres: iniciar otro método (DIU, implante o solo progestágeno).'] },
-    { id: 'ae', g: 'emergencia', n: 'Anticoncepción de emergencia', mec: null, p: null, dur: 'Dosis única', comp: 'Levonorgestrel 1,5 mg · acetato de ulipristal 30 mg · DIU de cobre',
-      uso: ['Levonorgestrel 1,5 mg: hasta 72 h (eficacia menor hasta 120 h). Con IMC mayor de 30 puede ser menos eficaz.', 'Ulipristal 30 mg: hasta 120 h; esperar 5 días para reiniciar hormonales.', 'DIU de cobre: hasta 5 días; el más eficaz y queda como método.', 'OMS 2018: con un coito en la segunda o tercera semana del ciclo, 8 embarazos cada 100 sin método; menos de 1 con ulipristal, 1 con levonorgestrel.', 'Conducta, dosis doble, Yuzpe y mifepristona: <a href="#aemergencia">Anticoncepción de emergencia</a>.'] },
+    { id: 'aecu', g: 'emergencia', n: 'DIU de cobre de emergencia', mec: null, p: null, pt: 'El más eficaz: menos de 1 embarazo cada 1000', dur: 'Hasta 5 días después del coito', comp: 'DIU de cobre T380A',
+      uso: ['Queda como método de larga duración.', 'También rige la categoría del DIU de cobre de la tabla general (sugerencia CaVeSal®).'] },
+    { id: 'aeupa', g: 'emergencia', n: 'Ulipristal 30 mg', mec: null, p: null, pt: 'Menos de 1 embarazo cada 100 (OMS 2018)', dur: 'Hasta 120 h, dosis única', comp: 'Acetato de ulipristal 30 mg',
+      uso: ['Esperar 5 días para iniciar o reiniciar un método hormonal y usar barrera mientras tanto.'] },
+    { id: 'aelng', g: 'emergencia', n: 'Levonorgestrel 1,5 mg', mec: null, p: null, pt: 'Alrededor de 1 embarazo cada 100 (OMS 2018)', dur: 'Hasta 72 h (menos eficaz hasta 120 h)', comp: 'Levonorgestrel 1,5 mg',
+      uso: ['Con IMC de 30 o más puede ser menos eficaz.', 'Puede iniciar un método hormonal enseguida.'] },
+    { id: 'aeyuzpe', g: 'emergencia', n: 'Método de Yuzpe', mec: null, p: null, pt: 'Menos eficaz que levonorgestrel y ulipristal', dur: 'Hasta 72 h, 2 tomas cada 12 h', comp: 'Píldoras combinadas: 100 µg de EE + 0,5 mg de levonorgestrel por toma',
+      uso: ['Más náuseas y vómitos. Usar solo si no hay otra opción.', 'Píldoras por toma según la marca: <a href="#aemergencia">Anticoncepción de emergencia</a>.'] },
+    { id: 'aemife', g: 'emergencia', n: 'Mifepristona 10 a 50 mg', mec: null, p: null, pt: 'Opción nueva de la OMS 2026', dur: 'Hasta 5 días después del coito', comp: 'Mifepristona 10 a 50 mg',
+      uso: ['Incorporada por la OMS en septiembre de 2026 como opción de emergencia.', 'Sin categoría en el US MEC 2024.'] },
     { id: 'ltb', g: 'definitivo', n: 'Ligadura o salpingectomía bilateral', mec: null, p: [0.5, 0.5, 'T'], dur: 'Permanente', comp: 'Laparoscópica o en la cesárea',
       uso: ['Salpingectomía bilateral: preferida por reducir el riesgo de cáncer de ovario seroso (ACOG CO 774).', 'Consentimiento informado y asesoría sobre la irreversibilidad.'] },
     { id: 'vasec', g: 'definitivo', n: 'Vasectomía', mec: null, p: [0.10, 0.15, 'T'], dur: 'Permanente', comp: 'Ambulatoria', uso: ['Usar otro método hasta confirmar azoospermia (espermograma a los 3 meses).'] }
+,
+    { id: 'anprog', g: 'mela', n: 'Anillo vaginal de progesterona', mec: null, p: null, pt: 'Tan eficaz como el DIU de cobre mientras la lactancia siga (Sivin 1997; Massai 1999)', dur: '90 días por anillo, hasta 4 anillos seguidos (1 año)', comp: 'Progesterona natural 10 mg/día (Progering)',
+      uso: ['Solo con lactancia activa, al menos 4 veces por día.', 'Se coloca entre las 4 y las 9 semanas posparto.', 'Incluido en el MEC de la OMS desde 2015 y en su lista de medicamentos esenciales; aprobado en unos 8 a 9 países de América Latina (ISP Chile).', 'Sin categoría en el US MEC 2024.'] },
+    { id: 'spray', g: 'mela', n: 'Spray transdérmico de Nestorona', mec: null, p: null, pt: 'En investigación', dur: 'Diario', comp: 'Acetato de segesterona (Nestorona) en spray sobre la piel',
+      uso: ['En investigación: sin aprobación ni categoría de elegibilidad.', 'Progestágeno que no pasa a la leche en forma activa por vía oral: por eso se estudia en la lactancia.'] }
   ];
+
+  // Familias de la vista unificada y fuente de la categoría de cada método.
+  var FAMILIAS = [['diu', 'DIU'], ['sp', 'Solo progestágeno'], ['comb', 'Combinados'], ['lact', 'Lactancia'], ['barrera', 'Barrera'], ['emerg', 'Emergencia'], ['ester', 'Esterilización'], ['natural', 'Naturales (conocimiento de la fertilidad)']];
+  var FUENTE = {
+    cu: 'diu', cuag: 'diu', cuau: 'diu', lng52: 'diu',
+    pop: 'sp', imp1: 'sp', imp2: 'sp', ampd: 'sp',
+    aoc: 'comb', aoce2: 'comb', aoce4: 'comb', parche: 'comb', anillo: 'comb', annov: 'comb', inymes: 'comb',
+    mela: 'lact', anprog: 'lact', spray: 'lact',
+    condm: ['barrera', 'bar', 'condon'], condf: ['barrera', 'bar', 'condonInt'], diaf: ['barrera', 'bar', 'diaf'], esperm: ['barrera', 'bar', 'esperm'],
+    aecu: ['emerg', 'ae', 'cu'], aeupa: ['emerg', 'ae', 'upa'], aelng: ['emerg', 'ae', 'lng'], aeyuzpe: ['emerg', 'ae', 'yuzpe'], aemife: 'emerg',
+    ltb: ['ester', 'est'], vasec: 'ester',
+    calend: ['natural', 'fab', 'cal'], collar: ['natural', 'fab', 'cal'], billings: ['natural', 'fab', 'sin'], dosdias: ['natural', 'fab', 'sin'], temp: ['natural', 'fab', 'sin'], sinto: ['natural', 'fab', 'sin'], coito: 'natural'
+  };
+  var HORM = ['aoc', 'aoce2', 'aoce4', 'pop', 'parche', 'anillo', 'annov', 'inymes', 'ampd', 'imp1', 'imp2', 'lng52', 'anprog', 'spray', 'aeupa', 'aelng', 'aeyuzpe', 'aemife'];
+  var LARC = ['cu', 'cuag', 'cuau', 'lng52', 'imp1', 'imp2'];
+  var ORAL = ['aoc', 'aoce2', 'aoce4', 'pop'];
+  var CICLO = ['aoc', 'aoce2', 'aoce4', 'parche', 'anillo', 'annov', 'inymes'];
+  M.forEach(function (m) {
+    var f = FUENTE[m.id] || 'natural', a = typeof f === 'string' ? [f] : f;
+    m.f = a[0]; m.src = a[1] || (m.mec ? 'mec' : null); m.k = a[2] || m.mec || null;
+    m.horm = HORM.indexOf(m.id) >= 0; m.larc = LARC.indexOf(m.id) >= 0; m.oral = ORAL.indexOf(m.id) >= 0; m.ciclo = CICLO.indexOf(m.id) >= 0;
+  });
 
   var COL = { 1: 'verde', 2: 'ambar', 3: 'naranja', 4: 'rojo' };
 
@@ -86,7 +130,7 @@
     if (d.mama) flags.push('cáncer de mama actual (contraindica también los hormonales de solo progestágeno)');
     var sinEstrogeno = cat.ahc !== null && cat.ahc >= 3;
     var lista = M.map(function (m) { return { m: m, cat: m.mec ? cat[m.mec] : null }; });
-    if (d.sinHormonas) lista = lista.filter(function (x) { return ['aoc', 'pop', 'parche', 'anillo', 'inymes', 'ampd', 'imp1', 'imp2', 'lng52'].indexOf(x.m.id) < 0; });
+    if (d.sinHormonas) lista = lista.filter(function (x) { return !x.m.horm; });
     if (d.grupo) lista = lista.filter(function (x) { return x.m.g === d.grupo; });
     var sug = [];
     if (sinEstrogeno) sug.push('No usar estrógenos (categoría ' + cat.ahc + ' para los combinados): ' + (flags.length ? flags.join('; ') : 'ver el MEC') + '. Opciones: DIU de cobre, DIU hormonal, implante o píldora de solo progestágeno según su categoría.');
@@ -97,49 +141,11 @@
     return { cat: cat, lista: lista, flags: flags, sinEstrogeno: sinEstrogeno, sugerencias: sug };
   }
 
-  function pearl(p) { if (!p) return 'Sin dato confiable'; return String(p[0]).replace('.', ',') + ' / ' + String(p[1]).replace('.', ','); }
+  function pearl(p, m) { if (m && m.pt) return m.pt; if (!p) return 'Sin dato confiable'; return String(p[0]).replace('.', ',') + ' / ' + String(p[1]).replace('.', ','); }
 
-  function render(cont, T, opts) {
-    var c = C(), F = w.GYN.fertilidad.fila, esFull = !opts || opts.esFull !== false;
-    cont.innerHTML =
-      '<p class="ayuda">Catálogo por duración con índice de Pearl (uso perfecto / uso típico) y la categoría US MEC 2024 para el perfil cargado. Para todas las condiciones, abrí <a href="#mec">Elegibilidad de métodos (MEC)</a>.</p>' +
-      c.grupo('Perfil', '<div class="grid2">' + c.campo('mt-edad', 'Edad', 'años', '1') +
-        c.sel('mt-lact', [['', 'No amamanta'], ['l21', 'Amamanta, menos de 21 días posparto'], ['l21_30', 'Amamanta, 21 a 30 días'], ['l30_42', 'Amamanta, 30 a 42 días'], ['l42', 'Amamanta, más de 42 días']], 'Lactancia') +
-        c.sel('mt-tab', [['', 'No fuma'], ['menor35', 'Fuma, menos de 35 años'], ['mayor35menos15', 'Fuma, 35 o más, menos de 15/día'], ['mayor35mas15', 'Fuma, 35 o más, 15 o más/día']], 'Tabaco') +
-        c.sel('mt-hta', [['', 'Sin HTA'], ['controlada', 'HTA controlada'], ['h140', '140-159 / 90-99'], ['h160', '160/100 o más'], ['vascular', 'Con enfermedad vascular']], 'Hipertensión') +
-        c.sel('mt-tev', [['', 'Sin TEV'], ['sinBajoRiesgo', 'TEV previa, bajo riesgo de recurrencia'], ['sinAltoRiesgo', 'TEV previa, alto riesgo de recurrencia'], ['familiar', 'TEV en familiar de primer grado']], 'Tromboembolia venosa') +
-        c.sel('mt-g', [['', 'Todas las categorías']].concat(GRUPOS), 'Mostrar') + '</div>' +
-        c.chk('mt-aura', 'Migraña con aura') + c.chk('mt-tro', 'Trombofilia conocida') + c.chk('mt-aaf', 'Lupus con anticuerpos antifosfolipídicos') + c.chk('mt-mama', 'Cáncer de mama actual') +
-        c.chk('mt-obe', 'IMC de 30 o más') + c.chk('mt-vih', 'VIH en TAR con carga viral suprimida') + c.chk('mt-sh', 'Prefiere un método sin hormonas')) +
-      '<div id="mt-o" class="resultados" aria-live="polite"></div>' +
-      '<p class="ayuda">Ventana fértil: 6 días, los 5 previos a la ovulación y el día de la ovulación (Wilcox AJ et al. N Engl J Med 1995;333:1517-21).</p>' +
-      '<p class="etiqueta">Tabla propia CaVeSal® · Índice de Pearl: OMS, Planificación familiar: manual mundial para proveedores 2018 (O) · Trussell J. Contraception 2011;83:397-404 (T)</p>' +
-      '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: CDC US MEC 2024 (dominio público) · CDC US SPR 2024 · OMS 2026 (uso extendido y continuo de AOC; implante 5 años) · FDA 2026 (Nexplanon 5 años) · SFP 2022 (uso extendido de LARC) · OMS hoja informativa DIU · FSRH 2023 (anticoncepción intrauterina) · EURAS-LCS12 2026 · OMS 2025 (VIH y lactancia) · ACOG CO 774</p>' +
-      '<p class="orientativa">' + T.app.orientativa + '</p>';
-    var L = c.lector(cont), q = function (s) { return cont.querySelector(s); };
-    function act() {
-      var r = evaluar({ edad: L.n('mt-edad'), lact: L.v('mt-lact'), tabaco: L.v('mt-tab'), hta: L.v('mt-hta'), tev: L.v('mt-tev'), aura: L.c('mt-aura'), tromb: L.c('mt-tro'), aaf: L.c('mt-aaf'), mama: L.c('mt-mama'), obes: L.c('mt-obe'), vih: L.c('mt-vih'), sinHormonas: L.c('mt-sh'), grupo: L.v('mt-g') });
-      var h = [];
-      if (r.flags.length) h.push(F('Alertas para estrógenos', c.ul(r.flags), '', r.sinEstrogeno ? 'rojo' : 'ambar'));
-      h.push(esFull ? F('Sugerencia', c.ul(r.sugerencias), 'Sugerencia CaVeSal®.', r.sinEstrogeno ? 'naranja' : 'verde') : opts.bloqueo('Sugerencia de método en la versión completa'));
-      GRUPOS.forEach(function (g) {
-        var xs = r.lista.filter(function (x) { return x.m.g === g[0]; });
-        if (!xs.length) return;
-        var filas = xs.map(function (x) {
-          var m = x.m, k = x.cat;
-          var cel = k ? '<span class="mec-c c' + k + '">' + k + '</span>' : '—';
-          return '<tr><td><strong>' + m.n + '</strong><br><small>' + m.comp + '</small></td><td>' + pearl(m.p) + (m.p ? ' <small>(' + m.p[2] + ')</small>' : '') + '</td><td>' + m.dur + '</td><td>' + cel + '</td></tr>' +
-            '<tr class="mt-uso"><td colspan="4">' + c.ul(m.uso) + '</td></tr>';
-        }).join('');
-        h.push('<div class="fila neutro"><div class="f-etq">' + g[1] + '</div><div class="f-val"><div class="tabla-scroll"><table class="tabla"><thead><tr><th>Método</th><th>Pearl perfecto / típico</th><th>Duración</th><th>MEC</th></tr></thead><tbody>' + filas + '</tbody></table></div></div></div>');
-      });
-      q('#mt-o').innerHTML = h.join('');
-    }
-    cont.addEventListener('input', act);
-    cont.addEventListener('change', act);
-    act();
-  }
+  // La vista de métodos quedó unificada con la elegibilidad (opción A): #metodos abre el mismo módulo.
+  function render(cont, T, opts) { return w.GYN.mec.render(cont, T, opts); }
 
   w.GYN = w.GYN || {};
-  w.GYN.metodos = { METODOS: M, GRUPOS: GRUPOS, evaluar: evaluar, perfil: perfil, render: render };
+  w.GYN.metodos = { METODOS: M, GRUPOS: GRUPOS, FAMILIAS: FAMILIAS, evaluar: evaluar, perfil: perfil, pearl: pearl, render: render };
 })(window);

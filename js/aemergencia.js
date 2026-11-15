@@ -49,7 +49,7 @@
     var yz = '<div class="tabla-scroll"><table class="tabla"><thead><tr><th>Píldora</th><th>Por toma</th><th>Total</th></tr></thead><tbody>' +
       Object.keys(YUZPE).map(function (k) { var y = YUZPE[k]; return '<tr><td>' + y.n + '</td><td>' + y.p + '</td><td>' + (2 * y.p) + '</td></tr>'; }).join('') + '</tbody></table></div>' +
       '<p class="etiqueta">Dos tomas separadas por 12 horas: dosis total de EE 200 µg + LNG 1 mg. Tabla propia CaVeSal® · Basada en: AAP 2012 · ICEC</p>';
-    cont.innerHTML = '<p class="ayuda">Opciones ordenadas por eficacia según las horas desde la relación, el peso y la situación. <a href="#metodos">Métodos anticonceptivos</a> · <a href="#mec">Elegibilidad MEC</a></p>' +
+    cont.innerHTML = '<p class="ayuda">Opciones ordenadas por eficacia según las horas desde la relación, el peso y la situación. <a href="#mec">Anticoncepción: elegibilidad y métodos</a></p>' +
       C.grupo('Datos', '<div class="grid2">' + C.campo('ae-h', 'Horas desde la relación', 'h', '1') + C.campo('ae-imc', 'IMC', 'kg/m²') + C.campo('ae-peso', 'Peso', 'kg') +
         C.sel('ae-diu', [['', 'DIU elegible (MEC 1 o 2)'], ['no', 'DIU no elegible (MEC 3 o 4)']], 'DIU') +
         C.sel('ae-aoc', [['', 'Yuzpe: elegir píldora'], ['ee20', 'EE 20 µg + LNG 100 µg'], ['ee30', 'EE 30 µg + LNG 150 µg'], ['ee50', 'EE 50 µg + LNG 250 µg']], 'Píldora disponible') + '</div>' +

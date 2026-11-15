@@ -110,7 +110,7 @@
       DOSIS_THM.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td><td>' + r[3] + '</td></tr>'; }).join('') + '</tbody></table></div>' +
       '<p class="etiqueta">Tabla propia CaVeSal® · Basada en: BMS 2026 · Cochrane tibolona 2016 · MHRA</p>';
 
-    cont.innerHTML = '<p class="ayuda">Perfil de cada progestágeno y sugerencia según las características clínicas, para THM o anticoncepción oral. <a href="#thm">Calculadora de THM</a> · <a href="#mec">Elegibilidad MEC</a> · <a href="#metodos">Métodos anticonceptivos</a></p>' +
+    cont.innerHTML = '<p class="ayuda">Perfil de cada progestágeno y sugerencia según las características clínicas, para THM o anticoncepción oral. <a href="#thm">Calculadora de THM</a> · <a href="#mec">Anticoncepción: elegibilidad y métodos</a></p>' +
       C.grupo('Contexto', '<div class="grid2">' + C.sel('pg-uso', [['thm', 'Terapia hormonal (climaterio)'], ['aoc', 'Anticoncepción oral']], 'Uso') + C.campo('pg-edad', 'Edad', 'años', '1') + '</div>') +
       C.grupo('Características', C.chk('pg-sinut', 'Sin útero (solo THM)') + C.chk('pg-am12', 'Más de 12 meses sin menstruación (solo THM)') +
         C.chk('pg-hta', 'HTA') + C.chk('pg-ret', 'Retención hídrica, edema o mastodinia') + C.chk('pg-tev', 'Antecedente o riesgo de TEV') +

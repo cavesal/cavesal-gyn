@@ -62,7 +62,11 @@
         Object.keys(d.mecSel).forEach(function (k) { selCond(cont, k, d.mecSel[k]); });
         return '';
       }
-      if (d.tabaco) { if (d.edad !== undefined && d.edad < 35) selCond(cont, 'tabaco', 'menor35'); else falta.push('cigarrillos por día (tabaquismo con 35 años o más)'); }
+      if (d.tabaco) {
+        if (d.edad !== undefined && d.edad < 35) selCond(cont, 'tabaco', 'menor35');
+        else if (d.edad !== undefined && d.cigDia) selCond(cont, 'tabaco', d.cigDia >= 15 ? 'mayor35mas15' : 'mayor35menos15');
+        else falta.push('cigarrillos por día (tabaquismo con 35 años o más)');
+      }
       if ((d.imc !== undefined && d.imc >= 30) || d.p_obesidad) selCond(cont, 'obesidad', d.edad !== undefined && d.edad < 18 ? 'imc30menor18' : 'imc30');
       if (d.p_trombo) selCond(cont, 'trombofilia', 'si');
       if (d.p_migrana_aura) selCond(cont, 'cefalea', 'migranaCon'); else if (d.p_migrana_sinaura) selCond(cont, 'cefalea', 'migranaSin');
@@ -170,36 +174,6 @@
       ['#b-edad', '#c-edad', '#e-edad'].forEach(function (s) { fijar(cont.querySelector(s), d.edad); });
       return '';
     },
-    metodos: function (cont, d) {
-      var falta = [], q = function (s) { return cont.querySelector(s); }, ms = d.mecSel || {};
-      fijar(q('#mt-edad'), d.edad);
-      // Lactancia
-      if (ms.lactancia) fijar(q('#mt-lact'), ms.lactancia);
-      else if (typeof d.partoDias === 'number' && d.lactancia === true) {
-        var dd = d.partoDias; fijar(q('#mt-lact'), dd < 21 ? 'l21' : dd < 30 ? 'l21_30' : dd <= 42 ? 'l30_42' : 'l42');
-      } else if (typeof d.partoDias === 'number' && d.lactancia === undefined) falta.push('posparto de ' + d.partoDias + ' días: indicar si hay lactancia');
-      // Tabaco
-      if (ms.tabaco) fijar(q('#mt-tab'), ms.tabaco);
-      else if (d.tabaco) {
-        if (d.edad !== undefined && d.edad < 35) fijar(q('#mt-tab'), 'menor35');
-        else if (d.edad !== undefined && d.cigDia) fijar(q('#mt-tab'), d.cigDia >= 15 ? 'mayor35mas15' : 'mayor35menos15');
-        else falta.push('cigarrillos por día (tabaquismo con 35 años o más)');
-      }
-      // HTA y TEV: la HC no informa el grado; la ficha sí.
-      if (ms.hta) fijar(q('#mt-hta'), ms.hta); else if (d.p_hta) falta.push('grado de control de la hipertensión');
-      if (ms.tev && q('#mt-tev option[value="' + ms.tev + '"]')) fijar(q('#mt-tev'), ms.tev);
-      else if (d.p_tvp || d.p_tep) falta.push('tipo de trombosis o embolia previa (riesgo de recurrencia o anticoagulación)');
-      fijar(q('#mt-aura'), d.p_migrana_aura || ms.cefalea === 'migranaCon');
-      fijar(q('#mt-tro'), d.p_trombo || ms.trombofilia === 'si');
-      fijar(q('#mt-aaf'), ms.les === 'aaf');
-      fijar(q('#mt-mama'), ms.mama === 'actual');
-      fijar(q('#mt-obe'), (d.imc !== undefined && d.imc >= 30) || d.p_obesidad);
-      if (d.p_saf && ms.les !== 'aaf') falta.push('síndrome antifosfolípido: marcar si corresponde a lupus con anticuerpos antifosfolipídicos');
-      if ((d.p_cancer_act || d.p_cancer_prev) && !ms.mama) falta.push('tipo de cáncer (marcar si es cáncer de mama actual)');
-      if (d.p_dm) falta.push('diabetes: ver detalle en Elegibilidad de métodos (MEC)');
-      if (d.p_cardio) falta.push('cardiopatía: ver detalle en Elegibilidad de métodos (MEC)');
-      return falta.length ? 'Completar a mano: ' + falta.join('; ') + '.' : '';
-    },
     progestagenos: function (cont, d) {
       var falta = [], q = function (s) { return cont.querySelector(s); };
       if (d.trh) fijar(q('#pg-uso'), 'thm');
@@ -266,6 +240,7 @@
       return d.ritmo === 'Irregular' ? 'Ritmo irregular en la HC: cargar la diferencia entre el ciclo más corto y el más largo.' : '';
     }
   };
+  MOD.metodos = MOD.mec; // Métodos quedó unificado con la elegibilidad (opción A).
 
   // Ritmo de la HC: "Regular" → regulares; "Irregular" no dice de qué tipo, se completa a mano.
   function cicloSel(cont, sel, d) {
