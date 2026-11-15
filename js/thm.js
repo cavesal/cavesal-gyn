@@ -10,6 +10,11 @@
   function num(v) { if (v === '' || v === null || v === undefined) return null; var n = Number(String(v).replace(',', '.')); return isFinite(n) ? n : null; }
   var CONTRA = ['sangrado', 'mama', 'tev', 'trombofilia', 'hepatica', 'acv', 'porfiria'];
   var PATO = ['obesidad', 'hta', 'tg', 'riesgoTev', 'tabaco', 'migrana', 'glp1', 'cerebro'];
+  // Antecedentes oncológicos (BGCS/BMS 2024; EMA 2020 y 2022) y otras condiciones (NAMS 2022; BGCS/BMS 2024). Solo algoritmo combinado.
+  var ONCO = { endoTemprano: 'consultar', endoAvanzado: 'evitar', sarcoma: 'evitar', ovarioEpitelial: 'permitida', lgsoc1: 'consultar', ovarioHormonal: 'evitar',
+    borderline: 'consultar', cervixEscamoso: 'permitida', cervixAdeno: 'consultar', brcaRrso: 'permitida', meningioma: 'consultar' };
+  var ONCO_K = Object.keys(ONCO);
+  var OTRAS = ['coronaria', 'vesicula', 'endometriosis', 'hiperplasia', 'prevencion'];
 
   // Bloques: cada uno devuelve su propio resultado.
   function bloqueMrs(d) {
@@ -26,7 +31,7 @@
 
   function bloqueOsteo(d) {
     if (!d.oste) return null;
-    if (d.fractura === 'alto') return { conducta: 'manejoOsteo' };
+    if (d.fractura === 'alto' || d.fractura === 'muyAlto') return { conducta: 'manejoOsteo' };
     if (d.fractura !== 'bajo') return { conducta: 'faltaFractura' };
     if (d.svm) return { conducta: 'thm' };
     if (d.tscore === null) return { conducta: 'faltaT' };
@@ -67,9 +72,38 @@
     return { dentro: d.edad < 60 && d.anosFum < 10 };
   }
 
+  // Tratamiento de la osteoporosis (Endocrine Society 2019/2020, AACE 2020, NOGG 2022, BHOF 2022).
+  function ttoOsteo(d, r) {
+    if (d.modo !== 'combinado' || !r.osteo) return null;
+    var c = r.osteo.conducta, k = [], tev = !!(d.contra.tev || d.contra.trombofilia || (d.pato && d.pato.riesgoTev));
+    if (c === 'manejoOsteo') {
+      if (d.fractura === 'muyAlto') k.push('anabolico');
+      else {
+        var thmOk = r.ventana && r.ventana.dentro && !r.contra.length && !r.contraExtra.length && !(r.cv && r.cv.evitar) && !(r.mama && r.mama.categoria === 'alto') && !tev;
+        if (thmOk && d.svm) k.push('thmPrimera');
+        if (d.renal) k.push('renal'); else k.push('bifosfonato', 'pausa', 'denosumabAlt');
+        k.push(tev ? 'raloxifenoNo' : 'raloxifeno');
+      }
+    }
+    if (c === 'manejoOsteo' || c === 'thm' || c === 'control') k.push('calcioD');
+    if (d.denosumab) k.push('denoNoSuspender');
+    k.push('dxa');
+    return k;
+  }
+
   function calcular(d) {
-    var r = { modo: d.modo, avisos: [] };
+    var r = calcularBase(d);
+    r.osteoTto = ttoOsteo(d, r);
+    return r;
+  }
+
+  function calcularBase(d) {
+    var r = { modo: d.modo, avisos: [] }, comb = d.modo === 'combinado', on = d.onco || {}, ot = d.otras || {};
     r.contra = CONTRA.filter(function (k) { return d.contra[k]; });
+    r.onco = comb ? ONCO_K.filter(function (k) { return on[k]; }) : [];
+    r.contraExtra = r.onco.filter(function (k) { return ONCO[k] === 'evitar'; });
+    if (comb && ot.coronaria) r.contraExtra.push('coronaria');
+    r.otras = comb ? OTRAS.filter(function (k) { return ot[k]; }) : [];
     r.pato = d.modo === 'combinado' ? PATO.filter(function (k) { return d.pato[k]; }) : [];
     r.mrs = bloqueMrs(d);
     r.osteo = bloqueOsteo(d);
@@ -91,17 +125,18 @@
 
     // Contraindicaciones, riesgo CV alto (HEARTS) o mamario alto → no hormonal.
     var motivoNoHormonal = null;
-    if (r.contra.length) motivoNoHormonal = 'contra';
+    if (r.contra.length || r.contraExtra.length) motivoNoHormonal = 'contra';
     else if (r.cv && r.cv.evitar) motivoNoHormonal = 'cv';
     else if (r.mama && r.mama.categoria === 'alto') motivoNoHormonal = 'mama';
     r.sistemica = sistemica && !motivoNoHormonal;
     r.noHormonal = sistemica && !!motivoNoHormonal;
     r.motivo = motivoNoHormonal;
     if (r.local && r.contra.length) r.localCondicion = d.modo === 'combinado' ? (d.contra.mama ? 'oncologia' : 'baja') : 'no';
-    if (r.tdsh && r.contra.length) r.tdsh = false;
+    if (r.local && !r.contra.length && r.contraExtra.length) r.localCondicion = r.onco.indexOf('sarcoma') >= 0 ? 'no' : (r.contraExtra.length === 1 && r.contraExtra[0] === 'coronaria' ? 'baja' : 'oncologia');
+    if (r.tdsh && (r.contra.length || r.contraExtra.length)) r.tdsh = false;
 
     if (r.sistemica) {
-      var trans = (r.cv && r.cv.via === 'transdermica') || r.pato.some(function (k) { return k !== 'cerebro'; });
+      var trans = (r.cv && r.cv.via === 'transdermica') || r.pato.some(function (k) { return k !== 'cerebro'; }) || r.otras.indexOf('vesicula') >= 0;
       r.via = trans ? 'transdermica' : 'libre';
       r.progSeguro = !!(r.cv && r.cv.progSeguro) || (d.modo === 'combinado' && (d.pato.riesgoTev));
       r.dosisBaja = !!(r.cv && r.cv.dosisBaja);
@@ -109,6 +144,10 @@
       if (d.utero === 'no') r.esquema = 'estrogeno';
       else if (d.utero === 'si') r.esquema = (d.etapa === 'posmeno') ? 'continua' : 'ciclica';
       else r.esquema = null;
+      r.sinUtero = d.utero === 'no';
+      if (r.esquema === 'estrogeno' && r.otras.indexOf('endometriosis') >= 0) { r.esquema = 'continua'; r.avisos.push('endometriosisSinUtero'); }
+      r.onco.forEach(function (k) { r.avisos.push('onco_' + k); });
+      ['vesicula', 'endometriosis', 'hiperplasia', 'prevencion'].forEach(function (k) { if (r.otras.indexOf(k) >= 0 && !(k === 'endometriosis' && r.avisos.indexOf('endometriosisSinUtero') >= 0)) r.avisos.push(k); });
       if (r.mama && r.mama.categoria === 'moderado') r.avisos.push('mamaModerado');
       if (r.ventana && !r.ventana.dentro) r.avisos.push('fueraVentana');
       if (d.modo === 'combinado' && r.mrs && !r.mrs.moderadaOMas && d.svm) r.avisos.push('mrsLeve');
@@ -133,7 +172,7 @@
         if (!r.sinTibolona) l.push(P.tibolona);
       }
       l.push(P.ginodermP4continua);
-      l.push(P.diuLng);
+      if (!r.sinUtero) l.push(P.diuLng);
     }
     return l;
   }
@@ -167,8 +206,11 @@
         '<div class="grid3">' + nro('mrsS', t.c.mrsS, '0-16', '0') + nro('mrsP', t.c.mrsP, '0-16', '0') + nro('mrsU', t.c.mrsU, '0-12', '0') + '</div>' +
         '<small class="ayuda">' + t.c.mrsAyuda + '</small></fieldset>' +
       '<fieldset class="mrs-grupo" id="th-wOste" data-paso="4"><legend>' + t.g.oste + '</legend><div class="grid2">' +
-        sel('fractura', t.c.fractura, [['', t.elegir], ['bajo', t.c.fracBajo], ['alto', t.c.fracAlto]], t.c.fracturaAyuda) + nro('tscore', t.c.tscore, '', '-2,0', '0.1') + '</div></fieldset>' +
+        sel('fractura', t.c.fractura, [['', t.elegir], ['bajo', t.c.fracBajo], ['alto', t.c.fracAlto], ['muyAlto', t.c.fracMuyAlto]], t.c.fracturaAyuda) + nro('tscore', t.c.tscore, '', '-2,0', '0.1') + '</div>' +
+        '<div id="th-wOsteComb">' + chk('renal', t.c.renal) + chk('denosumab', t.c.denosumab) + '</div></fieldset>' +
       '<fieldset class="mrs-grupo" data-paso="2"><legend>' + t.g.contra + '</legend>' + CONTRA.map(function (k) { return chk('c-' + k, t.contra[k]); }).join('') + '</fieldset>' +
+      '<fieldset class="mrs-grupo" id="th-wOnco" data-paso="2"><legend>' + t.g.onco + '</legend>' + ONCO_K.map(function (k) { return chk('o-' + k, t.onco[k]); }).join('') + '<small class="ayuda">' + t.oncoAyuda + '</small></fieldset>' +
+      '<fieldset class="mrs-grupo" id="th-wOtras" data-paso="2"><legend>' + t.g.otras + '</legend>' + OTRAS.map(function (k) { return chk('x-' + k, t.otras[k]); }).join('') + '</fieldset>' +
       '<fieldset class="mrs-grupo" data-paso="5"><legend>' + t.g.cv + '</legend>' +
         '<div id="th-wCvHerr">' + seg('th-cvHerr', [['hearts', t.c.hearts], ['figo', t.c.figo]], 'hearts') + '</div>' +
         '<div id="th-wHearts">' + nro('cvHearts', t.c.cvHearts, t.c.cvHeartsAyuda, '4', '0.1') + '</div>' +
@@ -192,6 +234,11 @@
     var radio = function (n) { var r = cont.querySelector('input[name=th-' + n + ']:checked'); return r ? r.value : ''; };
     var ultimo = '';
     // Precarga desde la escala MRS.
+    // Precarga desde Densitometría (T-score más bajo y riesgo).
+    try {
+      var dx = JSON.parse(localStorage.getItem('cavesal_gyn_dxa') || 'null');
+      if (dx && dx.t !== null && dx.t !== undefined) { $('tscore').value = dx.t; if (dx.muyAlto) $('fractura').value = 'muyAlto'; else if (dx.tratar) $('fractura').value = 'alto'; }
+    } catch (e) {}
     try {
       var m = JSON.parse(localStorage.getItem('cavesal_gyn_mrs') || 'null');
       if (m) { $('mrsS').value = m.somatico; $('mrsP').value = m.psicologico; $('mrsU').value = m.urogenital;
@@ -199,12 +246,15 @@
     } catch (e) {}
 
     function leer() {
-      var d = { modo: radio('modo'), esqMrs: radio('esq'), cvHerr: radio('cvHerr'), contra: {}, pato: {} };
+      var d = { modo: radio('modo'), esqMrs: radio('esq'), cvHerr: radio('cvHerr'), contra: {}, pato: {}, onco: {}, otras: {} };
       ['etapa', 'utero', 'fractura', 'cvFigo', 'cac', 'gailCat'].forEach(function (k) { d[k] = $(k).value; });
       ['edad', 'anosFum', 'mrsS', 'mrsP', 'mrsU', 'tscore', 'cvHearts', 'gail'].forEach(function (k) { d[k] = num($(k).value); });
       ['anticoncepcion', 'deseoEmbarazo', 'svm', 'oste', 'sgum', 'tdsh'].forEach(function (k) { d[k] = $(k).checked; });
       CONTRA.forEach(function (k) { d.contra[k] = $('c-' + k).checked; });
       PATO.forEach(function (k) { d.pato[k] = $('p-' + k).checked; });
+      ONCO_K.forEach(function (k) { d.onco[k] = $('o-' + k).checked; });
+      OTRAS.forEach(function (k) { d.otras[k] = $('x-' + k).checked; });
+      d.renal = $('renal').checked; d.denosumab = $('denosumab').checked;
       if (d.etapa !== 'transicion') d.anticoncepcion = false;
       if (d.etapa !== 'iop') d.deseoEmbarazo = false;
       if (d.modo !== 'combinado') d.cvHerr = 'hearts';
@@ -224,6 +274,9 @@
       $('wGailCat').style.display = comb ? 'none' : '';
       $('wGail').style.display = comb ? '' : 'none';
       $('wPato').style.display = comb ? '' : 'none';
+      $('wOnco').style.display = comb ? '' : 'none';
+      $('wOtras').style.display = comb ? '' : 'none';
+      $('wOsteComb').style.display = comb ? '' : 'none';
       $('cita').textContent = comb ? t.citaComb : t.citaSegirp;
       $('etq').textContent = comb ? t.etqComb : t.etqSegirp;
       var out = $('out');
@@ -237,8 +290,17 @@
         h += F('MRS', '<strong>' + r.mrs.total + ' / 44 · ' + mv + '</strong>', T.mrs.esquemas[r.mrs.esquema], r.mrs.moderadaOMas ? 'naranja' : 'verde');
         txt.push('MRS ' + r.mrs.total + '/44 (' + T.mrs.esquemas[r.mrs.esquema] + '): ' + mv + '.');
       }
-      if (r.osteo) { h += F(t.g.oste, '<strong>' + t.osteo[r.osteo.conducta] + '</strong>', '', r.osteo.conducta === 'thm' ? 'neutro' : 'ambar'); txt.push(t.g.oste + ': ' + t.osteo[r.osteo.conducta] + '.'); }
-      if (r.contra.length) { h += F(t.g.contra, '<strong>' + t.hayContra + '</strong>', r.contra.map(function (k) { return t.contra[k]; }).join(' · '), 'rojo'); txt.push(t.hayContra + ': ' + r.contra.map(function (k) { return t.contra[k]; }).join(', ') + '.'); }
+      if (r.osteo) {
+        h += F(t.g.oste, '<strong>' + t.osteo[r.osteo.conducta] + '</strong>', '', r.osteo.conducta === 'thm' ? 'neutro' : 'ambar'); txt.push(t.g.oste + ': ' + t.osteo[r.osteo.conducta] + '.');
+        if (r.osteoTto && r.osteoTto.length) { h += '<div class="vg-tto"><p><b>' + t.ostTtoTit + '</b></p>' + li(r.osteoTto.map(function (k) { return t.ostTto[k]; })) + '<p class="etiqueta">Sugerencia CaVeSal®</p></div>'; txt.push(t.ostTtoTit + ': ' + r.osteoTto.filter(function (k) { return k !== 'dxa'; }).map(function (k) { return t.ostTto[k]; }).join(' ')); }
+      }
+      var cx = r.contra.map(function (k) { return t.contra[k]; }).concat(r.contraExtra.map(function (k) { return k === 'coronaria' ? t.otras.coronaria : t.onco[k]; }));
+      if (cx.length) { h += F(t.g.contra, '<strong>' + t.hayContra + '</strong>', cx.join(' · '), 'rojo'); txt.push(t.hayContra + ': ' + cx.join(', ') + '.'); }
+      r.onco.forEach(function (k) {
+        var nv = ONCO[k];
+        h += F(t.g.onco, '<strong>' + t.nivel[nv] + '</strong>', t.onco[k] + '. ' + t.oncoDet[k], nv === 'evitar' ? 'rojo' : nv === 'consultar' ? 'ambar' : 'verde');
+        txt.push(t.onco[k] + ': ' + t.nivel[nv] + '. ' + t.oncoDet[k]);
+      });
       if (r.cv) {
         var cvT = t.cv[r.cv.herramienta][r.cv.categoria] + (r.cv.reclasificado ? ' · ' + t.reclasificado : '');
         h += F(t.g.cv, '<strong>' + t.cat[r.cv.categoria] + '</strong>', cvT, r.cv.categoria === 'bajo' ? 'verde' : r.cv.categoria === 'intermedio' ? 'ambar' : 'rojo');
@@ -307,7 +369,7 @@
       var q = [1];
       if ((d.etapa === 'transicion' && d.anticoncepcion) || (d.etapa === 'iop' && d.deseoEmbarazo)) return q.concat(8);
       q.push(2);
-      if (CONTRA.some(function (k) { return d.contra[k]; })) return q.concat(4, 8);
+      if (CONTRA.some(function (k) { return d.contra[k]; }) || calcular(d).contraExtra.length) return q.concat(4, 8);
       q.push(3, 4);
       var objetivo = d.svm || d.oste || d.tdsh || d.etapa === 'iop';
       if (!objetivo) return q.concat(8);
@@ -367,5 +429,5 @@
   }
 
   w.GYN = w.GYN || {};
-  w.GYN.thm = { calcular: calcular, presentaciones: presentaciones, render: render, CONTRA: CONTRA, PATO: PATO };
+  w.GYN.thm = { calcular: calcular, presentaciones: presentaciones, render: render, CONTRA: CONTRA, PATO: PATO, ONCO: ONCO, OTRAS: OTRAS };
 })(window);

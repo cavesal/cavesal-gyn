@@ -469,7 +469,7 @@
         ayudas: { 2: 'Si marcás alguna, el flujo pasa directo al objetivo y a la rama no hormonal.', 4: 'Solo síndrome genitourinario: el flujo termina en terapia local.', 5: 'Con riesgo intermedio por FIGO/WHF, el calcio coronario (CAC) reclasifica.' } },
       ayuda: 'Elegí el modo y cargá los datos. Cada bloque muestra su propio resultado y al final aparece la conducta.',
       g: { modo: 'Modo de cálculo', etapa: 'Etapa y útero', objetivo: 'Objetivo del tratamiento', mrs: 'Escala MRS', oste: 'Prevención de osteoporosis',
-        contra: 'Contraindicaciones de THM', cv: 'Riesgo cardiovascular', mama: 'Riesgo mamario', pato: 'Patologías que orientan la vía', ventana: 'Ventana de tratamiento' },
+        contra: 'Contraindicaciones de THM', cv: 'Riesgo cardiovascular', mama: 'Riesgo mamario', pato: 'Patologías que orientan la vía', ventana: 'Ventana de tratamiento', onco: 'Antecedentes oncológicos', otras: 'Otras condiciones' },
       modos: { segirp: 'Algoritmo SEGIRP 2026', combinado: 'Algoritmo combinado CaVeSal®' },
       modoAyuda: {
         segirp: 'Sigue el algoritmo de la Sociedad Paraguaya de Ginecología Endocrina y Reproductiva (SEGIRP) 2026.',
@@ -484,7 +484,7 @@
         anticoncepcion: 'Necesita anticoncepción o tiene sangrado uterino anormal', deseoEmbarazo: 'Deseo de embarazo',
         svm: 'Síntomas vasomotores', oste: 'Prevención de osteoporosis', sgum: 'Síndrome genitourinario (SGUM)', tdsh: 'Trastorno del deseo sexual hipoactivo (TDSH, por DSDS)',
         mrsS: 'Somático', mrsP: 'Psicológico', mrsU: 'Urogenital', mrsAyuda: 'Se completa solo si antes usaste la escala MRS. Podés editarlo.',
-        fractura: 'Riesgo de fractura (FRAX)', fracBajo: 'Bajo', fracAlto: 'Alto', fracturaAyuda: 'Según FRAX y Davis 2023', tscore: 'T-score',
+        fractura: 'Riesgo de fractura (FRAX)', fracBajo: 'Bajo', fracAlto: 'Alto', fracMuyAlto: 'Muy alto (fractura reciente o múltiple, T menor de -3, FRAX mayor de 30 % o cadera mayor de 4,5 %)', renal: 'Depuración de creatinina menor de 35 mL/min', denosumab: 'Recibe denosumab', fracturaAyuda: 'Según FRAX y Davis 2023', tscore: 'T-score',
         hearts: 'HEARTS OPS (%)', figo: 'FIGO/WHF (categoría)',
         cvHearts: 'Riesgo CV a 10 años, HEARTS OPS (%)', cvHeartsAyuda: 'Menos de 5 bajo · 5 a 10 intermedio · más de 10 alto',
         cvFigo: 'Categoría FIGO/WHF', cac: 'Calcio coronario (CAC-CT)', cacNo: 'No realizado', cacHasta10: 'CAC 0 a 10', cacMas10: 'CAC más de 10', cacAyuda: 'Reclasifica el riesgo intermedio',
@@ -497,6 +497,52 @@
         hepatica: 'Enfermedad hepática aguda', acv: 'ACV o IAM', porfiria: 'Porfiria aguda'
       },
       pato: { obesidad: 'Obesidad (IMC > 30)', hta: 'Hipertensión', tg: 'Hipertrigliceridemia', riesgoTev: 'Riesgo de TEV', tabaco: 'Tabaquismo', migrana: 'Migraña', glp1: 'En tratamiento con GLP-1 o tirzepatida', cerebro: 'Alto riesgo cerebrovascular' },
+      oncoAyuda: 'Según histología y estadio (BGCS/BMS 2024). Decidir siempre junto con oncología.',
+      onco: {
+        endoTemprano: 'Cáncer de endometrio estadio I–II, endometrioide de grado 1–2',
+        endoAvanzado: 'Cáncer de endometrio estadio III–IV, grado 3 o no endometrioide',
+        sarcoma: 'Sarcoma del estroma endometrial de bajo grado u otro sarcoma uterino',
+        ovarioEpitelial: 'Cáncer de ovario epitelial de alto grado, mucinoso, de células claras o germinal',
+        lgsoc1: 'Cáncer de ovario seroso de bajo grado, estadio I',
+        ovarioHormonal: 'Cáncer de ovario seroso de bajo grado estadio II–IV o recurrente, o tumor de células de la granulosa',
+        borderline: 'Tumor borderline seroso o cáncer endometrioide de ovario',
+        cervixEscamoso: 'Cáncer escamoso de cuello uterino, vulva o vagina',
+        cervixAdeno: 'Adenocarcinoma de cuello uterino',
+        brcaRrso: 'BRCA o Lynch con cirugía reductora de riesgo, sin cáncer',
+        meningioma: 'Meningioma actual o previo'
+      },
+      nivel: { evitar: 'THM sistémica no recomendada', consultar: 'Decidir con oncología; primero opciones no hormonales', permitida: 'No contraindica la THM' },
+      oncoDet: {
+        endoTemprano: 'Puede considerarse tras la cirugía; los estudios no muestran más recurrencia (BGCS/BMS 2024).',
+        endoAvanzado: 'Sin datos de seguridad suficientes: preferir opciones no hormonales; la terapia vaginal se decide con oncología.',
+        sarcoma: 'Tumor hormonodependiente; el sarcoma del estroma de bajo grado contraindica también el estrógeno vaginal.',
+        ovarioEpitelial: 'No es hormonodependiente. Iniciar al terminar el tratamiento, no junto con terapias biológicas.',
+        lgsoc1: 'Primero opciones no hormonales; la THM no está contraindicada tras discutir riesgos y beneficios.',
+        ovarioHormonal: 'Tumor hormonodependiente: preferir opciones no hormonales; la terapia vaginal se decide con oncología.',
+        borderline: 'Usar con precaución y decisión compartida.',
+        cervixEscamoso: 'No es hormonodependiente. Si recibió radioterapia y conserva el útero, sumar progestágeno.',
+        cervixAdeno: 'Puede expresar receptores de estrógeno: usar con precaución. Tras histerectomía radical, estrógeno solo; tras quimiorradiación con útero, terapia combinada continua.',
+        brcaRrso: 'THM aconsejada hasta los 51 años, edad promedio de la menopausia; con útero, sumar progestágeno.',
+        meningioma: 'Evitar nomegestrol y clormadinona (contraindicados con meningioma) y ciproterona en dosis altas (EMA 2020 y 2022).'
+      },
+      otras: {
+        coronaria: 'Enfermedad coronaria establecida', vesicula: 'Litiasis o enfermedad vesicular', endometriosis: 'Endometriosis actual o previa',
+        hiperplasia: 'Hiperplasia endometrial previa', prevencion: 'Pide THM solo para prevenir demencia o enfermedad cardiovascular'
+      },
+      ostTtoTit: 'Tratamiento de la osteoporosis',
+      ostTto: {
+        anabolico: 'Riesgo muy alto: primero un anabólico (teriparatida 20 µg/día SC o abaloparatida 80 µg/día SC hasta 2 años, o romosozumab 210 mg/mes SC por 12 meses, no si tuvo IAM o ACV en el último año) y después un antirresortivo (AACE 2020).',
+        thmPrimera: 'Menor de 60 años o menos de 10 años de menopausia, con síntomas y sin contraindicación: la THM previene todo tipo de fracturas y es opción de primera línea (Endocrine Society 2019, NOGG 2022). Si se suspende, pasar a otro tratamiento.',
+        bifosfonato: 'Primera línea: alendronato 70 mg/semana o risedronato 35 mg/semana VO, o ácido zoledrónico 5 mg IV una vez al año.',
+        pausa: 'Reevaluar a los 5 años (oral) o 3 años (IV): con riesgo bajo o moderado, pausa de hasta 5 años; con riesgo alto, continuar (Endocrine Society 2019).',
+        denosumabAlt: 'Denosumab 60 mg SC cada 6 meses: alternativa inicial, o si el bifosfonato no se tolera, está contraindicado o falla.',
+        renal: 'Depuración menor de 35 mL/min: evitar bifosfonatos; denosumab 60 mg SC cada 6 meses con calcio y vitamina D adecuados y control de la calcemia (riesgo de hipocalcemia).',
+        raloxifeno: 'Raloxifeno 60 mg/día: riesgo vertebral alto con riesgo de TEV bajo y riesgo mamario alto, o si no corresponden bifosfonato ni denosumab; puede empeorar los sofocos.',
+        raloxifenoNo: 'Raloxifeno no indicado: riesgo o antecedente de TEV.',
+        calcioD: 'Calcio 1.000–1.200 mg/día, de preferencia con la dieta, y vitamina D 800–1.000 UI/día (BHOF 2022).',
+        denoNoSuspender: 'Denosumab: no retrasar ni suspender sin pasar a otro antirresortivo (bifosfonato, THM o SERM), por el riesgo de fracturas vertebrales por rebote.',
+        dxa: 'T-score, FRAX y conducta detallada en <a href="#densitometria">Densitometría</a>; el resultado se carga solo en esta calculadora.'
+      },
       osteo: { manejoOsteo: 'Manejo de osteoporosis', thm: 'THM indicada para prevención', control: 'Control periódico', faltaFractura: 'Falta el riesgo de fractura', faltaT: 'Falta el T-score' },
       hayContra: 'Hay contraindicación',
       cv: {
@@ -526,7 +572,16 @@
         mamaModerado: 'Riesgo mamario moderado: discutir riesgos y beneficios.',
         fueraVentana: 'Fuera de la ventana: discutir riesgos y beneficios. No iniciar con fin cardioprotector (FIGO/WHF 2026).',
         mrsLeve: 'MRS sin síntomas moderados a severos: la indicación aprobada de THM sistémica es para síntomas vasomotores moderados a severos (FDA 2025).',
-        iopHasta: 'IOP: mantener la terapia al menos hasta la edad promedio de la menopausia (ESHRE 2024).'
+        iopHasta: 'IOP: mantener la terapia al menos hasta la edad promedio de la menopausia (ESHRE 2024).',
+        vesicula: 'Enfermedad vesicular: la THM oral la aumenta (WHI); se indica vía transdérmica.',
+        endometriosis: 'Endometriosis: preferir terapia combinada continua (BGCS/BMS 2024).',
+        endometriosisSinUtero: 'Endometriosis sin útero: terapia combinada continua en lugar de estrógeno solo, al menos hasta los 51 años (BGCS/BMS 2024, ESHRE).',
+        hiperplasia: 'Hiperplasia previa: progestágeno continuo en dosis adecuada y estudiar cualquier sangrado.',
+        prevencion: 'La THM no se indica para prevenir demencia ni enfermedad cardiovascular (NAMS 2022).',
+        onco_endoTemprano: 'Cáncer de endometrio temprano: decidir con oncología.', onco_lgsoc1: 'Seroso de bajo grado estadio I: decidir con oncología.',
+        onco_borderline: 'Tumor borderline o endometrioide de ovario: precaución y decisión compartida.', onco_cervixAdeno: 'Adenocarcinoma de cuello: precaución.',
+        onco_ovarioEpitelial: 'Ovario epitelial no hormonodependiente: la THM no está contraindicada.', onco_cervixEscamoso: 'Cáncer escamoso: la THM no está contraindicada.',
+        onco_brcaRrso: 'BRCA o Lynch operada: THM hasta los 51 años.', onco_meningioma: 'Meningioma: evitar nomegestrol, clormadinona y ciproterona en dosis altas.'
       },
       presentaciones: 'Presentaciones disponibles en Paraguay (Fuente: SEGIRP 2026)',
       prod: {
@@ -551,9 +606,9 @@
       tablaTitulo: 'Presentaciones disponibles en Paraguay (SEGIRP 2026)',
       tabla: '<ul class="pq-notas"><li>Estrógeno solo: Ginoderm gel 0,06% (estradiol 0,6 mg/g), transdérmico.</li><li>Combinado continuo: Angeliq y Gadofem (estradiol 1 mg + drospirenona 2 mg); Femoston Conti 1/5 (estradiol 1 mg + didrogesterona 5 mg), orales.</li><li>Combinado secuencial: Femoston 1/10 (estradiol 1 mg; didrogesterona 10 mg en la fase combinada), oral.</li><li>Progesterona micronizada: Progelle, Progendo, Gynprogest 100-200 mg, oral o vaginal.</li><li>Tibolona: Tobe 2,5 mg, oral.</li><li>Testosterona: Androlone 1% crema (tubo 15 g, sobre 5 g), transdérmica.</li><li>DIU-LNG 52 mg: Mirena, Asertia, protección endometrial.</li><li>Local vaginal: estriol (Colpoestriol, Vacidox) óvulos o crema; promestrieno (Antrofi) crema 10 mg; prasterona (DHEA).</li></ul><p class="ayuda">Fuente: SEGIRP 2026.</p>',
       citaSegirp: 'Sociedad Paraguaya de Ginecología Endocrina y Reproductiva (SEGIRP). Manejo de los síntomas en la peri y posmenopausia con terapia hormonal. Algoritmo 2026 · Davis SR et al. The 2023 Practitioner’s Toolkit for Managing Menopause. Climacteric. 2023;26:517-536 · Piasta J, Zewail A. Hormonal Options for Perimenopause: A Clinician Toolkit. Obstet Gynecol. 2026 · Panay N et al. ESHRE/ASRM/CREWHIRL/IMS. Premature ovarian insufficiency. Climacteric. 2024;27:510-520 · OPS. HEARTS · NCI. Breast Cancer Risk Assessment Tool (Gail).',
-      citaComb: 'SEGIRP 2026 · Benedetto C, Gulati M, Khadilkar SS, et al. (FIGO/WHF). Int J Gynecol Obstet. 2026. doi:10.1002/ijgo.71356 · Stute P, et al. (EMAS). Maturitas. 2026;212:109060 · ACOG Clinical Practice Guideline No. 13. Obstet Gynecol. 2026;148(5):e345-e369 · Qaseem A, et al. (ACP). Ann Intern Med. 2026 · The Menopause Society (NAMS). The 2022 hormone therapy position statement. Menopause. 2022;29:767-794 · FDA. Labeling changes for menopausal hormone therapy, 2025-2026 · Panay N et al. (ESHRE). Climacteric. 2024;27:510-520 · USPSTF. Medication use to reduce risk of breast cancer. JAMA. 2019;322:857-867 · Heinemann 2004 · SOCHEG 2020.',
+      citaComb: 'SEGIRP 2026 · Benedetto C, Gulati M, Khadilkar SS, et al. (FIGO/WHF). Int J Gynecol Obstet. 2026. doi:10.1002/ijgo.71356 · Stute P, et al. (EMAS). Maturitas. 2026;212:109060 · ACOG Clinical Practice Guideline No. 13. Obstet Gynecol. 2026;148(5):e345-e369 · Qaseem A, et al. (ACP). Ann Intern Med. 2026 · The Menopause Society (NAMS). The 2022 hormone therapy position statement. Menopause. 2022;29:767-794 · FDA. Labeling changes for menopausal hormone therapy, 2025-2026 · Panay N et al. (ESHRE). Climacteric. 2024;27:510-520 · USPSTF. Medication use to reduce risk of breast cancer. JAMA. 2019;322:857-867 · Heinemann 2004 · SOCHEG 2020. · Taylor A, et al. BGCS/BMS guidelines: management of menopausal symptoms following treatment of gynaecological cancer. Post Reprod Health. 2024 · Eastell R, et al. Endocrine Society. J Clin Endocrinol Metab. 2019;104(5):1595-622 · Shoback D, et al. Endocrine Society. J Clin Endocrinol Metab. 2020;105(3):587-94 · Camacho PM, et al. AACE/ACE. Endocr Pract. 2020;26(Suppl 1):1-46 · NOGG 2022 · LeBoff MS, et al. BHOF Clinician\'s Guide. Osteoporos Int. 2022;33:2049-102 · EMA PRAC: ciproterona 2020; nomegestrol y clormadinona 2022',
       etqSegirp: 'Algoritmo propio CaVeSal® · Basado en: SEGIRP 2026',
-      etqComb: 'Algoritmo propio CaVeSal® · Basado en: SEGIRP 2026 · FIGO/WHF 2026 · EMAS 2026 · ACOG 2026 · ACP 2026 · NAMS 2022 · FDA 2025-2026 · ESHRE 2024 · USPSTF 2019'
+      etqComb: 'Algoritmo propio CaVeSal® · Basado en: SEGIRP 2026 · FIGO/WHF 2026 · EMAS 2026 · ACOG 2026 · ACP 2026 · NAMS 2022 · FDA 2025-2026 · ESHRE 2024 · USPSTF 2019 · BGCS/BMS 2024 · EMA 2020-2022 · Endocrine Society 2019 · AACE 2020 · NOGG 2022 · BHOF 2022'
     },
 
     legal: {

@@ -47,7 +47,7 @@
     if (d.ia) r.conducta.push('Inhibidores de aromatasa: DXA basal y cada 1 a 2 años; tratar con T-score de -2,0 o menos o con riesgo alto.');
     if (d.gc) r.conducta.push('Glucocorticoides (2,5 mg o más de prednisona por 3 meses o más): ajustar el FRAX hacia arriba y considerar tratamiento con osteopenia.');
     r.seguimiento.push(tratar ? 'DXA de control a 1 a 2 años de iniciado el tratamiento.' : (r.clase === 'Normal' ? 'Repetir DXA según riesgo, en general a los 5 años o más.' : 'Repetir DXA en 2 años.'));
-    r.muyAlto = muyAlto; r.tratar = !!tratar;
+    r.muyAlto = muyAlto; r.tratar = !!tratar; r.tmin = tmin;
     if (r.tamizaje) r.seguimiento.push(r.tamizaje);
     return r;
   }
@@ -77,6 +77,7 @@
         if (con.length) h.push(esFull ? F('Conducta', c.ul(con), 'Sugerencia CaVeSal®.', r.color) : opts.bloqueo('Conducta en la versión completa'));
       }
       q('#dx-o').innerHTML = h.join('');
+      try { if (r && !r.soloTamizaje && r.tmin !== null && r.tmin !== undefined) localStorage.setItem('cavesal_gyn_dxa', JSON.stringify({ t: r.tmin, muyAlto: !!r.muyAlto, tratar: !!r.tratar })); } catch (e) {}
     }
     cont.addEventListener('input', act);
     cont.addEventListener('change', act);

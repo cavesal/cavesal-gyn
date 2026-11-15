@@ -248,6 +248,15 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Osteo: alto riesgo → manejo de osteoporosis', H.calcular(hb({ svm: false, oste: true, fractura: 'alto' })).conducta, 'osteo');
   eq('Osteo: T -1,8 → THM (límite)', H.calcular(hb({ svm: false, oste: true, fractura: 'bajo', tscore: -1.8 })).osteo.conducta, 'thm');
   eq('Solo SGUM con contraindicación (SEGIRP) → local no', H.calcular(hb({ svm: false, sgum: true, contra: { tev: true } })).localCondicion, 'no');
+  eq('Cáncer de endometrio avanzado (combinado) → no hormonal', H.calcular(hb({ modo: 'combinado', onco: { endoAvanzado: true } })).conducta, 'noHormonal');
+  eq('BRCA operada (combinado) → THM con aviso hasta 51', (function () { var r = H.calcular(hb({ modo: 'combinado', onco: { brcaRrso: true } })); return [r.conducta, r.avisos.indexOf('onco_brcaRrso') >= 0]; })(), ['thm', true]);
+  eq('Onco en modo SEGIRP no cambia la conducta', H.calcular(hb({ onco: { endoAvanzado: true } })).conducta, 'thm');
+  eq('Coronaria (combinado) → no hormonal', H.calcular(hb({ modo: 'combinado', otras: { coronaria: true } })).conducta, 'noHormonal');
+  eq('Endometriosis sin útero → combinada continua, transdérmica por vesícula, sin DIU', (function () { var r = H.calcular(hb({ modo: 'combinado', utero: 'no', otras: { endometriosis: true, vesicula: true } })); return [r.esquema, r.via, H.presentaciones(r, GYN_TEXTOS.thm).join('').indexOf('DIU') < 0]; })(), ['continua', 'transdermica', true]);
+  eq('Osteoporosis riesgo alto <60 con SVM → THM primera + bifosfonato', H.calcular(hb({ modo: 'combinado', oste: true, fractura: 'alto' })).osteoTto.slice(0, 2), ['thmPrimera', 'bifosfonato']);
+  eq('Riesgo muy alto → anabólico primero', H.calcular(hb({ modo: 'combinado', oste: true, fractura: 'muyAlto', svm: false })).osteoTto[0], 'anabolico');
+  eq('Renal + TEV → denosumab, sin raloxifeno', H.calcular(hb({ modo: 'combinado', oste: true, fractura: 'alto', renal: true, contra: { tev: true } })).osteoTto.slice(0, 2), ['renal', 'raloxifenoNo']);
+  eq('Denosumab en curso → no suspender', H.calcular(hb({ modo: 'combinado', oste: true, fractura: 'bajo', tscore: -2, denosumab: true })).osteoTto.indexOf('denoNoSuspender') >= 0, true);
   eq('Riesgo cerebrovascular (combinado) → sin tibolona', H.presentaciones(H.calcular(hb({ modo: 'combinado', pato: { cerebro: true } })), GYN_TEXTOS.thm).join('').indexOf('Tibolona') < 0, true);
 
   grupo('Elegibilidad MEC (US MEC 2024)');
