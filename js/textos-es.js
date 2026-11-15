@@ -74,12 +74,18 @@
           { id: 'preconcepcional', nombre: 'Preconcepcional: semáforo, ácido fólico y panel hormonal', estado: 'v1', etapas: ['edad-fertil'], caps: [], motivos: ['prevencion', 'infertilidad'], kw: 'acido folico riesgo reproductivo',
             resumen: 'Semáforo de riesgo del MSPBS, dosis y momento del ácido fólico, TSH con anti-TPO y anti-Tg, valores del día 2 y del día 21, y alertas de lupus, SAF y trombofilia.' },
           { id: 'pareja', nombre: 'Estudio de la pareja infértil: siguiente paso', estado: 'v1', etapas: ['edad-fertil'], caps: [], motivos: ['infertilidad'], kw: 'espermograma infertilidad amh',
-            resumen: 'Espermograma OMS 2021 con diagnóstico, REM, ovulación y su causa, reserva ovárica, útero y trompas, y el siguiente paso según los resultados.' }
+            resumen: 'Espermograma OMS 2021 con diagnóstico, REM, ovulación y su causa, reserva ovárica, útero y trompas, y el siguiente paso según los resultados.' },
+          { id: 'induccion', nombre: 'Inducción de la ovulación: seguimiento y hCG', estado: 'v1', etapas: ['edad-fertil'], caps: ['endocrino'], motivos: ['infertilidad'], kw: 'foliculometria seguimiento folicular letrozol clomifeno gonadotropinas hcg trigger cancelacion quiste folicular luf',
+            resumen: 'Folículos por ovario, endometrio y estradiol según el fármaco: cuándo aplicar la hCG, cuándo no (embarazo múltiple, hiperestimulación, folículo sobremadurado), próximo control con fecha, falta de respuesta y folículo luteinizado no roto.' },
+          { id: 'sho', nombre: 'Síndrome de hiperestimulación ovárica (SHO)', estado: 'v1', etapas: ['edad-fertil'], caps: ['endocrino'], motivos: ['infertilidad', 'dolor'], kw: 'hiperestimulacion ohss ascitis hematocrito cabergolina',
+            resumen: 'Factores de riesgo (ASRM 2024), gravedad leve, moderada, severa o crítica (RCOG), signos de alarma, internación y conducta.' }
         ] },
-      { id: 'anticoncepcion', nombre: 'Anticoncepción', intro: 'Elegibilidad de métodos según criterios médicos.',
+      { id: 'anticoncepcion', nombre: 'Anticoncepción', intro: 'Métodos, índice de Pearl y elegibilidad según criterios médicos.',
         funciones: [
           { id: 'mec', nombre: 'Elegibilidad de métodos (MEC)', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: [], motivos: ['anticoncepcion'], kw: 'anticonceptivo diu implante pildora oms',
-            resumen: 'Categoría 1 a 4 de seis métodos con 67 condiciones del US MEC 2024, notas de la OMS 2025, más de 40 años (SIC 2025) y cuándo suspender la anticoncepción y pasar a THM.' }
+            resumen: 'Categoría 1 a 4 de seis métodos con 67 condiciones del US MEC 2024, notas de la OMS 2025, más de 40 años (SIC 2025) y cuándo suspender la anticoncepción y pasar a THM.' },
+          { id: 'metodos', nombre: 'Métodos anticonceptivos: catálogo, índice de Pearl y elección', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: ['fertilidad'], motivos: ['anticoncepcion'], kw: 'pastilla aoc continua extendida inyectable mesigyna cyclofem ampd parche anillo implante jadelle nexplanon diu cobre plata oro mirena pearl calendario collar billings sintotermico mela lactancia emergencia ligadura vasectomia',
+            resumen: 'Todos los métodos por duración (corta, LARC, barrera, naturales, MELA, emergencia y definitivos) con índice de Pearl perfecto y típico, esquemas (21/7, 24/4, extendido y continuo), duración, alertas para estrógenos y categoría US MEC según el perfil.' }
         ] },
       { id: 'infecciones', nombre: 'Infecciones genitales', intro: 'Flujo vaginal y enfermedad pélvica inflamatoria.',
         funciones: [
@@ -107,16 +113,22 @@
           { id: 'orads', nombre: 'Masa anexial: O-RADS, IOTA y GI-RADS', estado: 'v1', etapas: TODAS, caps: ['imagenes', 'gin'], motivos: ['tumor', 'dolor'], kw: 'quiste ovario tumor ca125 marcadores',
             resumen: 'O-RADS US v2022, reglas simples IOTA y GI-RADS, con marcadores tumorales, imagen complementaria y derivación.' },
           { id: 'estudios', nombre: 'Mama, cérvix y endometrio: BI-RADS, tamizaje y grosor', estado: 'v1', etapas: TODAS, caps: ['imagenes'], motivos: ['tumor', 'sangrado', 'prevencion'], kw: 'mamografia pap vph citologia endometrio',
-            resumen: 'BI-RADS v2025 con conducta por categoría, tamizaje de cuello uterino ASCCP con conducta por resultado y grosor endometrial con IETA.' },
+            resumen: 'BI-RADS v2025 con conducta por categoría, tamizaje de cuello uterino ASCCP o MSPBS 2025 con conducta por resultado (colposcopía, LEC, cono) y grosor endometrial con IETA.' },
           { id: 'onco', nombre: 'Estadificación FIGO: cérvix, endometrio y ovario', estado: 'v1', etapas: TODAS, caps: [], motivos: ['tumor', 'sangrado'], kw: 'cancer figo estadio',
-            resumen: 'Cérvix FIGO 2018, endometrio FIGO 2023 con grupo molecular y ovario FIGO 2014, sin dosis.' }
+            resumen: 'Cérvix FIGO 2018, endometrio FIGO 2023 con grupo molecular y ovario FIGO 2014, sin dosis.' },
+          { id: 'genetica', nombre: 'Cáncer hereditario: BRCA y síndrome de Lynch', estado: 'v1', etapas: TODAS, caps: ['imagenes'], motivos: ['tumor', 'prevencion'], kw: 'brca lynch genetica hereditario panel amsterdam colonoscopia salpingooforectomia',
+            resumen: 'Criterios de derivación a genética (NCCN, ACOG, MSPBS 2025, Amsterdam II), panel multigén y seguimiento y cirugía reductora en portadoras.' }
         ] },
       { id: 'imagenes', nombre: 'Laboratorio e imágenes', intro: 'Laboratorio por cuadro, marcadores tumorales y hallazgos de imagen con su conducta.',
         funciones: [
           { id: 'laboratorio', nombre: 'Laboratorio por cuadro: qué pedir e interpretación', estado: 'v1', etapas: TODAS, caps: ['endocrino', 'fertilidad', 'infecciones', 'climaterio'], motivos: ['sangrado', 'irregularidad', 'infertilidad', 'climaterio', 'pubertad', 'metabolico', 'prevencion', 'flujo'], kw: 'laboratorio analisis hemograma anemia ferritina glucemia hba1c tiroides tsh fsh lh estradiol amh progesterona dia 21 testosterona dhea 17oh prolactina vitamina d b12 folato calcemia trombofilia antifosfolipidos lupus abortos repeticion flujo exudado gardnerella candida estreptococo ureaplasma micoplasma clamidia',
             resumen: 'Ocho cuadros: rutina y preconcepcional, sangrado, fertilidad (día 2 a 3, AMH, día 21), hiperandrogenismo, climaterio, pubertad, perfil inmunológico con trombofilia y abortos a repetición, y secreciones. Qué pedir, qué no pedir, interpretación y conducta.' },
           { id: 'marcadores', nombre: 'Marcadores tumorales y origen probable', estado: 'v1', etapas: TODAS, caps: ['onco'], motivos: ['tumor'], kw: 'ca125 he4 roma cea ca199 afp hcg ldh inhibina amh marcadores tumor ovario germinal granulosa',
-            resumen: 'CA-125, HE4 con ROMA, CEA, CA 19-9, AFP, β-hCG, LDH, inhibina B, AMH, estradiol y testosterona: origen probable, falsos positivos y derivación.' }
+            resumen: 'CA-125, HE4 con ROMA, CEA, CA 19-9, AFP, β-hCG, LDH, inhibina B, AMH, estradiol y testosterona: origen probable, falsos positivos y derivación.' },
+          { id: 'ecogin', nombre: 'Eco ginecológica: reserva ovárica, ovario poliquístico, trompas y cavidad', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: ['fertilidad', 'endocrino'], motivos: ['infertilidad', 'irregularidad'], kw: 'ecografia folículos antrales rfa amh ovario poliquistico histerosalpingografia hsg hyfosy trompas hidrosalpinx histeroscopia polipo tabique sinequias',
+            resumen: 'Recuento de folículos antrales y AMH, morfología de ovario poliquístico (SOMP 2023), histerosalpingografía o HyFoSy con conducta tubaria y hallazgos de histeroscopía.' },
+          { id: 'densitometria', nombre: 'Densitometría ósea: T-score, Z-score y FRAX', estado: 'v1', etapas: ['climaterio', 'postmenopausia', 'edad-fertil'], caps: ['climaterio'], motivos: ['climaterio', 'prevencion'], kw: 'dxa osteoporosis osteopenia t-score z-score frax hueso',
+            resumen: 'Clasificación OMS por T-score, Z-score en premenopausia (ISCD), FRAX, muy alto riesgo y conducta (BHOF y AACE).' }
         ] }
     ],
     motivos: [

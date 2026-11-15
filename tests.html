@@ -45,6 +45,12 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/ficha.js"></script>
 <script src="js/laboratorio.js"></script>
 <script src="js/marcadores.js"></script>
+<script src="js/ecogin.js"></script>
+<script src="js/densitometria.js"></script>
+<script src="js/induccion.js"></script>
+<script src="js/sho.js"></script>
+<script src="js/metodos.js"></script>
+<script src="js/genetica.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -590,6 +596,104 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   var rm = MK.roma(150, 300, true);
   eq('ROMA posmenopausia HE4 150, CA-125 300 → alto', rm.alto, true);
   eq('ROMA premenopausia HE4 40, CA-125 50 → bajo', MK.roma(40, 50, false).alto, false);
+
+  grupo('Eco ginecológica');
+  var EG = GYN.ecogin;
+  eq('RFA 4 → reserva baja', EG.reserva({ edad: 36, rfa: 4, amh: null, fsh: null }).baja, true);
+  eq('AMH 0,8 → baja', EG.reserva({ edad: 30, rfa: null, amh: 0.8, fsh: null }).baja, true);
+  eq('AMH 5 → hiperrespuesta', EG.reserva({ edad: 30, rfa: null, amh: 5, fsh: null }).alta, true);
+  eq('RFA 12 → esperable', EG.reserva({ edad: 30, rfa: 12, amh: null, fsh: null }).color, 'verde');
+  eq('22 folículos con 8 MHz → MOP', EG.pcom({ fd: 22, fi: 10, vd: null, vi: null, mhz: true }).mop, true);
+  eq('22 folículos sin 8 MHz → no MOP', EG.pcom({ fd: 22, fi: 10, vd: null, vi: null, mhz: false }).mop, false);
+  eq('Volumen 11 mL → MOP', EG.pcom({ fd: null, fi: null, vd: 11, vi: 6 }).mop, true);
+  eq('Menos de 8 años de menarca → no diagnosticar', EG.pcom({ fd: 25, fi: null, vd: null, vi: null, mhz: true, menarca8: true }).adolescente, true);
+  eq('Hidrosálpinx → salpingectomía antes de FIV', /salpingectomía/.test(EG.tubas({ der: 'hidro', izq: 'perm', cav: '' }).conducta.join(' ')), true);
+  eq('Obstrucción distal bilateral → FIV', /FIV como tratamiento/.test(EG.tubas({ der: 'dist', izq: 'dist', cav: '' }).conducta.join(' ')), true);
+  eq('Proximal bilateral → confirmar', /espasmo/.test(EG.tubas({ der: 'prox', izq: 'prox', cav: '' }).conducta.join(' ')), true);
+  eq('Defecto de llenado → histeroscopía', /histeroscopía/.test(EG.tubas({ der: 'perm', izq: 'perm', cav: 'defecto' }).conducta.join(' ')), true);
+
+  grupo('Densitometría');
+  var DX = GYN.densitometria, dx0 = function (o) { var d = { edad: 60, post: true, tCol: null, tCue: null, tCad: null, z: null, fxCad: false, fxVert: false, fxReciente: false, fxMult: false, fraxM: null, fraxC: null, gc: false, ia: false }; for (var k in o) d[k] = o[k]; return DX.evaluar(d); };
+  eq('T -2,7 → osteoporosis', dx0({ tCol: -2.7 }).clase, 'Osteoporosis');
+  eq('T -1,8 → osteopenia', /Osteopenia/.test(dx0({ tCue: -1.8 }).clase), true);
+  eq('T -0,5 → normal', dx0({ tCol: -0.5 }).clase, 'Normal');
+  eq('Osteopenia + FRAX cadera 3,5 → tratar', dx0({ tCue: -2, fraxC: 3.5 }).tratar, true);
+  eq('Osteopenia + FRAX bajo → no tratar', dx0({ tCue: -2, fraxM: 10, fraxC: 1 }).tratar, false);
+  eq('Fractura vertebral → osteoporosis', /Osteoporosis/.test(dx0({ tCol: -1.5, fxVert: true }).clase), true);
+  eq('T -3,2 → muy alto riesgo', !!dx0({ tCol: -3.2 }).muyAlto, true);
+  eq('Premenopausia Z -2,3 → por debajo de lo esperado', /por debajo/.test(dx0({ edad: 35, post: false, z: -2.3 }).clase), true);
+
+  grupo('Inducción de la ovulación');
+  var IN = GYN.induccion, in0 = function (o) { var d = { farmaco: 'letrozol', der: '', izq: '', endo: null, e2: null, edad: 30, somp: false, fecha: '2026-11-14', postHcg: false, persiste: false, ciclos: null, sinRespuesta: false, diaEst: null }; for (var k in o) d[k] = o[k]; return IN.evaluar(d); };
+  eq('Lista "18, 14 y 11"', IN.lista('18, 14 y 11').join('|'), '18|14|11');
+  eq('Letrozol 20 mm → hCG', in0({ der: '20' }).hcg, 'si');
+  eq('Letrozol 16 mm → esperar', in0({ der: '16' }).hcg, 'esperar');
+  eq('Letrozol 16 mm → próximo control 16/11', /16\/11\/2026|15\/11\/2026/.test(in0({ der: '16' }).proxima), true);
+  eq('Letrozol 26 mm → tolerancia, hCG hoy', in0({ der: '26' }).hcg, 'si');
+  eq('Letrozol 30 mm → no hCG', in0({ der: '30' }).hcg, 'no');
+  eq('Clomifeno 22 mm → hCG', in0({ farmaco: 'clomifeno', der: '22' }).hcg, 'si');
+  eq('Gonadotropinas 17 mm → hCG', in0({ farmaco: 'gonadotropinas', der: '17' }).hcg, 'si');
+  eq('3 folículos ≥16 → cancelar', in0({ der: '18, 17', izq: '16' }).cancelar, true);
+  eq('4 folículos ≥14 → cancelar', in0({ der: '19, 15', izq: '14, 14' }).cancelar, true);
+  eq('SOMP gonadotropinas 3 >14 → cancelar', in0({ farmaco: 'gonadotropinas', somp: true, der: '17, 15', izq: '15' }).cancelar, true);
+  eq('E2 4000 → cancelar por SHO', in0({ der: '20', e2: 4000 }).cancelar, true);
+  eq('Post hCG persiste → LUF', in0({ postHcg: true, persiste: true }).hcg, 'luf');
+  eq('Clomifeno endometrio 6 → sugiere letrozol', /letrozol/.test(in0({ farmaco: 'clomifeno', der: '21', endo: 6 }).conducta.join(' ')), true);
+
+  grupo('SHO');
+  var SH = GYN.sho, sh0 = function (o, s) { var d = { amh: null, rfa: null, fol: null, e2: null, ovo: null, somp: false, previo: false, embarazo: false, ovario: null, hto: null, gb: null, na: null, k: null, alb: null, sint: s || {} }; for (var k in o) d[k] = o[k]; return SH.evaluar(d); };
+  eq('AMH 4 → riesgo', sh0({ amh: 4 }).riesgo.length, 1);
+  eq('Distensión → leve', sh0({}, { distension: true }).grado, 'Leve');
+  eq('Ascitis eco → moderado', sh0({}, { ascitisEco: true }).grado, 'Moderado');
+  eq('Hto 47 → severo', sh0({ hto: 47 }, { dolor: true }).grado, 'Severo');
+  eq('Hto 56 → crítico', sh0({ hto: 56 }).grado, 'Crítico');
+  eq('Leucocitos 26000 → crítico', sh0({ gb: 26000 }).grado, 'Crítico');
+  eq('Severo → internación', /Internación/.test(sh0({ na: 132 }).conducta.join(' ')), true);
+
+  grupo('Métodos anticonceptivos');
+  var MT = GYN.metodos, mt0 = function (o) { var d = { edad: 30, lact: '', tabaco: '', hta: '', tev: '', aura: false, tromb: false, aaf: false, mama: false, obes: false, vih: false, sinHormonas: false, grupo: '' }; for (var k in o) d[k] = o[k]; return MT.evaluar(d); };
+  eq('Migraña con aura → AOC 4', mt0({ aura: true }).cat.ahc, 4);
+  eq('Migraña con aura → sin estrógenos', mt0({ aura: true }).sinEstrogeno, true);
+  eq('35+ fuma 15+ → AOC 4', mt0({ edad: 38, tabaco: 'mayor35mas15' }).cat.ahc, 4);
+  eq('Sin condiciones → AOC 1', mt0({}).cat.ahc, 1);
+  eq('Cáncer de mama → DIU-LNG 4, cobre 1', mt0({ mama: true }).cat.lng + '/' + mt0({ mama: true }).cat.cu, '4/1');
+  eq('Sin hormonas → sin implante', mt0({ sinHormonas: true }).lista.some(function (x) { return x.m.id === 'imp1'; }), false);
+  eq('Grupo LARC → solo larga', mt0({ grupo: 'larga' }).lista.every(function (x) { return x.m.g === 'larga'; }), true);
+  eq('Implante 5 años', /5 años/.test(MT.METODOS.filter(function (m) { return m.id === 'imp1'; })[0].dur), true);
+  eq('DIU-LNG 52 mg 8 años', /8 años/.test(MT.METODOS.filter(function (m) { return m.id === 'lng52'; })[0].dur), true);
+  eq('Cobre-plata 5 años', /5 años/.test(MT.METODOS.filter(function (m) { return m.id === 'cuag'; })[0].dur), true);
+  eq('Pearl AOC 0,3 / 9', MT.METODOS.filter(function (m) { return m.id === 'aoc'; })[0].p.slice(0, 2).join('/'), '0.3/9');
+  eq('VIH suprimida → lactancia OMS', /lactancia materna/.test(mt0({ vih: true, lact: 'l42' }).sugerencias.join(' ')), true);
+
+  grupo('Cuello uterino MSPBS 2025');
+  var EM = GYN.estudios.cervixMspbs, em0 = function (o) { var d = { edad: null, irs: null, negAnuales: null, cito: '', vph: '', colpo: '', lec: '', bx: '', inmuno: false, emb: false, post: '', reconos: null }; for (var k in o) d[k] = o[k]; return EM(d); };
+  eq('IRS 1 año → todavía no', /Todavía no/.test(em0({ edad: 18, irs: 1 }).tit), true);
+  eq('35 años sin resultados → VPH 30-65', /VPH/.test(em0({ edad: 35, irs: 10 }).con.join(' ')), true);
+  eq('VPH neg → 5 años', /5 años/.test(em0({ vph: 'neg' }).con.join(' ')), true);
+  eq('VPH+ → colposcopía', /Colposcopía/.test(em0({ vph: '16' }).con.join(' ')), true);
+  eq('VPH+ colpo normal LEC neg → VPH en 2 años', /2 años/.test(em0({ vph: 'otros', colpo: 'normal', lec: 'neg' }).con.join(' ')), true);
+  eq('VPH+ colpo anormal → biopsia + LEC', /Biopsia dirigida \+ LEC/.test(em0({ vph: '18', colpo: 'mayor' }).con.join(' ')), true);
+  eq('CIN 2+ → cono LEEP', /Cono LEEP/.test(em0({ bx: 'cin2mas' }).con.join(' ')), true);
+  eq('<CIN 2 → control 12 meses', /12 meses/.test(em0({ bx: 'menorCin2' }).con.join(' ')), true);
+  eq('CIN 1 → seguimiento 2 años', /2 años/.test(em0({ bx: 'cin1' }).con.join(' ')), true);
+  eq('HSIL colpo normal LEC neg → cono LEEP diagnóstico', /Cono LEEP diagnóstico/.test(em0({ cito: 'hsil', colpo: 'normal', lec: 'neg' }).con.join(' ')), true);
+  eq('NILM con 2 anuales negativas → cada 3 años', /cada 3 años/.test(em0({ cito: 'nilm', negAnuales: 2 }).con.join(' ')), true);
+  eq('Embarazo → control cada 3 meses', /cada 3 meses/.test(em0({ cito: 'lsil', emb: true }).con.join(' ')), true);
+  eq('Bordes + → no retratamiento inmediato', /no implican retratamiento/.test(em0({ post: 'pos' }).con.join(' ')), true);
+  eq('2 re-conos → histerectomía simple', /histerectomía simple/.test(em0({ post: 'recurre', reconos: 2 }).con.join(' ')), true);
+  eq('ASCCP sin cambios: ASC-US VPH neg → 3 años', /3 años/.test(GYN.estudios.cervix({ edad: 35, cito: 'ascus', vph: 'neg' }).con.join(' ')), true);
+
+  grupo('Cáncer hereditario');
+  var GN = GYN.genetica, gn0 = function (o) { var d = { mamaEdad: null, endoEdad: null, ccrEdad: null, premm: null, tn: false, bilateral: false, ovario: false, pancreas: false, prostata: false, dmmr: false, metilMlh1: false, asq: false, fMut: false, fMama50: false, fOvario: false, fMamaVaron: false, fPancreas: false, fProstata: false, f3mama: false, ams3: false, ams2gen: false, ams50: false, resultado: '' }; for (var k in o) d[k] = o[k]; return GN.evaluar(d); };
+  eq('Mama a los 42 → criterio', gn0({ mamaEdad: 42 }).hboc.length > 0, true);
+  eq('Mama a los 55 sin otros → sin criterio', gn0({ mamaEdad: 55 }).hboc.length, 0);
+  eq('Ovario epitelial → criterio', gn0({ ovario: true }).hboc.length > 0, true);
+  eq('Endometrio a los 45 → Lynch', gn0({ endoEdad: 45 }).lynch.length > 0, true);
+  eq('Amsterdam II completo', /Amsterdam II/.test(gn0({ ams3: true, ams2gen: true, ams50: true }).lynch.join(' ')), true);
+  eq('Derivación → panel multigén', /Panel multigén/.test(gn0({ ovario: true }).conducta.join(' ')), true);
+  eq('BRCA1 → SOB 35-40', /35 y 40/.test(gn0({ resultado: 'brca1' }).portadora.join(' ')), true);
+  eq('Lynch MLH1 → colonoscopía 20-25', /20 a 25/.test(gn0({ resultado: 'lynch1' }).portadora.join(' ')), true);
+  eq('MLH1 metilado → esporádico, sin derivar', /Derivar/.test(gn0({ dmmr: true, metilMlh1: true }).conducta.join(' ')), false);
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;

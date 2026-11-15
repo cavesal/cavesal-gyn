@@ -427,6 +427,66 @@
             { t: 'Control ecográfico en 3 meses', fb: 'No. Marcador germinal elevado con masa sólida: derivar.' }
           ], ref: 'Marcadores · ESMO 2018', url: B + 'marcadores' }
       ]
+    },
+    {
+      id: 'induccion-letrozol', sector: 'Fertilidad', titulo: 'Seguimiento con letrozol en SOMP',
+      resumen: '¿Cuándo aplicar la hCG y cuándo cancelar?',
+      modulo: 'induccion',
+      relato: 'Mujer de 28 años con SOMP en su segundo ciclo con letrozol 5 mg. Día 11: ovario derecho 17 y 12 mm, izquierdo 10 mm; endometrio 8 mm.',
+      preguntas: [
+        { q: 'Folículo líder de 17 mm con letrozol. ¿Conducta?',
+          ops: [
+            { t: 'Esperar: control ecográfico en 1 a 2 días', ok: true, fb: 'Correcto. Con letrozol el rango de hCG es 19 a 23 mm; crece 1,5 a 2 mm por día.' },
+            { t: 'Aplicar la hCG hoy', fb: 'No. Con letrozol 17 mm no alcanza el rango.' },
+            { t: 'Cancelar el ciclo', fb: 'No. No hay criterios de embarazo múltiple ni de hiperestimulación.' }
+          ], ref: 'Inducción · umbrales del módulo Fertilidad', url: B + 'induccion' },
+        { q: 'Dos días después: 20, 17 y 16 mm. ¿Conducta?',
+          ops: [
+            { t: 'No aplicar hCG y cancelar: hay más de 2 folículos de 16 mm o más', ok: true, fb: 'Correcto. ASRM 2022: riesgo de embarazo múltiple.' },
+            { t: 'Aplicar hCG y programar IIU', fb: 'No. Con 3 folículos de 16 mm o más el riesgo de múltiple es alto.' },
+            { t: 'Subir la dosis', fb: 'No. La respuesta ya es excesiva.' }
+          ], ref: 'Inducción · ASRM 2022', url: B + 'induccion' }
+      ]
+    },
+    {
+      id: 'metodos-aura', sector: 'Anticoncepción', titulo: 'Fumadora de 38 años con migraña con aura',
+      resumen: '¿Qué métodos sí y cuáles no?',
+      modulo: 'metodos',
+      relato: 'Mujer de 38 años, fuma 20 cigarrillos por día, migraña con aura. Pide "la pastilla".',
+      preguntas: [
+        { q: '¿Puede usar la píldora combinada?',
+          ops: [
+            { t: 'No: categoría 4 por migraña con aura y por fumar 15 o más a los 35 años o más', ok: true, fb: 'Correcto. US MEC 2024.' },
+            { t: 'Sí, con dosis baja de etinilestradiol', fb: 'No. La dosis baja no cambia la categoría 4.' },
+            { t: 'Sí, si usa el esquema continuo', fb: 'No. El esquema no modifica el riesgo de ACV.' }
+          ], ref: 'Métodos · US MEC 2024', url: B + 'metodos' },
+        { q: '¿Qué opción tiene la mayor eficacia y es segura para ella?',
+          ops: [
+            { t: 'Implante de etonogestrel o DIU (Pearl típico menor de 1)', ok: true, fb: 'Correcto. Categoría 1 y máxima eficacia.' },
+            { t: 'Parche combinado', fb: 'No. Lleva estrógeno: misma categoría 4.' },
+            { t: 'Calendario', fb: 'No. Baja eficacia y sin tasa confiable según la OMS.' }
+          ], ref: 'Métodos · OMS 2018 · Trussell 2011', url: B + 'metodos' }
+      ]
+    },
+    {
+      id: 'cervix-mspbs', sector: 'Oncología', titulo: 'VPH positivo según la norma MSPBS 2025',
+      resumen: 'Colposcopía, LEC y seguimiento según el flujograma nacional',
+      modulo: 'estudios',
+      relato: 'Mujer de 38 años con VPH de alto riesgo positivo (otros tipos) en el tamizaje del servicio público.',
+      preguntas: [
+        { q: '¿Primer paso según el MSPBS 2025?',
+          ops: [
+            { t: 'Colposcopía', ok: true, fb: 'Correcto. Todo VPH positivo va a colposcopía.' },
+            { t: 'Repetir el VPH en 1 año', fb: 'No. Eso es la conducta ASCCP con citología negativa; el MSPBS indica colposcopía.' },
+            { t: 'Cono LEEP', fb: 'No. Primero colposcopía.' }
+          ], ref: 'Cuello uterino · MSPBS 2025', url: B + 'cervix-mspbs' },
+        { q: 'Colposcopía normal y LEC negativo. ¿Conducta?',
+          ops: [
+            { t: 'Control con VPH en 2 años (citología si no se dispone)', ok: true, fb: 'Correcto. Flujograma MSPBS 2025.' },
+            { t: 'Cono diagnóstico', fb: 'No. Eso corresponde a HSIL con colposcopía normal y LEC negativo.' },
+            { t: 'Alta a 5 años', fb: 'No. 5 años es para VPH negativo.' }
+          ], ref: 'Cuello uterino · MSPBS 2025', url: B + 'cervix-mspbs' }
+      ]
     }
   ];
 })(window);

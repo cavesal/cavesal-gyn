@@ -125,6 +125,61 @@
     return null;
   }
 
+  /* ---------- Cuello uterino según MSPBS Paraguay 2025 (Manual Nacional de Normas de Patologías Ginecológicas, pp. 163-172) ---------- */
+  // d: { edad, irs (años desde el inicio de relaciones), negAnuales, cito, vph, colpo:''|'normal'|'menor'|'mayor', lec:''|'neg'|'pos',
+  //      bx:''|'menorCin2'|'cin1'|'cin2mas'|'invasor', inmuno, emb, post:''|'neg'|'pos'|'recurre', reconos }
+  function cervixMspbs(d) {
+    var e = d.edad, ci = d.cito, v = d.vph, vpos = v && v !== 'neg', citoAnormal = ci && ci !== 'nilm';
+    var M = ' (MSPBS 2025)';
+    if (d.bx === 'invasor' || ci === 'ca') return { tit: 'Cáncer invasor', color: 'rojo', con: ['Derivar a oncología ginecológica' + M + '.', 'Estadificación FIGO en el módulo Oncología.'] };
+    if (d.post === 'neg') return { tit: 'Postratamiento con bordes libres', color: 'verde', con: ['Control citológico y colposcópico cada 6 meses por 2 años y luego anual' + M + '.', 'Prueba de VPH a los 6 a 12 meses del tratamiento.'] };
+    if (d.post === 'pos') return { tit: 'Postratamiento con bordes comprometidos', color: 'ambar', con: ['Los márgenes comprometidos no implican retratamiento inmediato' + M + '.', 'Seguimiento cada 6 meses por 2 años con citología endocervical y ectocervical, colposcopía y LEC; VPH a los 12 meses.', 'Si aparece una lesión de alto grado: re-cono LEEP (de elección al año) o histerectomía según el deseo de gestación.'] };
+    if (d.post === 'recurre') {
+      if (d.reconos !== null && d.reconos >= 2) return { tit: 'Lesión persistente luego de 2 re-conizaciones', color: 'rojo', con: ['Solo se recomiendan hasta 2 re-conizaciones; si persiste la lesión, histerectomía simple' + M + '.'] };
+      return { tit: 'Lesión de alto grado en el seguimiento', color: 'rojo', con: ['Nuevo tratamiento escisional: re-cono LEEP, de elección al año del tratamiento' + M + '.', 'Hasta 2 re-conizaciones; luego, histerectomía simple.'] };
+    }
+    if (d.emb && (citoAnormal || vpos)) return { tit: 'Embarazo con citología anormal o VPH positivo', color: 'ambar', con: ['Seguimiento cito-colposcópico cada 3 meses; reevaluar a los 40 días del posparto o cesárea' + M + '.', 'Biopsia solo ante sospecha de invasión.', 'La lesión precursora o un LEEP previo no cambian la vía del parto; solo el cono frío previo indica cesárea.'] };
+    if (d.bx === 'cin2mas') return { tit: 'CIN 2 o más (LIE de alto grado) confirmado', color: 'rojo', con: [
+      d.lec === 'pos' ? 'LEC positivo: cono quirúrgico (bisturí frío) o LEEP' + M + '.' : 'Cono LEEP (escisión con asa según el tipo de zona de transformación, IFCPC)' + M + '.',
+      'Cono frío si el LEC es positivo o si la anatomía no es apta para LEEP.',
+      'Termocoagulación solo si: cérvix completo y no distorsionado, ZT 1 o 2 con LEC visible, lesión visible que no entra al canal y ocupa menos del 75 %, sin sospecha de invasión ni de enfermedad glandular, con correlación cito-colposcópica.',
+      'Ver y tratar (LEEP o termocoagulación) en HSIL con colposcopía anormal cuando el seguimiento es difícil (domicilio lejano, comunidades indígenas, atención extramural).',
+      'Luego: control cada 6 meses por 2 años y VPH a los 6 a 12 meses.'] };
+    if (d.bx === 'cin1') return d.inmuno
+      ? { tit: 'CIN 1 con factores de riesgo', color: 'naranja', con: ['Tratamiento acorde a normas (inmunodeficiencia: mayor progresión)' + M + '.'] }
+      : { tit: 'CIN 1 con correlación cito-colpo-histológica', color: 'ambar', con: ['Seguimiento sin tratamiento por 2 años: citología y colposcopía cada 6 meses y VPH anual' + M + '.', 'Negativo por 2 años: control habitual. Progresión a CIN 2 o más: tratar. Persistencia a los 2 años: tratamiento o reevaluación según factores de riesgo.', 'Si hay discordancia con sospecha de lesión mayor: revisar todos los hallazgos y procedimiento diagnóstico adicional.'] };
+    if (d.bx === 'menorCin2') return { tit: 'Biopsia menor de CIN 2', color: 'ambar', con: ['Control a los 12 meses con prueba de VPH; si no se dispone, citología' + M + '.'] };
+    if (ci === 'hsil') {
+      if (!d.colpo) return { tit: 'HSIL', color: 'rojo', con: ['Colposcopía' + M + '.'] };
+      if (d.colpo === 'normal') {
+        if (!d.lec) return { tit: 'HSIL con colposcopía normal', color: 'rojo', con: ['Legrado endocervical (LEC)' + M + '.'] };
+        return d.lec === 'neg' ? { tit: 'HSIL, colposcopía normal, LEC negativo', color: 'rojo', con: ['Cono LEEP diagnóstico' + M + '.'] } : { tit: 'HSIL con LEC positivo', color: 'rojo', con: ['Tratamiento según hallazgo: cono quirúrgico o LEEP' + M + '.'] };
+      }
+      return { tit: 'HSIL con colposcopía anormal', color: 'rojo', con: ['Biopsia exocervical + LEC y tratamiento según hallazgo' + M + '.', 'Ver y tratar (cono LEEP o termocoagulación) si el seguimiento es difícil.'] };
+    }
+    if (ci === 'lsil') {
+      if (!d.colpo) return { tit: 'LSIL', color: 'ambar', con: ['Colposcopía' + M + '.'] };
+      if (d.colpo === 'mayor') return { tit: 'LSIL con colposcopía de grado mayor', color: 'naranja', con: ['Biopsia + LEC y manejo según anatomía patológica' + M + '.'] };
+      return { tit: 'LSIL con colposcopía ' + (d.colpo === 'normal' ? 'normal' : 'de grado menor'), color: 'ambar', con: ['Nuevo testeo en 12 meses y manejo según resultado' + M + '.'] };
+    }
+    if (citoAnormal || vpos) {
+      var tit = citoAnormal ? 'Citología positiva' : 'VPH positivo' + (v === '16' || v === '18' ? ' (' + v + ')' : '');
+      if (!d.colpo) return { tit: tit, color: 'naranja', con: ['Colposcopía' + M + '.'] };
+      if (d.colpo === 'normal') {
+        if (!d.lec) return { tit: tit + ', colposcopía normal', color: 'ambar', con: ['Legrado endocervical (LEC)' + M + '.'] };
+        return d.lec === 'pos' ? { tit: tit + ', LEC positivo', color: 'rojo', con: ['Tratamiento según hallazgos' + M + '.'] } : { tit: tit + ', colposcopía normal y LEC negativo', color: 'ambar', con: ['Control con prueba de VPH en 2 años; si no se dispone, citología' + M + '.'] };
+      }
+      return { tit: tit + ', colposcopía anormal', color: 'naranja', con: ['Biopsia dirigida + LEC: 2 a 4 muestras en frascos separados, identificando el punto horario' + M + '.', 'CIN 2 o más: cono LEEP. Menor de CIN 2: control a 12 meses con VPH.'] };
+    }
+    if (v === 'neg') return { tit: 'VPH negativo', color: 'verde', con: ['Seguimiento a 5 años con prueba de VPH; si no se dispone, citología' + M + '.'] };
+    if (ci === 'nilm') return { tit: 'Citología negativa', color: 'verde', con: [d.negAnuales !== null && d.negAnuales >= 2 ? 'Dos o más citologías anuales negativas consecutivas: repetir cada 3 años' + M + '.' : 'Repetir la citología en 1 año; luego de 2 anuales negativas consecutivas, cada 3 años' + M + '.', e !== null && e >= 30 && e <= 65 ? 'Entre 30 y 65 años se puede usar la prueba de VPH (OMS).' : ''] };
+    if (e === null && d.irs === null) return null;
+    if (d.irs !== null && d.irs < 3) return { tit: 'Todavía no corresponde la citología', color: 'verde', con: ['La citología se inicia a partir del tercer año del inicio de las relaciones sexuales' + M + '.', 'Faltan ' + (3 - d.irs) + ' año(s).'] };
+    var con = ['Citología a partir del tercer año del inicio de relaciones, con énfasis entre los 25 y 49 años; anual y, luego de 2 anuales negativas consecutivas, cada 3 años' + M + '.'];
+    if (e !== null && e >= 30 && e <= 65) con.push(d.emb ? 'Prueba de VPH: no en embarazadas ni en puérperas hasta 3 meses.' : 'Prueba de VPH de alto riesgo (PCR con 16, 18 y otros) entre 30 y 65 años (OMS); negativa: repetir a los 5 años.');
+    return { tit: 'Tamizaje', color: 'verde', con: con };
+  }
+
   /* ---------- Grosor endometrial ---------- */
   // d: { etapa: 'adol'|'fertil'|'post', edad, grosor, sangrado: 'no'|'si'|'persiste', thm: 'no'|'continua'|'secuencial', tamox, fr, falla, noVisible, ieta: {nouni, irreg, multi, unico} }
   function endometrio(d) {
@@ -174,12 +229,17 @@
       '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: ACR BI-RADS v2025 · ACR Appropriateness Criteria, masas palpables (2022) · USPSTF 2024 · ACOG 2024 · FDA MQSA 2024 · ACR 2023 (alto riesgo y mama densa)</p>' +
 
       '<h3 class="sub">Cuello uterino · tamizaje y conducta</h3>' +
-      '<p class="ayuda">Sin resultados, devuelve el esquema por edad. Con resultados, la conducta. Es una versión simplificada: para el riesgo exacto, usar la app de la ASCCP.</p>' +
-      '<div class="form">' + c.campo('c-edad', 'Edad', 'años', '1') + c.sel('c-cito', CITO, 'Citología') + c.sel('c-vph', VPH, 'VPH') +
+      '<p class="ayuda">Sin resultados, devuelve el esquema. Con resultados, la conducta. Elegí la norma: ASCCP (versión simplificada; para el riesgo exacto, usar la app de la ASCCP) o MSPBS Paraguay 2025.</p>' +
+      '<div class="form">' + c.sel('c-norma', [['asccp', 'ASCCP 2019-2025'], ['mspbs', 'MSPBS Paraguay 2025']], 'Norma') + c.campo('c-edad', 'Edad', 'años', '1') + c.sel('c-cito', CITO, 'Citología') + c.sel('c-vph', VPH, 'VPH') +
         c.sel('c-dob', [['', 'Sin dato'], ['pos', 'Positiva'], ['neg', 'Negativa']], 'Doble tinción p16/Ki-67') + '</div>' +
       c.chk('c-auto', 'La prueba de VPH fue por autotoma') + c.chk('c-inm', 'Inmunosuprimida o con VIH') + c.chk('c-prev', 'Mayor de 65: tamizaje previo adecuado y sin CIN 2 o más en 25 años') +
+      '<div id="c-msp" hidden>' + c.grupo('Datos MSPBS', '<div class="grid2">' + c.campo('c-irs', 'Años desde el inicio de relaciones', 'años', '1') + c.campo('c-nan', 'Citologías anuales negativas consecutivas', 'n', '1') +
+        c.sel('c-col', [['', 'Sin colposcopía'], ['normal', 'Normal'], ['menor', 'Anormal de grado menor'], ['mayor', 'Anormal de grado mayor']], 'Colposcopía') + c.sel('c-lec', [['', 'Sin LEC'], ['neg', 'Negativo'], ['pos', 'Positivo']], 'Legrado endocervical') +
+        c.sel('c-bx', [['', 'Sin biopsia'], ['menorCin2', 'Menor de CIN 2'], ['cin1', 'CIN 1 (LIE de bajo grado)'], ['cin2mas', 'CIN 2 o más (LIE de alto grado)'], ['invasor', 'Carcinoma invasor']], 'Biopsia') +
+        c.sel('c-post', [['', 'Sin tratamiento previo'], ['neg', 'Postratamiento, bordes libres'], ['pos', 'Postratamiento, bordes comprometidos'], ['recurre', 'Lesión de alto grado en el seguimiento']], 'Tratamiento previo') + c.campo('c-rec', 'Re-conizaciones previas', 'n', '1') + '</div>' + c.chk('c-emb', 'Embarazada')) + '</div>' +
       '<div id="c-out" class="resultados" aria-live="polite"></div>' +
       '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: ASCCP 2019 (Perkins RB et al. J Low Genit Tract Dis 2020;24:102-131) · actualizaciones ASCCP 2024 (J Low Genit Tract Dis 2024;28:3-6) · guías permanentes ASCCP 2024-2025 (doble tinción, autotoma, genotipado extendido) · Guía CaVeSal® de HC</p>' +
+      '<p class="etiqueta" id="c-etq-msp" hidden>Algoritmo propio CaVeSal® · Basado en: MSPBS Paraguay, Manual Nacional de Normas de Atención de Patologías Ginecológicas 2025 (cuello uterino, pp. 163-172) · OMS (VPH de 30 a 65 años)</p>' +
 
       '<h3 class="sub">Endometrio · grosor y conducta</h3>' +
       '<div class="form">' + c.sel('e-eta', [['', 'Elegí'], ['adol', 'Adolescente'], ['fertil', 'Edad fértil'], ['post', 'Posmenopausia']], 'Etapa') +
@@ -206,7 +266,11 @@
       }
       q('#b-out').innerHTML = h.join('');
 
-      var cx = cervix({ edad: L.n('c-edad'), cito: L.v('c-cito'), vph: L.v('c-vph'), autotoma: L.c('c-auto'), doble: L.v('c-dob'), inmuno: L.c('c-inm'), previoOk: L.c('c-prev') });
+      var msp = L.v('c-norma') === 'mspbs';
+      q('#c-msp').hidden = !msp; q('#c-etq-msp').hidden = !msp;
+      ['c-dob', 'c-auto', 'c-prev'].forEach(function (id) { var lb = q('#' + id).closest('label'); if (lb) lb.hidden = msp; });
+      var cx = msp ? cervixMspbs({ edad: L.n('c-edad'), irs: L.n('c-irs'), negAnuales: L.n('c-nan'), cito: L.v('c-cito'), vph: L.v('c-vph'), colpo: L.v('c-col'), lec: L.v('c-lec'), bx: L.v('c-bx'), inmuno: L.c('c-inm'), emb: L.c('c-emb'), post: L.v('c-post'), reconos: L.n('c-rec') })
+        : cervix({ edad: L.n('c-edad'), cito: L.v('c-cito'), vph: L.v('c-vph'), autotoma: L.c('c-auto'), doble: L.v('c-dob'), inmuno: L.c('c-inm'), previoOk: L.c('c-prev') });
       q('#c-out').innerHTML = cx ? F('Resultado', '<strong>' + cx.tit + '</strong>', '', cx.color) + F('Conducta', c.ul(cx.con), '', cx.color) : F('Cuello uterino', 'Ingresá la edad o los resultados.', '', 'neutro');
 
       var en = endometrio({ etapa: L.v('e-eta'), edad: L.n('e-edad'), grosor: L.n('e-gro'), sangrado: L.v('e-san'), thm: L.v('e-thm'), tamox: L.c('e-tam'), fr: L.c('e-fr'), falla: L.c('e-fal'), noVisible: L.c('e-nov'), ieta: { nouni: L.c('e-i1'), irreg: L.c('e-i2'), multi: L.c('e-i3'), unico: L.c('e-i4') } });
@@ -220,5 +284,5 @@
   }
 
   w.GYN = w.GYN || {};
-  w.GYN.estudios = { birads: birads, cervix: cervix, endometrio: endometrio, render: render };
+  w.GYN.estudios = { birads: birads, cervix: cervix, cervixMspbs: cervixMspbs, endometrio: endometrio, render: render };
 })(window);

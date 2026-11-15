@@ -106,3 +106,4 @@ Igual que la Calculadora Prenatal y Emergencias: USD 19.90 de por vida en el lan
 Mega Combo (Calculadora + Historia Clínica + Emergencias + GYN), aprobado el 13/11/2026: USD 49.90 de lanzamiento; desde 2027, USD 149.90 de por vida o USD 29.90 al año. No se publica hasta que salga GYN.
 
 - Laboratorio por cuadro (8 cuadros) y Marcadores tumorales con ROMA (js/laboratorio.js, js/marcadores.js). Capítulo "Laboratorio e imágenes". sw v5.
+- Entrega C (sw v6): Eco ginecológica (js/ecogin.js), Densitometría (js/densitometria.js), Inducción de la ovulación (js/induccion.js), SHO (js/sho.js), Métodos anticonceptivos con índice de Pearl (js/metodos.js), Cáncer hereditario BRCA y síndrome de Lynch (js/genetica.js) y norma MSPBS 2025 de cuello uterino en js/estudios.js (selector; ASCCP sin cambios).

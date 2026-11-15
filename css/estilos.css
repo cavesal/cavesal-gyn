@@ -272,3 +272,8 @@ button,input,select{font:inherit;color:inherit}
 .fi-imp{cursor:pointer}
 .cons-bar{margin-bottom:12px}
 @media (max-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}.tab{font-size:.8rem}}
+/* Entrega C · métodos anticonceptivos */
+.mec-c{display:inline-block;min-width:1.8em;text-align:center;padding:2px 6px;border-radius:6px;font-weight:700;color:#fff}
+.mec-c.c1{background:#2e7d32}.mec-c.c2{background:#9a6b00}.mec-c.c3{background:#c25a00}.mec-c.c4{background:#b3261e}
+.tabla tr.mt-uso td{border-top:0;padding-top:0;font-size:.84rem;color:var(--ink-soft)}
+.tabla tr.mt-uso .lista{margin:0}
