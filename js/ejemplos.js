@@ -53,6 +53,10 @@
       { t: 'Puérpera de 5 semanas que amamanta, con VIH suprimida', v: { '#mt-edad': 26, '#mt-lact': 'l30_42', '#mt-vih': true, '#mt-g': 'larga' } }],
     genetica: [{ t: 'Cáncer de mama a los 41 años y madre con cáncer de ovario', v: { '#gn-mama': 41, '#gn-fov': true } },
       { t: 'Cáncer de endometrio a los 46 con dMMR y familia Amsterdam II', v: { '#gn-endo': 46, '#gn-dmmr': true, '#gn-a3': true, '#gn-a2': true, '#gn-a50': true } }],
+    progestagenos: [{ t: 'THM con útero, 54 años, HTA y retención hídrica', v: { '#pg-uso': 'thm', '#pg-edad': 54, '#pg-hta': true, '#pg-ret': true, '#pg-am12': true } },
+      { t: 'Anticonceptivo oral en SOMP con acné e hirsutismo', v: { '#pg-uso': 'aoc', '#pg-edad': 24, '#pg-acne': true, '#pg-hir': true, '#pg-somp': true } }],
+    aemergencia: [{ t: 'Relación sin protección hace 30 horas, 78 kg', v: { '#ae-h': 30, '#ae-peso': 78, '#ae-aoc': 'ee30' } },
+      { t: 'Violación hace 100 horas, usa carbamazepina', v: { '#ae-h': 100, '#ae-vio': true, '#ae-ind': true } }],
     dm: [{ t: 'Glucemia en ayunas de 112 y HbA1c 6,0 %', v: { '#dm-ay': 112, '#dm-a1c': 6.0, '#dm-edad': 40, '#dm-imc': 36 } },
       { t: 'Dos valores en rango de diabetes', v: { '#dm-ay': 134, '#dm-a1c': 7.1, '#dm-edad': 46, '#dm-imc': 31, '#dm-plan': true } }]
   };

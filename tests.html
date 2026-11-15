@@ -51,6 +51,8 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/sho.js"></script>
 <script src="js/metodos.js"></script>
 <script src="js/genetica.js"></script>
+<script src="js/progestagenos.js"></script>
+<script src="js/aemergencia.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -664,6 +666,37 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Cobre-plata 5 años', /5 años/.test(MT.METODOS.filter(function (m) { return m.id === 'cuag'; })[0].dur), true);
   eq('Pearl AOC 0,3 / 9', MT.METODOS.filter(function (m) { return m.id === 'aoc'; })[0].p.slice(0, 2).join('/'), '0.3/9');
   eq('VIH suprimida → lactancia OMS', /lactancia materna/.test(mt0({ vih: true, lact: 'l42' }).sugerencias.join(' ')), true);
+
+  grupo('Elección del progestágeno');
+  var PG = GYN.progestagenos, pg0 = function (o) { var d = { uso: 'thm', edad: 52 }; for (var k in o) d[k] = o[k]; return PG.evaluar(d); };
+  eq('THM sin útero → sin progestágeno', /no necesita progestágeno/.test(pg0({ sinUtero: true }).prim), true);
+  eq('THM base → micronizada o didrogesterona', /micronizada o didrogesterona/.test(pg0({}).prim), true);
+  eq('THM HTA → drospirenona', /Drospirenona/.test(pg0({ hta: true }).prim), true);
+  eq('THM TEV → evitar 19-norprogesterona', /19-norprogesterona/.test(pg0({ tev: true }).evitar.join(' ')), true);
+  eq('THM 12 meses → continuo', /Continuo/.test(pg0({ amenorrea12: true }).esquema), true);
+  eq('THM sin amenorrea → cíclico', /Cíclico/.test(pg0({}).esquema), true);
+  eq('Tibolona contraindicada con cáncer de mama', /LIBERATE/.test(pg0({ cancerMama: true }).evitar.join(' ')), true);
+  eq('Tibolona 60+ → ACV', /LIFT/.test(pg0({ edad: 62 }).evitar.join(' ')), true);
+  eq('Libido es orientativo, no cambia la sugerencia', pg0({ libido: true }).prim, pg0({}).prim);
+  eq('AOC base → LNG', /Levonorgestrel/.test(pg0({ uso: 'aoc' }).prim), true);
+  eq('AOC acné → antiandrogénico', /Drospirenona/.test(pg0({ uso: 'aoc', acne: true }).prim), true);
+  eq('AOC TEV → sin estrógeno', pg0({ uso: 'aoc', tev: true, acne: true }).prim, 'Sin estrógeno');
+  eq('Tabla con 13 moléculas', PG.MOL.length, 13);
+
+  grupo('Anticoncepción de emergencia');
+  var AE = GYN.aemergencia, ae0 = function (o) { var d = { horas: 24, imc: null, peso: null, mecDiu: '', aoc: '', ovulacion5: false, violacion: false, inductor: false, inicioHormonal: false }; for (var k in o) d[k] = o[k]; return AE.evaluar(d); };
+  eq('24 h → DIU primero', ae0({}).ops[0].id, 'cu');
+  eq('Orden por eficacia', ae0({}).ops.map(function (x) { return x.id; }).join(','), 'cu,upa,mife,lng,yuzpe');
+  eq('Violación → sin DIU', ae0({ violacion: true }).ops.some(function (x) { return x.id === 'cu'; }), false);
+  eq('Peso 75 → LNG 3 mg', /3 mg/.test(ae0({ peso: 75 }).ops.filter(function (x) { return x.id === 'lng'; })[0].n), true);
+  eq('IMC 28 → LNG 3 mg', /3 mg/.test(ae0({ imc: 28 }).ops.filter(function (x) { return x.id === 'lng'; })[0].n), true);
+  eq('Inductores → sin ulipristal', ae0({ inductor: true }).ops.some(function (x) { return x.id === 'upa'; }), false);
+  eq('130 h → fuera de ventana', ae0({ horas: 130 }).ops.length, 0);
+  eq('130 h y ovulación 5 días → DIU', ae0({ horas: 130, ovulacion5: true }).ops[0].id, 'cu');
+  eq('Yuzpe 30/150 → 4 por toma', /4 píldoras/.test(ae0({ aoc: 'ee30' }).ops.filter(function (x) { return x.id === 'yuzpe'; })[0].det), true);
+  eq('Yuzpe 20/100 → 5 por toma', AE.YUZPE.ee20.p, 5);
+  eq('Yuzpe 50/250 → 2 por toma', AE.YUZPE.ee50.p, 2);
+  eq('Ulipristal + hormonal → esperar 5 días', /5 días/.test(ae0({ inicioHormonal: true }).ops.filter(function (x) { return x.id === 'upa'; })[0].det), true);
 
   grupo('Cuello uterino MSPBS 2025');
   var EM = GYN.estudios.cervixMspbs, em0 = function (o) { var d = { edad: null, irs: null, negAnuales: null, cito: '', vph: '', colpo: '', lec: '', bx: '', inmuno: false, emb: false, post: '', reconos: null }; for (var k in o) d[k] = o[k]; return EM(d); };

@@ -85,7 +85,9 @@
           { id: 'mec', nombre: 'Elegibilidad de métodos (MEC)', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: [], motivos: ['anticoncepcion'], kw: 'anticonceptivo diu implante pildora oms',
             resumen: 'Categoría 1 a 4 de seis métodos con 67 condiciones del US MEC 2024, notas de la OMS 2025, más de 40 años (SIC 2025) y cuándo suspender la anticoncepción y pasar a THM.' },
           { id: 'metodos', nombre: 'Métodos anticonceptivos: catálogo, índice de Pearl y elección', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: ['fertilidad'], motivos: ['anticoncepcion'], kw: 'pastilla aoc continua extendida inyectable mesigyna cyclofem ampd parche anillo implante jadelle nexplanon diu cobre plata oro mirena pearl calendario collar billings sintotermico mela lactancia emergencia ligadura vasectomia',
-            resumen: 'Todos los métodos por duración (corta, LARC, barrera, naturales, MELA, emergencia y definitivos) con índice de Pearl perfecto y típico, esquemas (21/7, 24/4, extendido y continuo), duración, alertas para estrógenos y categoría US MEC según el perfil.' }
+            resumen: 'Todos los métodos por duración (corta, LARC, barrera, naturales, MELA, emergencia y definitivos) con índice de Pearl perfecto y típico, esquemas (21/7, 24/4, extendido y continuo), duración, alertas para estrógenos y categoría US MEC según el perfil.' },
+          { id: 'aemergencia', nombre: 'Anticoncepción de emergencia', estado: 'v1', etapas: ['adolescencia', 'edad-fertil', 'climaterio'], caps: [], motivos: ['anticoncepcion'], kw: 'pildora del dia despues emergencia levonorgestrel ulipristal yuzpe mifepristona diu cobre violacion',
+            resumen: 'Opciones ordenadas por eficacia según horas, IMC, inductores y violación: DIU de cobre, ulipristal, mifepristona, levonorgestrel (dosis doble si corresponde) y Yuzpe con píldoras por toma. Mecanismo de cada uno.' }
         ] },
       { id: 'infecciones', nombre: 'Infecciones genitales', intro: 'Flujo vaginal y enfermedad pélvica inflamatoria.',
         funciones: [
@@ -106,7 +108,9 @@
           { id: 'mrs', nombre: 'Escala MRS', estado: 'v1', etapas: ['climaterio', 'postmenopausia'], caps: [], motivos: ['climaterio'], kw: 'sofocos menopausia',
             resumen: 'Once ítems, subtotales por dominio y total con su gravedad.' },
           { id: 'thm', nombre: 'Calculadora de THM', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'], caps: ['endocrino'], motivos: ['climaterio'], kw: 'terapia hormonal estrogeno progesterona',
-            resumen: 'Conducta de terapia hormonal según etapa, síntomas, contraindicaciones y riesgo cardiovascular y mamario. Algoritmo SEGIRP 2026 en la Demo y algoritmo combinado en la versión completa.' }
+            resumen: 'Conducta de terapia hormonal según etapa, síntomas, contraindicaciones y riesgo cardiovascular y mamario. Algoritmo SEGIRP 2026 en la Demo y algoritmo combinado en la versión completa.' },
+          { id: 'progestagenos', nombre: 'Elección del progestágeno (THM y anticoncepción oral)', estado: 'v1', etapas: ['edad-fertil', 'climaterio', 'postmenopausia'], caps: ['anticoncepcion', 'endocrino'], motivos: ['climaterio', 'anticoncepcion'], kw: 'progesterona micronizada didrogesterona drospirenona ciproterona clormadinona dienogest levonorgestrel tibolona androgenico antiandrogenico mineralocorticoide',
+            resumen: 'Perfil antiestrogénico, androgénico, antiandrogénico, glucocorticoide y antimineralocorticoide por grupo, riesgo de TEV, dosis continua y cíclica en THM, tibolona y sugerencia según HTA, retención, acné, SOMP, TEV, endometriosis y sangrado.' }
         ] },
       { id: 'onco', nombre: 'Oncología ginecológica', intro: 'Masa anexial, mama, cérvix, endometrio y estadificación FIGO.',
         funciones: [

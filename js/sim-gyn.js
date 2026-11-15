@@ -469,6 +469,46 @@
       ]
     },
     {
+      id: 'progest-thm', sector: 'Climaterio', titulo: 'THM con útero e hipertensión',
+      resumen: '¿Qué progestágeno conviene?',
+      modulo: 'progestagenos',
+      relato: 'Mujer de 54 años, 2 años sin menstruación, con útero, HTA controlada y edemas. Va a iniciar estradiol transdérmico.',
+      preguntas: [
+        { q: '¿Qué progestágeno se prefiere?',
+          ops: [
+            { t: 'Drospirenona o progesterona micronizada, por su efecto antimineralocorticoide', ok: true, fb: 'Correcto. Reducen la retención hídrica.' },
+            { t: 'Ciproterona', fb: 'No. Es antiandrogénica, sin efecto antimineralocorticoide, y con mayor riesgo de TEV.' },
+            { t: 'Ninguno, porque tiene más de 50 años', fb: 'No. Con útero siempre necesita protección endometrial.' }
+          ], ref: 'Progestágenos · Regidor 2018', url: B + 'progestagenos' },
+        { q: '¿Qué esquema corresponde?',
+          ops: [
+            { t: 'Continuo: más de 12 meses sin menstruación', ok: true, fb: 'Correcto. Por ejemplo, progesterona micronizada 100 mg/día.' },
+            { t: 'Cíclico 12 a 14 días', fb: 'No. El cíclico es para la perimenopausia.' },
+            { t: 'Solo 7 días por mes', fb: 'No. Menos de 12 días no protege el endometrio.' }
+          ], ref: 'Progestágenos · BMS 2026', url: B + 'progestagenos' }
+      ]
+    },
+    {
+      id: 'ae-peso', sector: 'Anticoncepción', titulo: 'Anticoncepción de emergencia con 80 kg',
+      resumen: '¿Qué opción y qué dosis?',
+      modulo: 'aemergencia',
+      relato: 'Mujer de 22 años, 80 kg, relación sin protección hace 40 horas. Rechaza el DIU.',
+      preguntas: [
+        { q: '¿Qué opción oral es más eficaz para ella?',
+          ops: [
+            { t: 'Ulipristal 30 mg', ok: true, fb: 'Correcto. Más eficaz que LNG, incluso con el pico de LH iniciado.' },
+            { t: 'Yuzpe', fb: 'No. Es la menos eficaz (3,2 % de embarazos).' },
+            { t: 'Levonorgestrel 1,5 mg', fb: 'No. Con más de 70 kg corresponde 3 mg y aun así es menos eficaz que ulipristal.' }
+          ], ref: 'Emergencia · Cochrane 2019 · FSRH', url: B + 'aemergencia' },
+        { q: 'Si después quiere empezar la píldora, ¿cuándo?',
+          ops: [
+            { t: 'A los 5 días del ulipristal, con preservativo mientras tanto', ok: true, fb: 'Correcto. El progestágeno reduce el efecto del ulipristal.' },
+            { t: 'El mismo día', fb: 'No. Eso vale para levonorgestrel, no para ulipristal.' },
+            { t: 'Con la próxima menstruación, sin protección hasta entonces', fb: 'No. Puede empezar antes y necesita protección.' }
+          ], ref: 'Emergencia · FSRH 2017', url: B + 'aemergencia' }
+      ]
+    },
+    {
       id: 'cervix-mspbs', sector: 'Oncología', titulo: 'VPH positivo según la norma MSPBS 2025',
       resumen: 'Colposcopía, LEC y seguimiento según el flujograma nacional',
       modulo: 'estudios',

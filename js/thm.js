@@ -261,6 +261,7 @@
         cond = t.cond.thm + ': ' + (r.esquema ? t.esq[r.esquema] : t.faltaUtero); col = 'verde';
         det.push(t.via[r.via] + (r.dosisBaja ? ' · ' + t.dosisBaja : ''));
         if (r.progSeguro && r.esquema && r.esquema !== 'estrogeno') det.push(t.progSeguro);
+        if (r.esquema && r.esquema !== 'estrogeno') det.push('<a href="#progestagenos">Elegir el progestágeno</a>');
         if (r.sinTibolona) det.push(t.sinTibolona);
         if (comb && r.pato.length) det.push(t.porPato + ': ' + r.pato.map(function (k) { return t.pato[k]; }).join(', ') + '.');
         r.avisos.forEach(function (a) { det.push(t.avisos[a]); });
