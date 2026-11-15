@@ -27,8 +27,8 @@
       ops.push({ id: 'mife', n: 'Mifepristona 10 a 25 mg, dosis única', det: 'Hasta 120 horas. No registrada para este uso en todos los países.' });
       var lngDosis = (peso || d.inductor) ? '3 mg (doble dosis)' : '1,5 mg dosis única o 0,75 mg cada 12 horas';
       ops.push({ id: 'lng', n: 'Levonorgestrel ' + lngDosis, det: 'Hasta 72 horas; eficacia menor entre 72 y 120 horas.' + (peso ? ' IMC mayor de 26 o peso mayor de 70 kg: 3 mg.' : '') + (d.inductor ? ' Inductores enzimáticos: 3 mg.' : '') + (d.inicioHormonal ? ' Puede iniciar el método hormonal enseguida.' : '') });
-      var y = YUZPE[d.aoc];
-      ops.push({ id: 'yuzpe', n: 'Yuzpe', det: y ? y.n + ': ' + y.p + ' píldoras y repetir ' + y.p + ' a las 12 horas (' + (2 * y.p) + ' en total). Antiemético previo.' : 'Elegí el anticonceptivo disponible para calcular las píldoras. Menos eficaz y más náuseas.' });
+      var y = YUZPE[d.aoc], yx = ' Siempre dos tomas: no hay esquema validado en una sola toma. Preferentemente dentro de 72 horas (hasta 120). Vómito dentro de 2 horas: repetir la toma. Menos eficaz y más náuseas que LNG.' + (d.inicioHormonal ? ' Puede iniciar el método hormonal enseguida, con preservativo 7 días.' : '');
+      ops.push({ id: 'yuzpe', n: 'Yuzpe', det: y ? y.n + ': ' + y.p + ' píldoras y repetir ' + y.p + ' a las 12 horas (' + (2 * y.p) + ' en total), misma marca en las dos tomas. Antiemético previo.' + yx : 'Elegí el anticonceptivo disponible para calcular las píldoras.' + yx });
     }
     ops = ops.filter(function (o) { return !o.no; });
     if (!dentro && !d.ovulacion5) avisos.push('Más de 120 horas: fuera de la ventana. Test de embarazo y comenzar un método regular.');
