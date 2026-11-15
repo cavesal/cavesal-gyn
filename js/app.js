@@ -158,7 +158,7 @@
       cont.insertBefore(bar.firstChild, cont.firstChild);
     }
     if (w.GYN.puente && !bloqueada(r.f) && iEj === null) w.GYN.puente.aplicar(r.f.id, cont);
-    if (w.GYN.ia && !bloqueada(r.f) && iEj === null) w.GYN.ia.barra(cont, r.f.id, r.f.nombre);
+    if (w.GYN.ia && !bloqueada(r.f)) w.GYN.ia.barra(cont, r.f.id, r.f.nombre); // también con un ejemplo cargado
     if (iEj === null && !bloqueada(r.f)) {
       if (full) actual = r.f.id;
       var cs = w.GYN.ficha && w.GYN.ficha.consulta(r.f.id), fp = w.GYN.ficha && w.GYN.ficha.actual();

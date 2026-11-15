@@ -63,10 +63,13 @@
     var edad = fi.edad;
     if (esFicha && w.GYN.ficha) { var p = w.GYN.ficha.actual(); if (p && p.campos) edad = w.GYN.ficha.derivar(p.campos).edad; }
     var res = resultado(cont);
+    var ej = cont.querySelector('.ej-aviso');
+    var resumen = [nombre, edad !== null && edad !== undefined ? edad + ' años' : null].filter(Boolean).join(' — ');
+    if (ej) resumen += ' (ejemplo ilustrativo, paciente ficticia)';
     return {
       source_module: 'gyn',
       scope_authorized: 'calculo_actual',
-      patient_summary: [nombre, edad !== null && edad !== undefined ? edad + ' años' : null].filter(Boolean).join(' — '),
+      patient_summary: resumen,
       gyn_module: { id: modulo, nombre: nombre },
       clinical_findings: datosPantalla(cont).concat(fi.items),
       labs: [],
@@ -85,7 +88,7 @@
     w.open(url(armarContexto(modulo, nombre, cont)), '_blank', 'noopener,noreferrer');
   }
 
-  // Barra al pie de cada pantalla (no en los ejemplos: son pacientes ficticias).
+  // Barra al pie de cada pantalla, también con un ejemplo cargado.
   function barra(cont, modulo, nombre) {
     if (!cont || cont.querySelector('.ia-bar')) return;
     var full = w.GYN.licencia.esFull();
@@ -98,6 +101,20 @@
     b.querySelector('button').addEventListener('click', function () { enviar(modulo, nombre, cont); });
     cont.appendChild(b);
   }
+
+  // Botón violeta de arriba en la versión completa: «Analizar con CaVeSal® IA».
+  // Dentro de una pantalla envía esa pantalla; en el inicio abre la IA sin datos.
+  function botonSuperior() {
+    var a = d.querySelector('.topnav .pill-ia');
+    if (!a || !w.GYN.licencia || !w.GYN.licencia.esFull()) return;
+    a.textContent = 'Analizar con CaVeSal® IA';
+    a.addEventListener('click', function (ev) {
+      var pant = d.getElementById('pantalla');
+      var btn = pant && !pant.hidden && d.querySelector('#pCuerpo .ia-bar .btn-ia');
+      if (btn) { ev.preventDefault(); btn.click(); }
+    });
+  }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', botonSuperior); else botonSuperior();
 
   w.GYN = w.GYN || {};
   w.GYN.ia = { barra: barra, armarContexto: armarContexto, codificar: codificar, url: url, URL_IA: URL_IA };
