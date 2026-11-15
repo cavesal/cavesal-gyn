@@ -42,16 +42,22 @@
     return w;
   }
 
-  window.addEventListener("beforeinstallprompt", function (e) {
-    e.preventDefault(); deferred = e;
-    var w = boton(); if (!w) return;
-    document.getElementById("cv-instalar-go").onclick = function () {
-      if (!deferred) return;
-      deferred.prompt();
-      deferred.userChoice.then(function () { deferred = null; w.remove(); });
-    };
-  });
-  window.addEventListener("appinstalled", function () { var w = document.getElementById("cv-btn-instalar"); if (w) w.remove(); });
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferred = e; });
+  window.addEventListener("appinstalled", function () { deferred = null; var w = document.getElementById("cv-btn-instalar"); if (w) w.remove(); });
+
+  function instruccionesManual() {
+    var o = document.createElement("div");
+    o.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10001;display:flex;align-items:flex-end;justify-content:center";
+    o.innerHTML = '<div role="dialog" aria-modal="true" aria-label="Instalar la app" style="background:#fff;color:#12302f;border-radius:18px 18px 0 0;padding:22px 20px 28px;width:100%;max-width:480px">' +
+      '<h3 style="font-size:1rem;margin:0 0 12px">Instalar CaVeSal® GYN</h3>' +
+      '<ol style="padding-left:20px;line-height:1.9;font-size:.92rem;margin:0">' +
+      '<li>Si la abriste desde WhatsApp, Gmail u otra app, tocá el menú y elegí <strong>Abrir en Chrome</strong> (o en el navegador).</li>' +
+      '<li>En Chrome o Edge, tocá el menú <strong>⋮</strong> y elegí <strong>Instalar app</strong> o <strong>Agregar a pantalla de inicio</strong>. En la computadora también podés usar el ícono de instalar de la barra de direcciones.</li>' +
+      '<li>Si ya la tenés instalada, abrila desde su ícono.</li></ol>' +
+      '<button type="button" style="width:100%;margin-top:16px;padding:12px;background:#0b8e9f;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button></div>';
+    o.addEventListener("click", function (e) { if (e.target === o || e.target.tagName === "BUTTON") o.remove(); });
+    document.body.appendChild(o);
+  }
 
   function instruccionesIOS() {
     var o = document.createElement("div");
@@ -67,8 +73,16 @@
     o.addEventListener("click", function (e) { if (e.target === o || e.target.tagName === "BUTTON") o.remove(); });
     document.body.appendChild(o);
   }
-  if (esIOS && !standalone) {
-    var ini = function () { var w = boton(); if (w) document.getElementById("cv-instalar-go").onclick = instruccionesIOS; };
+  if (!standalone) {
+    var ini = function () {
+      var w = boton(); if (!w) return;
+      document.getElementById("cv-instalar-go").onclick = function () {
+        if (esIOS) return instruccionesIOS();
+        if (!deferred) return instruccionesManual();
+        deferred.prompt();
+        deferred.userChoice.then(function (r) { deferred = null; if (r && r.outcome === "accepted") w.remove(); });
+      };
+    };
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ini); else ini();
   }
 })();
