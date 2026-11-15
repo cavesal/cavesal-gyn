@@ -43,6 +43,8 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
 <script src="js/epi.js"></script>
 <script src="js/dolor.js"></script>
 <script src="js/ficha.js"></script>
+<script src="js/laboratorio.js"></script>
+<script src="js/marcadores.js"></script>
 <script>
 (function () {
   var out = document.getElementById('out'), ok = 0, mal = 0, ul = null;
@@ -523,6 +525,71 @@ li{margin:2px 0} #resumen{font-weight:700;font-size:1.1rem;padding:10px;border-r
   eq('Combinados categoría 4, DIU-LNG 1', [mm.metodos.ahc.cat, mm.metodos.lng.cat], [4, 1]);
   eq('Semáforo: fuma con 35 o más en rojo', FI.semaforo({ edad: '38', cig: '20', anosFuma: '15', m_cefalea: 'migranaCon' }, dv)[0].col, 'rojo');
   eq('Lactancia 25 días → l21_30', FI.derivar({ edad: '28', partoDias: '25', lactancia: true }).sel.lactancia, 'l21_30');
+
+  grupo('Laboratorio por cuadro');
+  var LB = GYN.laboratorio, lb = function (q, o) { return LB.evaluar(q, o); };
+  var J = function (r) { return r.filas.map(function (f) { return f[0] + ' ' + f[1] + ' ' + f[2]; }).join(' ') + ' ' + r.conducta.join(' ') + ' ' + r.noPedir.join(' ') + ' ' + r.pedir.join(' '); };
+  var n0 = function (o) { var d = { hb: null, vcm: null, ferr: null, glu: null, a1c: null, h2: null, ldl: null, hdl: null, tg: null, tsh: null, prl: null, plaq: null }; for (var k in o) d[k] = o[k]; return d; };
+  eq('Hb 9,5 → anemia moderada', /anemia moderada/.test(J(lb('rutina', n0({ hb: 9.5 })))), true);
+  eq('Ferritina 8 → depósitos agotados', /agotados/.test(J(lb('sangrado', n0({ ferr: 8 })))), true);
+  eq('β-hCG positiva → no es SUA', /no es SUA/.test(J(lb('sangrado', n0({ hcg: 'pos' })))), true);
+  eq('LDL 195 → hipercolesterolemia grave', /grave/.test(J(lb('rutina', n0({ ldl: 195 })))), true);
+  eq('Preconcepcional TSH 3,1 sin anti-TPO → zona gris', /Zona gris/.test(J(lb('rutina', n0({ preco: true, tsh: 3.1 })))), true);
+  var fe0 = function (o) { var d = n0({ edad: null, fsh: null, lh: null, e2: null, amh: null, p4: null }); for (var k in o) d[k] = o[k]; return d; };
+  eq('32 años FSH 40 → IOP', /Insuficiencia ovárica prematura/.test(J(lb('fertilidad', fe0({ edad: 32, fsh: 40 })))), true);
+  eq('AMH 0,8 → reserva disminuida (Bologna)', /Bologna/.test(J(lb('fertilidad', fe0({ amh: 0.8 })))), true);
+  eq('AMH 5 → alta, SOMP', /SOMP/.test(J(lb('fertilidad', fe0({ amh: 5 })))), true);
+  eq('E2 basal 95 con FSH 7 → puede ocultar', /ocultar/.test(J(lb('fertilidad', fe0({ fsh: 7, e2: 95 })))), true);
+  eq('P4 2 → anovulación', /Anovulación/.test(J(lb('fertilidad', fe0({ p4: 2 })))), true);
+  var an0 = function (o) { var d = n0({ tt: null, shbg: null, dheas: null, ohp: null, ins: null }); for (var k in o) d[k] = o[k]; return d; };
+  eq('Testosterona 210 → tumor', /tumor secretor/.test(J(lb('andro', an0({ tt: 210 })))), true);
+  eq('DHEA-S 820 → suprarrenal', /suprarrenal/.test(J(lb('andro', an0({ dheas: 820 })))), true);
+  eq('17-OHP 4 → ACTH', /ACTH/.test(J(lb('andro', an0({ ohp: 4 })))), true);
+  eq('17-OHP 12 → HSC no clásica', /HSC no clásica \(déficit/.test(J(lb('andro', an0({ ohp: 12 })))), true);
+  eq('T alta con exclusiones normales → SOMP', /compatible con SOMP/.test(J(lb('andro', an0({ ttAlta: true, ohp: 1, prl: 12, tsh: 2 })))), true);
+  eq('FAI: T 60 ng/dL, SHBG 20 → 10,4 %', /10,4 %/.test(J(lb('andro', an0({ tt: 60, shbg: 20 })))), true);
+  var cl0 = function (o) { var d = n0({ edad: 50, fsh: null, vitd: null, b12: null, fol: null, ca: '' }); for (var k in o) d[k] = o[k]; return d; };
+  eq('Más de 45 → no hace falta FSH', /no hace falta FSH/.test(J(lb('clima', cl0({})))), true);
+  eq('Vitamina D 15 → déficit (ES 2011)', /Endocrine Society 2011: déficit/.test(J(lb('clima', cl0({ vitd: 15 })))), true);
+  eq('B12 250 → ácido metilmalónico', /metilmalónico/.test(J(lb('clima', cl0({ b12: 250 })))), true);
+  eq('B6 sin regla', /B6: sin indicación de rutina/.test(J(lb('clima', cl0({})))), true);
+  eq('Pubertad: telarquia a los 7 → precoz', /Pubertad precoz/.test(J(lb('pubertad', { edad: 7, telarquia: true }))), true);
+  eq('Nota 5α-reductasa', /5α-reductasa/.test(J(lb('pubertad', { edad: null }))), true);
+  var im0 = function (o) { var d = { perd: null, tev: false, morb: false, famAlto: false, les: false, al: '', acl: '', b2: '', dos: false, fvl: '', pt: '', at: false, pc: false, ps: false, ana: '', dna: '', ro: '', c34: false, tpo: '', tsh: null }; for (var k in o) d[k] = o[k]; return d; };
+  eq('2 pérdidas → abortos a repetición ESHRE', /pérdida recurrente/.test(J(lb('inmuno', im0({ perd: 2 })))), true);
+  eq('Sin TEV → no pedir trombofilia', /Trombofilia hereditaria sin TEV/.test(J(lb('inmuno', im0({ perd: 2 })))), true);
+  eq('3 pérdidas + AL positivo 2 tomas → SAF obstétrico', /SAF obstétrico/.test(J(lb('inmuno', im0({ perd: 3, al: 'pos', dos: true })))), true);
+  eq('AL positivo 1 toma → repetir 12 semanas', /repetir a las 12 semanas/.test(J(lb('inmuno', im0({ al: 'pos' })))), true);
+  eq('FVL homocigota → alto riesgo', /Alto riesgo/.test(J(lb('inmuno', im0({ tev: true, fvl: 'homo' })))), true);
+  eq('FVL heterocigota sin TEV → vigilancia', /vigilancia/.test(J(lb('inmuno', im0({ famAlto: true, fvl: 'hetero' })))), true);
+  eq('Anti-Ro positivo → hidroxicloroquina', /hidroxicloroquina/.test(J(lb('inmuno', im0({ ro: 'pos' })))), true);
+  eq('PRR anti-TPO+ eutiroidea → no levotiroxina', /no indicar levotiroxina/.test(J(lb('inmuno', im0({ perd: 3, tpo: 'pos', tsh: 2 })))), true);
+  var sx0 = function (o) { var d = { emb: false, hipo: false, recur: false, prur: false, flujo: '', ph: null, aminas: '', clave: '', lacto: '', gard: '', nugent: null, donders: null, lev: '', tv: '', leuco: '', sgb: '', ct: '', ng: '', tvn: '', mg: '', uu: '' }; for (var k in o) d[k] = o[k]; return d; };
+  eq('Amsel 3/4 → vaginosis', /Vaginosis bacteriana/.test(J(lb('secrecion', sx0({ flujo: 'homogeneo', ph: 5.2, clave: 'si' })))), true);
+  eq('Nugent 8 → vaginosis', /Vaginosis bacteriana/.test(J(lb('secrecion', sx0({ nugent: 8 })))), true);
+  eq('Levaduras → candidiasis', /Candidiasis/.test(J(lb('secrecion', sx0({ lev: 'si' })))), true);
+  eq('Gardnerella sin criterios → no tratar', /No tratar sin criterios/.test(J(lb('secrecion', sx0({ gard: 'si', ph: 4.2 })))), true);
+  eq('Lactobacilos escasos sin dx → flora alterada', /Lactobacilos disminuidos/.test(J(lb('secrecion', sx0({ lacto: 'escasos' })))), true);
+  eq('SGB fuera del embarazo → no tratar', /no tratar en la mujer asintomática/.test(J(lb('secrecion', sx0({ sgb: 'pos' })))), true);
+  eq('SGB embarazada → profilaxis intraparto', /intraparto/.test(J(lb('secrecion', sx0({ sgb: 'pos', emb: true })))), true);
+  eq('Ureaplasma positivo → no tratar', /no tratar por este resultado/.test(J(lb('secrecion', sx0({ uu: 'pos' })))), true);
+  eq('Clamidia → doxiciclina', /doxiciclina 100 mg/.test(J(lb('secrecion', sx0({ ct: 'pos' })))), true);
+  eq('M. genitalium → moxifloxacino', /moxifloxacino/.test(J(lb('secrecion', sx0({ mg: 'pos' })))), true);
+
+  grupo('Marcadores tumorales');
+  var MK = GYN.marcadores, mk0 = function (o) { var d = { edad: null, post: false, masa: false, solida: false, ca125: null, he4: null, cea: null, ca199: null, ca153: '', afp: '', hcg: '', ldh: '', inh: '', amh: '', e2: '', testo: '' }; for (var k in o) d[k] = o[k]; return MK.evaluar(d); };
+  var O = function (r) { return r.origen.map(function (o) { return o[1]; }).join(' '); };
+  eq('AFP → saco vitelino', /saco vitelino/.test(O(mk0({ afp: 'a' }))), true);
+  eq('AFP + hCG → carcinoma embrionario', /embrionario/.test(O(mk0({ afp: 'a', hcg: 'a' }))), true);
+  eq('LDH → disgerminoma', /Disgerminoma/.test(O(mk0({ ldh: 'a' }))), true);
+  eq('Inhibina B → granulosa', /granulosa/.test(O(mk0({ inh: 'a' }))), true);
+  eq('CEA 12 → mucinoso o digestivo', /Mucinoso/.test(O(mk0({ cea: 12 }))), true);
+  eq('Posmenopausia CA-125 60 → derivar', /Derivar a ginecología oncológica/.test(mk0({ post: true, ca125: 60 }).conducta.join(' ')), true);
+  eq('Premenopausia CA-125 80 → no deriva por CA-125', /Derivar a ginecología oncológica \(CA-125/.test(mk0({ ca125: 80 }).conducta.join(' ')), false);
+  eq('<40 años con masa → LDH, AFP, β-hCG', /LDH, AFP y β-hCG/.test(mk0({ edad: 25, masa: true }).pedir.join(' ')), true);
+  var rm = MK.roma(150, 300, true);
+  eq('ROMA posmenopausia HE4 150, CA-125 300 → alto', rm.alto, true);
+  eq('ROMA premenopausia HE4 40, CA-125 50 → bajo', MK.roma(40, 50, false).alto, false);
 
   var res = document.getElementById('resumen');
   res.textContent = mal === 0 ? 'Todas aprobadas: ' + ok + ' de ' + ok : 'Falladas: ' + mal + ' · Aprobadas: ' + ok;

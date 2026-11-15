@@ -375,6 +375,58 @@
             { t: 'No hace falta control', fb: 'No. Puede fallar y romperse.' }
           ], ref: 'Dolor pélvico · ACOG PB 193', url: B + 'dolor' }
       ]
+    },
+    {
+      id: 'prr-saf', sector: 'Laboratorio', titulo: 'Tres pérdidas de embarazo antes de las 10 semanas',
+      resumen: '¿Qué se pide y qué no? ¿Cuándo se trata?',
+      modulo: 'laboratorio',
+      relato: 'Mujer de 33 años con 3 abortos espontáneos antes de las 10 semanas. Sin trombosis previa ni familiares con trombofilia. Pide "todos los estudios de trombofilia".',
+      preguntas: [
+        { q: '¿Qué estudio de coagulación está recomendado?',
+          ops: [
+            { t: 'Anticoagulante lúpico y anticardiolipinas IgG e IgM', ok: true, fb: 'Correcto. Recomendación fuerte de ESHRE tras 2 pérdidas; anti-β2GPI puede considerarse.' },
+            { t: 'Factor V Leiden, protrombina, proteínas C y S y MTHFR', fb: 'No. Sin TEV ni familiar de alto riesgo, la trombofilia hereditaria no se pide; MTHFR nunca.' },
+            { t: 'Homocisteína', fb: 'No. ESHRE no la recomienda de rutina.' }
+          ], ref: 'Laboratorio · ESHRE RPL 2022', url: B + 'laboratorio' },
+        { q: 'El anticoagulante lúpico sale positivo. ¿Qué sigue?',
+          ops: [
+            { t: 'Repetirlo a las 12 semanas para confirmar', ok: true, fb: 'Correcto. El criterio de laboratorio exige 2 tomas separadas por 12 semanas o más.' },
+            { t: 'Diagnosticar SAF con una sola toma', fb: 'No. Hace falta persistencia.' },
+            { t: 'Pedir HLA', fb: 'No. El HLA no se recomienda en la práctica clínica.' }
+          ], ref: 'Laboratorio · Miyakis 2006', url: B + 'laboratorio' },
+        { q: 'Confirmado. ¿Qué tratamiento se sugiere en el próximo embarazo?',
+          ops: [
+            { t: 'Aspirina en dosis baja desde antes de concebir + heparina profiláctica desde la prueba positiva', ok: true, fb: 'Correcto. ESHRE con 3 o más pérdidas y SAF.' },
+            { t: 'Levotiroxina por el anti-TPO positivo', fb: 'No. En eutiroideas con anti-TPO no mejora los nacidos vivos (TABLET, T4LIFE).' },
+            { t: 'Solo controles', fb: 'No. Con SAF y 3 pérdidas se sugiere tratar.' }
+          ], ref: 'Laboratorio · ESHRE RPL 2022', url: B + 'laboratorio' }
+      ]
+    },
+    {
+      id: 'marc-germinal', sector: 'Oncología', titulo: 'Adolescente con masa ovárica sólida',
+      resumen: '¿Qué marcadores pedir y qué orientan?',
+      modulo: 'marcadores',
+      relato: 'Adolescente de 17 años con dolor abdominal y masa anexial sólida de 12 cm en la ecografía. β-hCG negativa en orina.',
+      preguntas: [
+        { q: '¿Qué marcadores se piden en menores de 40 con masa compleja?',
+          ops: [
+            { t: 'LDH, AFP y β-hCG, además de CA-125', ok: true, fb: 'Correcto. RCOG GTG 62.' },
+            { t: 'Solo CA-125', fb: 'No. En jóvenes hay que buscar tumores germinales.' },
+            { t: 'CA 15-3', fb: 'No. Es para seguimiento de cáncer de mama.' }
+          ], ref: 'Marcadores · RCOG GTG 62', url: B + 'marcadores' },
+        { q: 'La AFP está elevada con LDH y hCG normales. ¿Origen probable?',
+          ops: [
+            { t: 'Tumor del saco vitelino', ok: true, fb: 'Correcto. La AFP es su marcador.' },
+            { t: 'Tumor de la granulosa', fb: 'No. Ese eleva inhibina B y AMH.' },
+            { t: 'Cistoadenoma mucinoso', fb: 'No. Ese eleva CEA y CA 19-9.' }
+          ], ref: 'Marcadores · ESMO 2018', url: B + 'marcadores' },
+        { q: '¿Conducta?',
+          ops: [
+            { t: 'Derivar a ginecología oncológica y priorizar la cirugía conservadora de la fertilidad', ok: true, fb: 'Correcto. ESMO 2018.' },
+            { t: 'Anexohisterectomía total', fb: 'No. En jóvenes se conserva la fertilidad siempre que se pueda.' },
+            { t: 'Control ecográfico en 3 meses', fb: 'No. Marcador germinal elevado con masa sólida: derivar.' }
+          ], ref: 'Marcadores · ESMO 2018', url: B + 'marcadores' }
+      ]
     }
   ];
 })(window);

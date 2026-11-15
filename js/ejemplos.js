@@ -35,6 +35,11 @@
     mrs: [{ t: 'Climaterio con síntomas moderados', v: { 'r:m1=3': true, 'r:m2=2': true, 'r:m3=3': true, 'r:m4=2': true, 'r:m5=2': true, 'r:m6=1': true, 'r:m7=2': true, 'r:m8=2': true, 'r:m9=1': true, 'r:m10=2': true, 'r:m11=2': true } }],
     thm: [{ t: 'Mujer de 52 años con sofocos y síndrome genitourinario', v: { '#th-etapa': 'posmeno', '#th-edad': 52, '#th-anosFum': 2, '#th-utero': 'si', '#th-svm': true, '#th-sgum': true, '#th-fractura': 'bajo', '#th-gailCat': 'bajo', 'r:th-cvHerr=hearts': true, '#th-cvHearts': 4 } }],
     incretinas: [{ t: 'Semaglutida 1 mg a las 12 semanas', v: { '#i-obj': 'peso', '#i-mol': 'sema', '#i-dosis': '2', '#i-semd': 4, '#i-semt': 12, '#i-tol': 'leve', '#i-pi': 98, '#i-pa': 90, '#i-talla': 165, '#i-met': 'oral', '#i-com': true } }],
+    laboratorio: [{ t: 'Tres abortos con anticoagulante lúpico positivo', v: { '#lb-cuadro': 'inmuno', '#li-perd': 3, '#li-al': 'pos', '#li-acl': 'alto', '#li-dos': true, '#li-tpo': 'pos', '#li-tsh': 2.1 } },
+      { t: 'Flujo con olor, células guía y Ureaplasma positivo', v: { '#lb-cuadro': 'secrecion', '#lx-flujo': 'homogeneo', '#lx-ph': 5.0, '#lx-am': 'si', '#lx-cg': 'si', '#lx-lac': 'escasos', '#lx-gar': 'si', '#lx-uu': 'pos' } },
+      { t: 'Hirsutismo con 17-OH progesterona de 4,5', v: { '#lb-cuadro': 'andro', '#la-tt': 68, '#la-tta': 'a', '#la-shbg': 22, '#la-dheas': 280, '#la-ohp': 4.5, '#la-prl': 14, '#la-tsh': 1.9, '#la-glu': 98, '#la-ins': 18 } }],
+    marcadores: [{ t: 'Adolescente con masa sólida y AFP elevada', v: { '#mk-edad': 17, '#mk-masa': true, '#mk-sol': true, '#mk-afp': 'a', '#mk-ldh': 'n', '#mk-hcg': 'n' } },
+      { t: 'Posmenopáusica con CA-125 de 180 y HE4 de 210', v: { '#mk-edad': 62, '#mk-meno': 'post', '#mk-masa': true, '#mk-sol': true, '#mk-ca': 180, '#mk-he4': 210 } }],
     dm: [{ t: 'Glucemia en ayunas de 112 y HbA1c 6,0 %', v: { '#dm-ay': 112, '#dm-a1c': 6.0, '#dm-edad': 40, '#dm-imc': 36 } },
       { t: 'Dos valores en rango de diabetes', v: { '#dm-ay': 134, '#dm-a1c': 7.1, '#dm-edad': 46, '#dm-imc': 31, '#dm-plan': true } }]
   };

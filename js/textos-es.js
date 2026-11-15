@@ -111,7 +111,13 @@
           { id: 'onco', nombre: 'Estadificación FIGO: cérvix, endometrio y ovario', estado: 'v1', etapas: TODAS, caps: [], motivos: ['tumor', 'sangrado'], kw: 'cancer figo estadio',
             resumen: 'Cérvix FIGO 2018, endometrio FIGO 2023 con grupo molecular y ovario FIGO 2014, sin dosis.' }
         ] },
-      { id: 'imagenes', nombre: 'Estudios e imágenes', intro: 'Hallazgos de imagen con su conducta.', funciones: [] }
+      { id: 'imagenes', nombre: 'Laboratorio e imágenes', intro: 'Laboratorio por cuadro, marcadores tumorales y hallazgos de imagen con su conducta.',
+        funciones: [
+          { id: 'laboratorio', nombre: 'Laboratorio por cuadro: qué pedir e interpretación', estado: 'v1', etapas: TODAS, caps: ['endocrino', 'fertilidad', 'infecciones', 'climaterio'], motivos: ['sangrado', 'irregularidad', 'infertilidad', 'climaterio', 'pubertad', 'metabolico', 'prevencion', 'flujo'], kw: 'laboratorio analisis hemograma anemia ferritina glucemia hba1c tiroides tsh fsh lh estradiol amh progesterona dia 21 testosterona dhea 17oh prolactina vitamina d b12 folato calcemia trombofilia antifosfolipidos lupus abortos repeticion flujo exudado gardnerella candida estreptococo ureaplasma micoplasma clamidia',
+            resumen: 'Ocho cuadros: rutina y preconcepcional, sangrado, fertilidad (día 2 a 3, AMH, día 21), hiperandrogenismo, climaterio, pubertad, perfil inmunológico con trombofilia y abortos a repetición, y secreciones. Qué pedir, qué no pedir, interpretación y conducta.' },
+          { id: 'marcadores', nombre: 'Marcadores tumorales y origen probable', estado: 'v1', etapas: TODAS, caps: ['onco'], motivos: ['tumor'], kw: 'ca125 he4 roma cea ca199 afp hcg ldh inhibina amh marcadores tumor ovario germinal granulosa',
+            resumen: 'CA-125, HE4 con ROMA, CEA, CA 19-9, AFP, β-hCG, LDH, inhibina B, AMH, estradiol y testosterona: origen probable, falsos positivos y derivación.' }
+        ] }
     ],
     motivos: [
       { id: 'tumor', nombre: 'Tumor o masa', grande: true, desc: 'Masa anexial, mama, útero, cáncer' },
