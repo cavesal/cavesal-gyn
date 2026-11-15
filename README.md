@@ -38,6 +38,7 @@ Ya no quedan funciones Próximamente.
 
 - Demo: abiertas la escala MRS, el día de ovulación con la ventana de progesterona , la Calculadora de THM en modo SEGIRP 2026 (el modo combinado es Full), el POP-Q y el IMC (`ABIERTAS_DEMO` en `js/licencia.js`).
 - Versión completa: trigger por esquema, panel hormonal y todas las funciones nuevas.
+- Entradas como en Emergencias: `/demo/` (siempre Demo; "Activar" lleva a `/full/`) y `/full/` (pide la clave al entrar si no está guardada). Se generan desde `index.html` con `python3 tools/entradas.py`; correrlo después de cada cambio en `index.html`. La raíz sigue funcionando para los enlaces ya compartidos.
 - Mientras `REQUIERE_LICENCIA = false` todo queda abierto; `?demo=1` muestra la Demo para revisarla.
 - La clave activada se guarda en `cavesal_gyn_full_unlocked`, que también abre Academy (`?desde=gyn`).
 

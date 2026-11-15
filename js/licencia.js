@@ -19,11 +19,15 @@
 
   function gate() { return d.getElementById('license_gate'); }
   function ocultarGate() { var g = gate(); if (g) g.hidden = true; d.body.style.overflow = ''; }
+  function abrir() { if (ENTRADA === 'demo') { location.href = RAIZ + 'full/'; return; } mostrarGate(); }
   function mostrarGate() { var g = gate(); if (g) { g.hidden = false; d.body.style.overflow = 'hidden'; var i = d.getElementById('lg_input'); if (i) i.focus(); } }
 
   function claveGuardada() { try { return !!localStorage.getItem(LICENSE_STORAGE_KEY); } catch (e) { return false; } }
   // Sin REQUIERE_LICENCIA (repo privado, en pruebas) todo queda abierto, salvo ?demo=1 para revisar la Demo.
+  // Entradas: /demo/ siempre Demo; /full/ pide la clave al entrar (window.GYN_ENTRADA, ver tools/entradas.py).
+  var ENTRADA = w.GYN_ENTRADA || '', RAIZ = w.GYN_RAIZ || './';
   function esFull() {
+    if (ENTRADA === 'demo') return false;
     if (/[?&]demo=1/.test(location.search)) return false;
     if (!REQUIERE_LICENCIA) return true;
     return claveGuardada();
@@ -66,10 +70,10 @@
     d.getElementById('lg_input').addEventListener('keydown', function (e) { if (e.key === 'Enter') validarClave(); });
     d.addEventListener('keydown', function (e) { if (e.key === 'Escape') ocultarGate(); });
     if (REQUIERE_LICENCIA && !claveGuardada()) {
-      w.CVSLic.restaurar(LICENSE_STORAGE_KEY).then(function (c) { if (c) activada(); });
+      w.CVSLic.restaurar(LICENSE_STORAGE_KEY).then(function (c) { if (c) activada(); else if (ENTRADA === 'full') mostrarGate(); });
     }
   }
 
   w.GYN = w.GYN || {};
-  w.GYN.licencia = { iniciar: iniciar, esFull: esFull, abiertaEnDemo: abiertaEnDemo, abrir: mostrarGate, REQUIERE_LICENCIA: REQUIERE_LICENCIA, CLAVE: LICENSE_STORAGE_KEY };
+  w.GYN.licencia = { iniciar: iniciar, esFull: esFull, abiertaEnDemo: abiertaEnDemo, abrir: abrir, ENTRADA: ENTRADA, REQUIERE_LICENCIA: REQUIERE_LICENCIA, CLAVE: LICENSE_STORAGE_KEY };
 })(window, document);

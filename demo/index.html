@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!-- Generado por tools/entradas.py desde index.html. No editar a mano. -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Modo Demo — CaVeSal® GYN</title>
+<meta name="description" content="Probá gratis CaVeSal® GYN: escala MRS, día de ovulación, Calculadora de THM, POP-Q, IMC, ficha de la paciente, casos de ejemplo y simulador.">
+<meta name="author" content="Dr. Carlos Vera Salerno — CaVeSal® Maternal Fetal Intelligence">
+<meta name="copyright" content="© 2026 Dr. Carlos Vera Salerno · CaVeSal® · Ley N.º 1328/1998 (Paraguay)">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b8e9f">
+<script>window.GYN_ENTRADA="demo";window.GYN_RAIZ="../";</script>
+<link rel="stylesheet" href="../css/estilos.css">
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="CaVeSal® DEMO · GYN Calculadora gineco-endocrinológica"/>
+<meta property="og:description" content="Probá gratis CaVeSal® GYN: escala MRS, día de ovulación, Calculadora de THM, POP-Q, IMC, ficha de la paciente, casos de ejemplo y simulador."/>
+<meta property="og:url" content="https://cavesal.app/cavesal-gyn/demo/"/>
+<meta property="og:image" content="https://cavesal.app/cavesal-gyn/og-cover-gyn.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="CaVeSal® GYN · Ginecología"/>
+<meta property="og:site_name" content="CaVeSal®"/>
+<meta property="og:locale" content="es_PY"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="CaVeSal® DEMO · GYN Calculadora gineco-endocrinológica"/>
+<meta name="twitter:description" content="Probá gratis CaVeSal® GYN: escala MRS, día de ovulación, Calculadora de THM, POP-Q, IMC, ficha de la paciente, casos de ejemplo y simulador."/>
+<meta name="twitter:image" content="https://cavesal.app/cavesal-gyn/og-cover-gyn.jpg"/>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CaVeSal GYN">
+</head>
+<body>
+
+<!-- Aviso legal · modal de aceptación (mismo texto y clave que las otras apps CaVeSal®) -->
+<div id="cavesal-legal-overlay" hidden>
+  <div id="cavesal-legal-modal" role="dialog" aria-modal="true" aria-labelledby="cavesal-legal-title">
+    <header>
+      <h2 id="cavesal-legal-title">Aviso legal · CaVeSal®</h2>
+      <p>Antes de continuar, leé lo siguiente</p>
+    </header>
+    <div id="cavesal-legal-body">
+      <p><strong>CaVeSal® es una herramienta de apoyo a la decisión clínica dirigida a profesionales de la salud.</strong> No reemplaza el juicio clínico del médico tratante, no constituye un dispositivo médico certificado y no sustituye las guías oficiales ni la evaluación presencial de cada paciente.</p>
+      <ul>
+        <li>El uso de la App no crea una relación médico-paciente entre el desarrollador y vos ni tus pacientes.</li>
+        <li>No es un servicio de emergencia: ante signos de alarma, seguí los protocolos de urgencia habituales.</li>
+        <li>Los resultados son orientativos y deben ser validados con criterio clínico independiente.</li>
+      </ul>
+      <p>Podés leer el detalle completo en los <a href="https://cavesal.app/terminos.html" target="_blank" rel="noopener">Términos de Servicio</a> y la <a href="https://cavesal.app/privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a>.</p>
+    </div>
+    <div id="cavesal-legal-footer">
+      <label id="cavesal-legal-check">
+        <input type="checkbox" id="cavesal-legal-checkbox">
+        <span>He leído y acepto los Términos de Servicio y la Política de Privacidad de CaVeSal®, y entiendo que esta App no reemplaza el juicio clínico profesional.<br><small>Confirmo que soy profesional de la salud habilitado y que uso esta herramienta como apoyo, no como sustituto de mi criterio clínico.</small></span>
+      </label>
+      <button id="cavesal-legal-accept" type="button" disabled>Acepto y continúo</button>
+    </div>
+  </div>
+</div>
+
+<!-- Activación de la versión completa (se abre desde los botones "Activar versión completa") -->
+<div id="license_gate" hidden role="dialog" aria-modal="true" aria-labelledby="lg_tit">
+  <div class="lg-caja">
+    <button id="lg_cerrar" class="lg-cerrar" type="button" aria-label="Cerrar">×</button>
+    <div class="lg-ico" aria-hidden="true">🔒</div>
+    <h2 id="lg_tit">Activá CaVeSal® GYN — Versión Completa</h2>
+    <p class="lg-msg">Tu clave de acceso es válida para un solo dispositivo. Al ingresarla, este dispositivo queda habilitado para todas las funciones, incluidas las futuras actualizaciones.</p>
+    <input id="lg_input" type="text" placeholder="GYN-XXXX-XXXX-XXXX-XXXX" maxlength="30" autocomplete="off" aria-label="Clave de licencia">
+    <button id="lg_btn" type="button">Activar</button>
+    <div id="lg_error" role="alert" hidden></div>
+    <div id="lg_reactivar"></div>
+    <a href="https://cavesal.gumroad.com/l/cavesal" target="_blank" rel="noopener">¿No tenés clave? Adquirí la versión completa →</a><br>
+    <a href="https://cavesal.app/comprar.html?producto=gyn" target="_blank" rel="noopener">¿No tenés tarjeta? Comprá por transferencia →</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="topbar">
+    <a class="brand" href="#">
+      <img class="logo" src="../assets/logo-gyn-icono.png" alt="" width="40" height="40">
+      <span><span class="name">CaVeSal<sup>®</sup> <b>GYN</b></span><span class="tag">Calculadora gineco-endocrinológica para el profesional</span></span>
+    </a>
+    <button id="btnTema" class="btn-tema" type="button" aria-label="Cambiar tema claro u oscuro">◐</button>
+  </header>
+  <nav class="topnav" aria-label="Secciones">
+    <a class="pill" href="#">Inicio</a>
+    <a class="pill" href="/academy/">Academy</a>
+    <a class="pill pill-ia" href="https://ia.cavesal.app/" target="_blank" rel="noopener">CaVeSal® IA</a>
+    <a class="pill" href="../simulador.html">Simulador</a>
+    <a class="pill" href="../manual.html">Tutorial</a>
+    <a class="pill" href="../acerca.html">Acerca</a>
+  </nav>
+  <div class="demo-banner" id="demoBanner" hidden>
+    <span>Versión Demo: abiertas la escala MRS, el día de ovulación, la Calculadora de THM, el POP-Q y el IMC. La ficha de la paciente es libre (guardar pacientes es de la versión completa). En los demás módulos podés ver un caso de ejemplo, y el <a href="../simulador.html">Simulador</a> es libre.</span>
+    <button type="button" class="btn-activar" data-activar>Activar versión completa</button>
+  </div>
+
+  <main>
+    <section id="inicio">
+      <div class="logo-hero"><img src="../assets/logo-gyn.jpg" alt="CaVeSal® GYN · Ginecología · Herramientas clínicas para la práctica ginecológica" width="640" height="640"></div>
+      <a class="ficha-bar" href="#ficha"><span class="fb-tit">Ficha de la paciente</span><span class="fb-sub" id="fichaChip">Antecedentes y factores de riesgo con semáforo</span><span class="fb-ir">Abrir →</span></a>
+      <label class="buscador"><span class="sr">Buscar</span><input id="buscar" type="search" placeholder="Buscar: sangrado, dolor, mioma, SOMP, ectópico, mamografía…" autocomplete="off"></label>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Buscar por"></div>
+      <div class="sub" id="sub"></div>
+      <p class="cat-intro" id="catIntro"></p>
+      <div class="grid" id="grid"></div>
+      <p class="vacio" id="vacio" hidden>Sin resultados. Probá con otra palabra o elegí un motivo de consulta.</p>
+    </section>
+
+    <section id="pantalla" hidden>
+      <button type="button" class="btn-volver" id="volver">← Volver</button>
+      <div class="p-cab">
+        <h2 id="pTitulo" tabindex="-1"></h2>
+        <p class="p-sub" id="pSub"></p>
+      </div>
+      <div class="p-cuerpo" id="pCuerpo"></div>
+    </section>
+  </main>
+
+  <footer class="pie" id="pie"></footer>
+</div>
+
+<script src="../js/textos-es.js"></script>
+<script src="../js/cvs-lic.js"></script>
+<script src="../js/licencia.js"></script>
+<script src="../js/fertilidad.js"></script>
+<script src="../js/preconcepcional.js"></script>
+<script src="../js/imc.js"></script>
+<script src="../js/pubertad.js"></script>
+<script src="../js/dm.js"></script>
+<script src="../js/ejemplos.js"></script>
+<script src="../js/pareja.js"></script>
+<script src="../js/somp.js"></script>
+<script src="../js/mrs.js"></script>
+<script src="../js/prolapso.js"></script>
+<script src="../js/incontinencia.js"></script>
+<script src="../js/vaginitis.js"></script>
+<script src="../js/thm.js"></script>
+<script src="../js/mec.js"></script>
+<script src="../js/incretinas.js"></script>
+<script src="../js/comun.js"></script>
+<script src="../js/orads.js"></script>
+<script src="../js/estudios.js"></script>
+<script src="../js/utero.js"></script>
+<script src="../js/endometriosis.js"></script>
+<script src="../js/onco.js"></script>
+<script src="../js/hua.js"></script>
+<script src="../js/amenorrea.js"></script>
+<script src="../js/epi.js"></script>
+<script src="../js/dolor.js"></script>
+<script src="../js/ficha.js"></script>
+<script src="../js/laboratorio.js"></script>
+<script src="../js/marcadores.js"></script>
+<script src="../js/ecogin.js"></script>
+<script src="../js/densitometria.js"></script>
+<script src="../js/induccion.js"></script>
+<script src="../js/sho.js"></script>
+<script src="../js/metodos.js"></script>
+<script src="../js/genetica.js"></script>
+<script src="../js/puente.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/pwa.js"></script>
+<script>/* Academy se abre aparte (no reemplaza la app) y lleva la clave para entrar directo. En la Demo queda bloqueada: pide la clave. */
+(function(){document.addEventListener("click",function(ev){var a=ev.target&&ev.target.closest?ev.target.closest('a[href^="/academy/"]'):null;if(!a)return;var L=window.GYN&&window.GYN.licencia;if(L&&!L.esFull()){ev.preventDefault();ev.stopPropagation();L.abrir();return;}var k="";try{k=(localStorage.getItem("cavesal_gyn_full_unlocked")||"").trim();}catch(e){}if(k==="true"||k==="1")k="";var h=k?"#k="+encodeURIComponent(k):"";a.href="https://cavesal.app/academy/?desde=gyn"+h;a.target="_blank";a.rel="noopener";},true);})();</script>
+</body>
+</html>

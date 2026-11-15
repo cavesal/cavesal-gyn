@@ -3,7 +3,8 @@
   "use strict";
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
     var hadController = !!navigator.serviceWorker.controller;
-    navigator.serviceWorker.register("./sw.js", { scope: "./", updateViaCache: "none" }).then(function (reg) {
+    var RAIZ = window.GYN_RAIZ || "./";
+    navigator.serviceWorker.register(RAIZ + "sw.js", { scope: RAIZ, updateViaCache: "none" }).then(function (reg) {
       /* app instalada: al volver a abrirla (aunque siga en memoria) busca versión nueva */
       var buscar = function () { try { reg.update(); } catch (e) {} };
       document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") buscar(); });

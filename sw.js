@@ -1,8 +1,12 @@
 /* CaVeSal® GYN — service worker. Subir VERSION en cada publicación. */
-const VERSION = "cavesal-gyn-v6";
+const VERSION = "cavesal-gyn-v7";
 const PRECACHE = [
   "./",
   "./acerca.html",
+  "./demo/",
+  "./demo/manifest.json",
+  "./full/",
+  "./full/manifest.json",
   "./assets/apple-touch-icon.png",
   "./assets/favicon.png",
   "./assets/icon-192.png",
