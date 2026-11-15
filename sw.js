@@ -1,5 +1,5 @@
 /* CaVeSal® GYN — service worker. Subir VERSION en cada publicación. */
-const VERSION = "cavesal-gyn-v24";
+const VERSION = "cavesal-gyn-v25";
 const PRECACHE = [
   "./",
   "./acerca.html",
@@ -83,6 +83,8 @@ const PRECACHE = [
   "./js/vaginitis.js",
   "./manifest.json",
   "./manual.html",
+  "./manual-en.html",
+  "./manual-pt.html",
   "./simulador.html",
   "./og-cover-gyn.jpg"
 ];

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial e Manual de Uso · CaVeSal® GYN</title>
+<meta name="description" content="Tutorial passo a passo do CaVeSal® GYN: fertilidade e trigger, painel hormonal pré-concepcional, escala MRS, Demo e versão completa.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="author" content="CaVeSal"/>
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="Tutorial e Manual de Uso · CaVeSal® GYN"/>
+<meta property="og:description" content="Tutorial passo a passo do CaVeSal® GYN: fertilidade e trigger, painel hormonal, escala MRS, Demo e versão completa."/>
+<meta property="og:url" content="https://cavesal.app/cavesal-gyn/manual-pt.html"/>
+<meta property="og:image" content="https://cavesal.app/cavesal-gyn/og-cover-gyn.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:site_name" content="CaVeSal®"/>
+<meta property="og:locale" content="pt_BR"/>
+<style>
+  :root{
+    --navy:#0D1B2D;--teal:#0EA5B7;--teal-lt:#e6f7f9;--slate:#4a6274;--mist:#f2f7f9;--border:#d0e8ed;--gold:#c9a227;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--mist);color:var(--navy);line-height:1.6}
+  header{background:linear-gradient(135deg,#0D1B2D,#0EA5B7);color:#fff;padding:32px 20px;text-align:center}
+  header h1{font-size:1.4rem;font-weight:800}
+  header p{font-size:.9rem;opacity:.85;margin-top:6px}
+  .portada{display:block;width:100%;max-width:520px;margin:0 auto 20px;background:#fff;border-radius:16px;padding:10px;box-shadow:0 6px 24px rgba(0,0,0,.22)}
+  .portada img{display:block;width:100%;height:auto;border-radius:10px}
+  main{max-width:760px;margin:0 auto;padding:28px 20px 60px}
+
+  nav.toc{background:#fff;border-radius:14px;padding:18px 20px;margin-bottom:22px;box-shadow:0 2px 12px rgba(14,165,183,.10)}
+  nav.toc h2{font-size:1rem;color:var(--teal);margin-bottom:10px}
+  nav.toc>ol{padding-left:18px;font-size:.88rem}
+  nav.toc>ol>li{margin-bottom:10px;font-weight:700}
+  nav.toc>ol>li>a{color:var(--navy);text-decoration:none}
+  nav.toc ol ol{padding-left:18px;font-weight:400;margin-top:4px}
+  nav.toc ol ol li{margin-bottom:3px;font-size:.84rem}
+  nav.toc a{color:var(--navy);text-decoration:none}
+  nav.toc ol ol a{color:var(--slate)}
+  nav.toc a:hover{color:var(--teal)}
+
+  .tab-divider{background:linear-gradient(135deg,#0D1B2D,#0EA5B7);color:#fff;border-radius:14px;padding:16px 20px;margin:26px 0 14px;scroll-margin-top:16px}
+  .tab-divider:first-of-type{margin-top:0}
+  .tab-divider h2{font-size:1.15rem;display:flex;align-items:center;gap:8px}
+  .tab-divider p{font-size:.8rem;opacity:.88;margin-top:4px}
+
+  section{background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 2px 12px rgba(14,165,183,.10);scroll-margin-top:16px}
+  section h2{font-size:1.1rem;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  section h3{font-size:.95rem;color:var(--navy);margin:14px 0 6px}
+  section .ref{font-size:.74rem;color:var(--slate);margin-bottom:14px;font-style:italic}
+  section p{font-size:.9rem;margin-bottom:10px}
+
+  .step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+  .step-num{background:var(--teal);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:800;flex-shrink:0;margin-top:2px}
+  .step p{font-size:.88rem;margin:0}
+
+  .tip{background:var(--teal-lt);border-left:3px solid var(--teal);border-radius:8px;padding:12px 14px;font-size:.85rem;margin-top:10px}
+  .warn{background:#fff8e6;border-left:3px solid var(--gold);border-radius:8px;padding:12px 14px;font-size:.85rem;margin-top:10px}
+
+  .shot{border:2px dashed var(--border);border-radius:12px;padding:22px;text-align:center;color:var(--slate);font-size:.82rem;margin:14px 0;background:#fafdfe}
+  .shot .cam{font-size:1.6rem;display:block;margin-bottom:6px}
+  .shot code{background:#eef7f9;padding:2px 6px;border-radius:5px;font-size:.78rem;color:var(--navy)}
+
+  .new{background:#eafbf0;border-left:3px solid #0d8f4a;border-radius:8px;padding:10px 14px;font-size:.78rem;margin-bottom:10px;color:#0d6b38;font-weight:600;display:inline-block}
+
+  .updated{font-size:.78rem;color:var(--slate);text-align:center;margin-top:20px}
+  a{color:var(--teal)}
+  .back-top{display:inline-block;margin-top:14px;font-size:.78rem}
+
+
+  .fig{margin:14px 0;text-align:center}
+  .fig img{max-width:100%;width:420px;border-radius:12px;box-shadow:0 2px 10px rgba(14,165,183,.18);border:1px solid var(--border)}
+  .fig figcaption{font-size:.76rem;color:var(--slate);margin-top:6px}
+  .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:14px 0}
+  .two .fig{margin:0}
+  .two .fig img{width:100%}
+  .two>*{min-width:0}.fig{min-width:0}.fig img{height:auto}
+  .badge{display:inline-block;font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
+  .b-full{background:#0D1B2D;color:#fff}.b-demo{background:#dcfce7;color:#15803d}
+  ul.list{padding-left:20px;margin:6px 0 10px}ul.list li{font-size:.88rem;margin-bottom:5px}
+  .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .cta{display:inline-block;padding:10px 16px;border-radius:10px;font-weight:700;font-size:.86rem;text-decoration:none}
+  .cta.dark{background:linear-gradient(135deg,#0D1B2D,#0EA5B7);color:#fff}
+  .cta.line{border:1.5px solid var(--teal);color:var(--teal);background:#fff}
+
+</style>
+<style>.portada{max-width:340px}
+@media print{.fig img,.two .fig img{width:auto;max-width:100%;max-height:120mm}.two{grid-template-columns:1fr 1fr}.fig{break-inside:avoid}.back-top{display:none}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}.portada{max-width:240px}}</style>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="CaVeSal GYN">
+<link rel="alternate" hreflang="es" href="https://cavesal.app/cavesal-gyn/manual.html"/>
+<link rel="alternate" hreflang="en" href="https://cavesal.app/cavesal-gyn/manual-en.html"/>
+<link rel="alternate" hreflang="pt-BR" href="https://cavesal.app/cavesal-gyn/manual-pt.html"/>
+<link rel="alternate" hreflang="x-default" href="https://cavesal.app/cavesal-gyn/manual.html"/>
+<style>.lang-sw{display:flex;justify-content:center;gap:6px;margin-top:12px;flex-wrap:wrap}.lang-sw a{color:#fff;text-decoration:none;font-size:.78rem;font-weight:700;padding:4px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.55);opacity:.85}.lang-sw a[aria-current]{background:#fff;color:#0D1B2D;opacity:1}</style>
+</head>
+<body>
+<header>
+  <div class="portada"><img src="assets/logo-gyn.jpg" width="640" height="640" alt="CaVeSal® GYN · Ginecología · Herramientas clínicas para la práctica ginecológica"></div>
+  <h1>Tutorial e Manual de Uso · CaVeSal® GYN</h1>
+  <p>Como usar cada função, na mesma ordem em que aparece no app</p>
+  <nav class="lang-sw" aria-label="Idioma / Language"><a href="manual.html" lang="es">ES</a><a href="manual-en.html" lang="en">EN</a><a href="manual-pt.html" lang="pt" aria-current="page">PT</a></nav>
+</header>
+<main>
+<nav class="toc" id="top">
+  <h2>Conteúdo</h2>
+  <ol>
+    <li><a href="#intro">Antes de começar</a><ol><li><a href="#demo-full">Demo e versão completa</a></li><li><a href="#instalar">Instalar e ativar</a></li></ol></li>
+    <li><a href="#organizacion">Como o app está organizado</a><ol><li><a href="#botones">Botões de cima</a></li></ol></li>
+    <li><a href="#funciones">Funções que já calculam</a><ol><li><a href="#fertilidad">Fertilidade: ovulação, progesterona e trigger</a></li><li><a href="#preconcepcional">Pré-concepcional: semáforo, ácido fólico e painel hormonal</a></li><li><a href="#pareja">Investigação do casal infértil</a></li><li><a href="#somp">SOP (SOMP): critérios, fenótipo e HOMA-IR</a></li><li><a href="#mrs">Climatério: escala MRS</a></li><li><a href="#ficha">Ficha da paciente</a></li><li><a href="#hua">Sangramento uterino anormal</a></li><li><a href="#amenorrea">Amenorreia</a></li><li><a href="#epi">DIP</a></li><li><a href="#dolor">Dor pélvica</a></li><li><a href="#laboratorio">Laboratório por quadro</a></li><li><a href="#marcadores">Marcadores tumorais</a></li><li><a href="#ecogin">Ultrassom ginecológico: reserva, ovário policístico, tubas e cavidade</a></li><li><a href="#densitometria">Densitometria óssea</a></li><li><a href="#induccion">Indução da ovulação</a></li><li><a href="#sho">Síndrome de hiperestimulação ovariana</a></li><li><a href="#metodos">Contracepção: elegibilidade e métodos</a></li><li><a href="#genetica">Câncer hereditário: BRCA e síndrome de Lynch</a></li><li><a href="#pacientes">Minhas pacientes e backup no Google Drive</a></li><li><a href="#puente-hc">Dados do Prontuário Clínico</a></li><li><a href="#progestagenos">Escolha do progestagênio</a></li><li><a href="#aemergencia">Contracepção de emergência</a></li></ol></li>
+    <li><a href="#ejemplos">Exemplos e Simulador</a></li>
+    <li><a href="#ecosistema">Academy, IA e Sobre</a></li>
+    <li><a href="#legal">Aviso legal e contato</a></li>
+  </ol>
+</nav>
+
+<div class="tab-divider" id="intro"><h2>Antes de começar</h2><p>O que é o CaVeSal® GYN e para quem é</p></div>
+<section>
+  <h2>O que é</h2>
+  <p>O CaVeSal® GYN é uma calculadora gineco-endocrinológica para profissionais de saúde. Reúne funções de fertilidade, investigação pré-concepcional, climatério, adolescência, contracepção, saúde ginecológica e endocrinologia.</p>
+  <p>A interface do app está em espanhol; os nomes de botões e campos aparecem como no app, com a tradução entre parênteses.</p>
+  <p>Cada função calcula seu próprio resultado no mesmo bloco onde você insere os dados. Não há uma aba de resultados separada: o que você muda é recalculado na hora.</p>
+  <p>Ao abrir o app pela primeira vez aparece o aviso legal. Marque a caixa e toque em Aceptar (Aceitar) para continuar.</p>
+  <figure class="fig"><img src="img/manual/01-aviso.jpg" alt="Aviso legal al primer ingreso"><figcaption>Aviso legal no primeiro acesso</figcaption></figure>
+  <div class="warn">É uma ferramenta de apoio à decisão clínica. Não substitui o critério do profissional.</div>
+</section>
+<section id="demo-full">
+  <h2>Demo e versão completa</h2>
+  <p><span class="badge b-demo">Demo</span> Aberta para testar: a escala MRS, o dia da ovulação com a janela da dosagem de progesterona, a Calculadora de TRH com o algoritmo SEGIRP 2026, o POP-Q do prolapso e o IMC.</p>
+  <p><span class="badge b-full">Versão completa</span> Soma o momento do trigger segundo o esquema de indução, o painel hormonal pré-concepcional e todas as funções que forem adicionadas, sem custo extra.</p>
+  <p>Na Demo, aparece em cima um aviso amarelo com o botão Activar versión completa (Ativar versão completa). As funções fechadas mostram a etiqueta Versión completa (Versão completa) e, ao abri-las, um cadeado com os links de compra.</p>
+  <div class="two"><figure class="fig"><img src="img/manual/02-inicio-demo.jpg" alt="Inicio en Demo"><figcaption>Início na Demo</figcaption></figure><figure class="fig"><img src="img/manual/03-bloqueo.jpg" alt="Función de la versión completa" loading="lazy" width="400" height="860"><figcaption>Função da versão completa</figcaption></figure></div>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="instalar">
+  <h2>Instalar e ativar</h2>
+  <div class="step"><span class="step-num">1</span><p>Abra <b>cavesal.app/cavesal-gyn/</b> no navegador do celular ou do computador.</p></div><div class="step"><span class="step-num">2</span><p>Instale como app com o botão <b>Instalar app</b> no canto inferior direito. No Android e no computador (Chrome ou Edge) abre a instalação direta. No iPhone ou iPad, pelo Safari, mostra os passos: botão Compartilhar, Adicionar à Tela de Início e Adicionar. Fica com o ícone do CaVeSal® GYN e abre sem conexão.</p></div><div class="step"><span class="step-num">3</span><p>Abra pelo ícone instalado, toque em Activar versión completa (Ativar versão completa) e cole a chave que chegou por e-mail (começa com GYN-). A versão completa fica habilitada de forma permanente.</p></div><div class="step"><span class="step-num">4</span><p>A chave habilita um dispositivo. Se você trocou de aparelho ou apagou os dados do navegador, use o link para reativá-la.</p></div>
+  <figure class="fig"><img src="img/manual/04-activar.jpg" alt="Ventana para activar la clave"><figcaption>Janela para ativar a chave</figcaption></figure>
+  <div class="tip">Se você ainda não tem chave, na mesma janela pode comprar com cartão ou por transferência.</div>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<div class="tab-divider" id="organizacion"><h2>Como o app está organizado</h2><p>Busca, abas, ficha e botões</p></div>
+<section>
+  <h2>Busca, motivo de consulta, etapa da vida e capítulo</h2>
+  <p>Em cima está a Ficha da paciente. Abaixo, a busca: escreva um sintoma, um quadro ou um exame (sangramento, dor, mioma, ectópica, mamografia) e aparecem todos os módulos relacionados.</p>
+  <p>As três abas ordenam os mesmos módulos de três formas: Motivo de consulta (Tumor, Dor, Sangramento e Corrimento em destaque, e os demais motivos), Etapa de vida (Etapa da vida: adolescência, idade fértil, climatério e menopausa, pós-menopausa) e Capítulo (ginecologia geral, endocrinologia, fertilidade, contracepção, infecções, assoalho pélvico, climatério, oncologia, exames e imagens). Um módulo aparece em todos os lugares a que pertence. O número de cada botão indica quantos módulos ele tem.</p>
+  <p>Todas as funções calculam. Na Demo, as que não estão abertas mostram um cadeado e o botão Ver ejemplo (Ver exemplo), que abre um caso fictício somente leitura.</p>
+</section>
+<section id="botones">
+  <h2>Botões de cima</h2>
+  <ul class="list">
+    <li><b>Inicio</b> (Início): volta para a tela principal.</li>
+    <li><b>Academy</b>: abre o CaVeSal® Academy com as diretrizes completas. Incluído com a versão completa.</li>
+    <li><b>Analizar con CaVeSal® IA</b> (Analisar com CaVeSal® IA, botão violeta de cima), na Demo e na versão completa: dentro de uma tela envia essa tela para a CaVeSal® IA; no início abre a IA sem dados. A IA profissional é adquirida à parte: se você ainda não tem conta, ao chegar ela mostra como ativá-la.</li>
+    <li><b>Robozinha da CaVeSal® IA</b>: abaixo das abas, com sua mensagem e o botão <b>Analizar</b> (Analisar). Envia a tela aberta; no início pede que você escolha uma tela. Também funciona na Demo.</li>
+    <li><b>Analizar con CaVeSal® IA</b> no pé de cada tela, na Demo e na versão completa: envia os dados inseridos, o resultado e a conduta dessa tela, mais os antecedentes da ficha aberta. Também funciona com um exemplo carregado (chega marcado como paciente fictícia). Nome e documento não são enviados.</li>
+    <li><b>Ao abrir</b>, a CaVeSal® IA mostra «Enviado desde CaVeSal® GYN» (Enviado do CaVeSal® GYN) e analisa o caso sozinha: resumo, interpretação do resultado, conduta sugerida e alertas. Depois você pode continuar perguntando. Cada chegada usa uma consulta de análise da sua cota diária. Requer uma conta da CaVeSal® IA.</li>
+    <li><b>Simulador</b>: casos clínicos fictícios para treinar, livre na Demo.</li>
+    <li><b>Tutorial</b>: este manual.</li>
+    <li><b>Acerca</b> (Sobre): autoria, ecossistema, bases clínicas e aviso legal.</li>
+    <li>O botão redondo do canto alterna entre tema claro e escuro.</li>
+  </ul>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<div class="tab-divider" id="funciones"><h2>Funções que já calculam</h2><p>Cada bloco mostra seu resultado e suas fontes</p></div>
+<section id="fertilidad">
+  <h2>Fertilidade: ovulação, progesterona e trigger</h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: ASRM 2013 e 2020, ESHRE 2023 e 2025, MSPyBS 2025</p>
+  <div class="step"><span class="step-num">1</span><p>Insira a duração do ciclo em dias: do primeiro dia de uma menstruação ao primeiro dia da seguinte.</p></div><div class="step"><span class="step-num">2</span><p>Se você inserir a data da última menstruação, o app mostra também a data da ovulação e a da dosagem de progesterona.</p></div><div class="step"><span class="step-num">3</span><p><span class="badge b-full">Versão completa</span> Escolha o esquema de indução (clomifeno, letrozol ou gonadotrofinas) e o diâmetro do folículo dominante em milímetros.</p></div><div class="step"><span class="step-num">4</span><p>O app indica se o folículo está na faixa para o trigger, abaixo ou acima do tamanho recomendado.</p></div>
+  <h3>Faixas do folículo dominante</h3>
+  <ul class="list">
+    <li>Clomifeno: 20 a 28 mm, com melhores taxas entre 23 e 28 mm.</li>
+    <li>Letrozol: 19 a 23 mm, tolerado até 28 mm.</li>
+    <li>Gonadotrofinas: 16 a 18 mm, tolerado até 20 mm.</li>
+  </ul>
+  <div class="two"><figure class="fig"><img src="img/manual/05-fertilidad-demo.jpg" alt="Fertilidad en Demo: ovulación y progesterona"><figcaption>Fertilidade na Demo: ovulação e progesterona</figcaption></figure><figure class="fig"><img src="img/manual/06-fertilidad.jpg" alt="Versión completa: esquema y folículo líder" loading="lazy" width="400" height="860"><figcaption>Versão completa: esquema e folículo dominante</figcaption></figure></div>
+  <div class="tip">Na Demo, o esquema e o folículo ficam ocultos e aparece o aviso da versão completa.</div>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="preconcepcional">
+  <h2>Pré-concepcional: semáforo, ácido fólico e painel hormonal <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Tabela adaptada do MSPBS 2022, p. 23 · OMS · ACOG/SMFM 2022 · USPSTF 2023 · CDC · Algoritmo próprio CaVeSal® · Baseado em: ASRM 2020 · ATA 2017</p>
+  <p><b>Semáforo:</b> insira idade, peso, altura, hemoglobina, palidez, sífilis e HIV, e marque os critérios vermelhos e amarelos que ela tiver. Vence a cor mais alta. Se faltar um dado obrigatório, não se classifica como verde. Cada cor mostra a conduta do MSPBS, e as ambiguidades do quadro (35 anos, Hb entre 11 e 12, IMC de 30) aparecem explicadas.</p>
+  <p><b>Ácido fólico:</b> dose segundo a cor e as indicações de dose alta (defeito do tubo neural prévio, diabetes, epilepsia, IMC de 30 ou mais), com o momento de início e fim. Se você marcar variante de MTHFR, mostra que não muda a dose nem o tipo.</p>
+  <p><b>Painel hormonal:</b> todos os valores são opcionais. FSH, LH, AMH, TSH e prolactina são dosados do dia 2 ao 5 do ciclo; a progesterona, no dia 21. O TSH é interpretado com o anti-TPO, a levotiroxina, a FIV/ICSI e o limite superior do laboratório (4,0 se não for informado).</p>
+  <p><b>Anti-Tg, autoimunidade e trombofilia:</b> o anti-Tg soma informação de autoimunidade tireoidiana; a decisão de levotiroxina continua baseada no anti-TPO. Se você marcar lúpus, SAF obstétrica ou trombótica, anticorpos antifosfolípides, trombose prévia ou trombofilia, aparecem os alertas pré-concepcionais (ACR 2020, SMFM #64, ACOG PB 197) com link para a diretriz.</p>
+  <figure class="fig"><img src="img/manual/07-panel.jpg" alt="Panel hormonal con valores cargados"><figcaption>Painel hormonal com valores inseridos</figcaption></figure>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="pareja">
+  <h2>Investigação do casal infértil <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: OMS 2025 · OMS 2021 · ASRM 2026 · AUA/ASRM 2024 · ESHRE 2023 · ASRM 2020 e 2021 · RCPI 2023</p>
+  <p><b>Quando investigar:</b> com a idade e os meses tentando, indica se cabe iniciar a investigação (12 meses, 6 com 35 anos ou mais, imediata com 40 ou mais ou com causa conhecida). Os dois membros são investigados ao mesmo tempo.</p>
+  <p><b>Fator masculino:</b> insira o espermograma; ele é comparado com os limites da OMS 2021 e o achado é nomeado (oligo, asteno, terato, azoospermia). Se anormal, repete-se após 11 semanas ou mais e encaminha-se à urologia. O REM após capacitação orienta IIU, FIV ou ICSI com a escala da diretriz do Prontuário (Sugerencia CaVeSal®).</p>
+  <p><b>Fator ovulatório, reserva e útero-tubas:</b> ciclos, progesterona lútea, FSH, prolactina, TSH e sinais de SOP orientam a causa da anovulação. CFA e AMH classificam a reserva (não são teste de fertilidade). Escolha o exame tubário (HSG, HyCoSy/HyFoSy, laparoscopia) e seu resultado.</p>
+  <p><b>Próximo passo:</b> resume a conduta prioritária do casal, os exames que faltam e se convém IIU ou FIV segundo o prognóstico.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="somp">
+  <h2>SOP (SOMP): critérios, fenótipo e HOMA-IR <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: Diretriz internacional 2023 (Teede) · Lancet 2026 · Matthews 1985 · ADA</p>
+  <p><b>Critérios:</b> a SOMP (sigla em espanhol da síndrome ovariana metabólica poliendócrina, antiga SOP) é confirmada com 2 de 3: disfunção ovulatória, hiperandrogenismo e ovário pelo ultrassom ou AMH. Em adolescentes com menos de 8 anos desde a menarca são necessários os dois primeiros; não se usam ultrassom nem AMH. Mostra o fenótipo A a D e lembra de excluir tireoide, prolactina e hiperplasia adrenal.</p>
+  <p><b>Metabolismo:</b> IMC, HOMA-IR (apenas descritivo, sem ponto de corte universal), glicemia de jejum, TOTG e HbA1c com cortes ADA, e a conduta segundo a diretriz de 2023.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="mrs">
+  <h2>Climatério: escala MRS <span class="badge b-demo">Demo</span></h2>
+  <p class="ref">Baseado em: Heinemann 2004 (Menopause Rating Scale)</p>
+  <p>Marque cada um dos 11 sintomas de 0 (nenhum) a 4 (muito grave). O total, de 0 a 44, é atualizado em cima com seu grau de gravidade. Abaixo aparece a pontuação de cada subescala: somatovegetativa, psicológica e urogenital.</p>
+  <figure class="fig"><img src="img/manual/08-mrs.jpg" alt="Escala MRS con el total y la severidad"><figcaption>Escala MRS com o total e a gravidade</figcaption></figure>
+  <div class="tip">A diretriz da escala MRS e terapia hormonal está no Prontuário Clínico CaVeSal® e no Academy.</div>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="thm">
+  <h2>Climatério: Calculadora de TRH <span class="badge b-demo">Demo</span> <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: SEGIRP 2026 (Demo) · FIGO/WHF, EMAS, ACOG e ACP 2026 · NAMS 2022 · BGCS/BMS 2024 · EMA 2020-2022 · Endocrine Society 2019 · AACE 2020 · NOGG 2022 · BHOF 2022 (versão completa)</p>
+  <p>Escolha o modo, a etapa e o objetivo. No algoritmo combinado, além das contraindicações clássicas, marque os antecedentes oncológicos: cada um mostra se a TRH sistêmica não é recomendada, se é decidida com a oncologia ou se não a contraindica, segundo a histologia e o estádio. Em Outras condições, a doença coronariana contraindica a TRH, a doença da vesícula passa para via transdérmica e a endometriose sem útero passa para terapia combinada contínua.</p>
+  <p>Com Prevenção de osteoporose e risco de fratura alto ou muito alto, aparece o tratamento: TRH de primeira linha em menores de 60 anos ou com menos de 10 anos de menopausa e sintomas, bifosfonato com sua pausa, denosumabe (sem suspender sem passar para outro antirreabsortivo), raloxifeno, anabólico em risco muito alto e cálcio com vitamina D. O T-score e o risco da Densitometria são carregados sozinhos.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="estudios">
+  <h2>Mama, colo e endométrio <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: ACR BI-RADS v2025 · USPSTF 2024 · ASCCP 2019-2025 · ACOG CO 734 · IETA</p>
+  <p>Três blocos independentes. BI-RADS: escolha a categoria e ele devolve a conduta (por exemplo, BI-RADS 0 em menor de 30 sugere ultrassom mamário; 4 e 5, biópsia). Colo do útero: sem resultados dá o esquema por idade; com citologia e HPV, a conduta. Endométrio: etapa, espessura e sangramento, com achados IETA opcionais.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="orads">
+  <h2>Massa anexial: O-RADS, IOTA e GI-RADS <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: ACR O-RADS US v2022 · IOTA · GI-RADS · ACOG PB 174 · RCOG GTG 62</p>
+  <p>Insira primeiro os dados da paciente (idade, menopausa, CA-125). Cada sistema calcula seu resultado e, se for de risco, acrescenta marcadores tumorais, imagem complementar (RM com contraste ou TC) e encaminhamento.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="utero">
+  <h2>Útero: adenomiose MUSA e miomas FIGO <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: MUSA 2022 · FIGO PALM-COEIN · STEP-W · ACOG PB 228</p>
+  <p>MUSA: marque os sinais diretos e indiretos; um sinal direto confirma. Miomas: escolha o tipo FIGO; nos submucosos aparece a pontuação STEP-W para planejar a histeroscopia.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="endometriosis">
+  <h2>Endometriose: #Enzian, rASRM, EFI e conduta <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: ESHRE 2022 · IDEA 2016 · #Enzian 2021 · rASRM 1996 · EFI (Adamson 2010)</p>
+  <p>Marque os sintomas e os achados do ultrassom em 4 passos. Escolha o método do #Enzian (ultrassom, RM ou cirurgia) e preencha cada compartimento: ele monta o código final. Se houve cirurgia, complete o rASRM e o EFI (que toma a lesão e o total do rASRM). Em Conduta escolha o objetivo: dor, gravidez, ambos ou achado sem sintomas. O botão Copiar resumen (Copiar resumo) leva o código, o estádio e o EFI.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="incontinencia">
+  <h2>Incontinência urinária <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: NICE NG123 · AUA/SUFU 2023 e 2024 · Stamey 1980 · Sandvik 1993 e 2000</p>
+  <p>Marque os sintomas: define esforço, urgência ou mista. No esforço aparece o grau de Stamey; o índice de Sandvik mede a gravidade. O diário miccional de 3 dias calcula polaciúria, noctúria, poliúria e poliúria noturna. A conduta vai das medidas gerais ao assoalho pélvico, aos fármacos com doses e à cirurgia ou terceira linha. Os sinais de alarme indicam encaminhar.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="onco">
+  <h2>Oncologia: estadiamento FIGO <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: FIGO 2018 colo · FIGO 2023 endométrio · FIGO 2014 ovário · ESGO</p>
+  <p>Insira a extensão, o tamanho e os linfonodos. Devolve o estádio, os exames de extensão, o encaminhamento à ginecologia oncológica e a conduta geral, sem doses. No endométrio, o grupo molecular pode mudar o estádio I ou II.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="pubertad">
+  <h2>Puberdade precoce <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: Diretrizes CaVeSal® · MSPyBS Paraguai (2025) · Carel 2009 · Latronico 2016 · Marshall e Tanner 1969 · Speiser 2018</p>
+  <p>Insira a idade, os estádios de Tanner (mama e pelos pubianos), a velocidade de crescimento, a idade óssea, o ultrassom pélvico (comprimento e volume uterino, relação corpo/colo, linha endometrial, volume ovariano e folículos) e o perfil hormonal (LH basal, pico de LH com GnRH, estradiol, 17-OHP basal e pós-ACTH, DHEA-S). Devolve o tipo provável (central, periférica adrenal ou ovariana, telarca isolada ou adrenarca idiopática), o laudo ultrassonográfico montado e a conduta: RM de crânio e bloqueio do eixo com agonistas de GnRH na central, ou hidrocortisona na hiperplasia adrenal não clássica.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="dm">
+  <h2>Diabetes fora da gravidez <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: ADA, Standards of Care in Diabetes 2026 · OMS 2006 e 2011</p>
+  <p>Insira glicemia de jejum, TOTG de 2 horas, HbA1c ou glicemia casual com sintomas. Devolve normoglicemia, pré-diabetes, faixa de diabetes a confirmar ou diabetes, com a diferença entre ADA e OMS e a conduta (estilo de vida, metformina quando cabe, planejamento da gravidez). Não usa os cortes da gestante.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="ficha">
+  <h2>Ficha da paciente <span class="badge b-demo">Demo</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: Diretrizes CaVeSal® · US MEC 2024 · NCCN 2025 · OMS (IMC)</p>
+  <p>Insira uma única vez a idade, peso e altura, os antecedentes gineco-obstétricos, o tabagismo (cigarros por dia e anos, com o índice maços-ano), os antecedentes pessoais com sua categoria MEC (hipertensão, diabetes, trombose, trombofilia, cardiopatia isquêmica, AVC, enxaqueca, epilepsia, lúpus, doença mamária) e os familiares (câncer de mama, ovário, cólon ou endométrio, BRCA, trombose, diabetes). Devolve o semáforo de fatores de risco e quais métodos contraceptivos ela pode usar (categoria 1 a 4 e se cabe só progestagênio). Os dados são pré-carregados nos módulos.</p>
+  <p>Na Demo você pode marcar e ver o semáforo. Salvar a paciente com seu código, abri-la depois, exportá-la e importá-la em JSON é da versão completa. Com a versão completa, ao sair de um módulo a consulta é salva na ficha e ao voltar aparece o botão Restaurar. Os dados ficam só neste dispositivo, sem nome nem documento.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="hua">
+  <h2>Sangramento uterino anormal: PALM-COEIN <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: Diretrizes CaVeSal® · FIGO 2018 · ACOG CO 557, PB 128, CO 785 e CO 734</p>
+  <p>Insira frequência, duração e variação do ciclo, volume, sangramento intermenstrual ou pós-coital, β-hCG, hemoglobina, a triagem de coagulopatia, os fatores para biópsia e a causa PALM-COEIN. Devolve o padrão FIGO, se cabe investigar coagulopatia ou biopsiar o endométrio, e a conduta por causa, incluindo o sangramento agudo abundante.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="amenorrea">
+  <h2>Amenorreia primária e secundária <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: Diretrizes CaVeSal® · ASRM 2008 · ESHRE POI 2016/2024 · Endocrine Society 2017</p>
+  <p>Segue o algoritmo: definição, β-hCG, TSH e prolactina, FSH, teste do progestagênio e de estrogênio-progestagênio; na primária, desenvolvimento mamário, útero e cariótipo. Devolve a causa provável (SOP, amenorreia hipotalâmica, IOP, hiperprolactinemia, Asherman, Turner, MRKH, insensibilidade androgênica, obstrução) e a conduta.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="epi">
+  <h2>Doença inflamatória pélvica <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: Diretrizes CaVeSal® · CDC 2021</p>
+  <p>Insira os critérios mínimos, adicionais e específicos e os critérios de internação. Devolve o diagnóstico, se é ambulatorial ou de internação, o esquema antibiótico, o manejo do abscesso tubo-ovariano e do DIU, o parceiro e o controle em 72 horas.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="dolor">
+  <h2>Dor pélvica aguda e crônica <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: Diretrizes CaVeSal® · ACOG PB 193, CO 783 e PB 218 · NICE NG126 · CDC 2021 · RCOG GTG 41 · Roma IV · AUA 2022</p>
+  <p>Aguda: estabilidade, β-hCG e ultrassom; se positivo, gravidez intrauterina, ectópica (metotrexato ou cirurgia) ou de localização desconhecida com β-hCG em 48 horas; se negativo, torção, DIP, abscesso, cisto roto, apendicite e causas urinárias. Crônica: 6 meses ou mais, sinais de alerta, causas prováveis (endometriose, adenomiose, congestão pélvica, aderências, bexiga dolorosa, cólon irritável, miofascial, neuropática, psicossocial), exames e conduta.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="laboratorio">
+  <h2>Laboratório por quadro <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: Diretrizes CaVeSal® · OMS 2024 · ADA · ATA 2017 · ASRM 2020/2026 · ESHRE (IOP 2024, RPL 2022) · SOP 2023 · Endocrine Society · NICE NG23 · ACOG PB 197 · ACR 2020 · CDC 2021</p>
+  <p>Escolha o quadro: rotina e pré-concepcional, sangramento, ciclo e fertilidade (dia 2 a 3, AMH, progesterona do dia 21), hiperandrogenismo e metabólico, climatério, puberdade, perfil imunológico (antifosfolípides, trombofilia hereditária, lúpus e abortos de repetição) ou secreção vaginal e endocervical. Mostra o que pedir, o que não pedir de rotina, a interpretação de cada resultado e a conduta.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="ecogin">
+  <h2>Ultrassom ginecológico: reserva, ovário policístico, tubas e cavidade <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: ESHRE Bologna 2011 · ASRM 2020 · SOP 2023 · ASRM 2021 · FOAM 2022 · AAGL · ASRM 2016</p>
+  <p>Escolha o que avaliar. Reserva: CFA e AMH com cortes de Bologna e de hiper-resposta. Ovário policístico: folículos por ovário (8 MHz) ou volume. Tubas: resultado de HSG ou HyFoSy por lado e cavidade, com conduta (FIV, salpingectomia por hidrossalpinge, histeroscopia). Histeroscopia: achado e conduta.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="densitometria">
+  <h2>Densitometria óssea <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: OMS 1994 · ISCD 2023 · BHOF 2022 · AACE 2020 · USPSTF 2025</p>
+  <p>Insira os T-scores (aceita negativos com vírgula) ou o Z-score na pré-menopausa, fraturas e FRAX. Devolve a classificação, se há indicação de tratamento, o risco muito alto e o controle.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="induccion">
+  <h2>Indução da ovulação <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: ASRM 2022 · ASRM 2020 · ASRM 2024 · SOP 2023 · limiares do módulo Fertilidade</p>
+  <p>Escolha o fármaco e escreva os folículos de cada ovário separados por vírgula (por exemplo 18, 14, 11). Devolve se aplicar a hCG, se cancelar por gravidez múltipla ou hiperestimulação, a data do próximo ultrassom, o endométrio e o controle 48 a 72 h depois da hCG.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="sho">
+  <h2>Síndrome de hiperestimulação ovariana <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: RCOG GTG 5 · ASRM 2024</p>
+  <p>Marque fatores de risco, sintomas e laboratório. Devolve a gravidade, a conduta (ambulatorial ou internação) e os sinais de alarme.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="metodos">
+  <h2>Contracepção: elegibilidade e métodos <span class="badge b-full">Sugestão na versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: US MEC 2024 (com apêndices E, F, I e J) · OMS 2025 e 2026 · FSRH 2023 · bulas FDA de Mounjaro (08/2026) e Ozempic (05/2026) · OMS 2018 · Trussell 2011</p>
+  <p>Um único módulo em 3 passos. Em cima, o bloco de categorias 1 a 4 e o botão (i) Leyenda (Legenda) com as três leituras, I/C, A/C/D e A/C/D/S.</p>
+  <p>Passo 1: idade, método atual e início ou continuação. Passo 2: toque em cada condição ou sua variante; a busca as filtra e as marcadas ficam em cima, com × para retirá-las. Inclui barreira, naturais, emergência e incretinas. Passo 3: a Sugerencia CaVeSal® (Sugestão CaVeSal®) e os métodos por família (DIU, só progestagênio, combinados, lactação, barreira, emergência, esterilização e naturais), com filtros. Toque em um método para ver sua ficha: Pearl, duração, composição, por que tem essa categoria e, nos combinados, as formas de uso (sequencial, estendido fixo, flexível e contínuo).</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="genetica">
+  <h2>Câncer hereditário: BRCA e síndrome de Lynch <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: NCCN · ACOG PB 182 e 147 · Amsterdam II · MSPBS 2025</p>
+  <p>Marque a história pessoal e familiar. Devolve os critérios cumpridos, o encaminhamento com painel multigênico e, se ela já tem a variante, o seguimento e a cirurgia redutora de risco.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="pacientes">
+  <h2>Minhas pacientes e backup no Google Drive <span class="badge b-full">Versão completa</span></h2>
+  <p>Aba Pacientes: lista de fichas salvas com busca, Abrir (carrega a ficha e suas consultas) e Borrar (Apagar). Backup local baixa um .json com todas as pacientes; Abrir Google Drive leva ao seu Drive para enviá-lo. Em outro aparelho, Elegir archivo .json (Escolher arquivo .json) o importa: Combinar soma as pacientes e mantém a versão mais recente de cada uma; Reemplazar todo (Substituir tudo) deixa só as do arquivo. Também aceita o .json de uma única paciente exportado da ficha.</p>
+  <figure class="fig"><img src="img/manual/11-pacientes.jpg" alt="Mis pacientes: backup .json y Google Drive" loading="lazy" width="400" height="860"><figcaption>Minhas pacientes: backup .json e Google Drive</figcaption></figure>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="puente-hc">
+  <h2>Dados do Prontuário Clínico <span class="badge b-full">Versão completa</span></h2>
+  <p>No Prontuário Clínico CaVeSal®, o botão <b>Enviar a GYN</b> (Enviar para o GYN) abre este app com os dados clínicos estruturados da paciente, sem nome nem documento. Cada módulo pré-carrega o que corresponde e mostra o aviso "Datos recibidos de la HC CaVeSal®" (Dados recebidos do Prontuário CaVeSal®), com o que falta completar à mão.</p>
+  <p>Recebem dados: escala MRS, elegibilidade MEC, métodos contraceptivos, escolha do progestagênio, contracepção de emergência, Calculadora de TRH, incretinas, semáforo pré-concepcional, IMC, incontinência (diário miccional), fertilidade, SOP, casal, endometriose, massa anexial, exames, densitometria, sangramento uterino anormal e a ficha da paciente.</p>
+  <p>A ficha só é pré-carregada se estiver vazia; dali recebe um código e é salva em Minhas pacientes. Tudo fica editável e o botão "Descartar datos de la HC" (Descartar dados do Prontuário) apaga o que foi recebido.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+<section id="progestagenos">
+  <h2>Escolha do progestagênio <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: BMS 2026 · EMA 2013 e 2014 · ESTHER/E3N · Schindler 2008 · Regidor 2018 · LIBERATE · LIFT</p>
+  <p>Escolha o uso (TRH ou contracepção oral) e marque as características. Sugere o progestagênio, o que evitar e o esquema cíclico ou contínuo. Libido, sono e risco mamário são dados orientativos e não mudam a sugestão. Inclui o perfil farmacológico por grupo, o risco de TEV e as doses em TRH com tibolona.</p>
+  <figure class="fig"><img src="img/manual/12-progestagenos.jpg" alt="Elección del progestágeno con ejemplo ilustrativo" loading="lazy" width="400" height="860"><figcaption>Escolha do progestagênio com exemplo ilustrativo</figcaption></figure>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="aemergencia">
+  <h2>Contracepção de emergência <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: OMS 2021 · FIGO/ICEC · FSRH 2017 · Cochrane 2019</p>
+  <p>Insira as horas desde a relação, o IMC ou o peso e a situação. Ordena as opções por eficácia (DIU de cobre, ulipristal, mifepristona, levonorgestrel e Yuzpe), ajusta a dose de levonorgestrel e calcula as pílulas de Yuzpe segundo o contraceptivo disponível. Mostra o mecanismo de cada um.</p>
+  <figure class="fig"><img src="img/manual/13-aemergencia.jpg" alt="Anticoncepción de emergencia: opciones ordenadas por eficacia" loading="lazy" width="400" height="860"><figcaption>Contracepção de emergência: opções ordenadas por eficácia</figcaption></figure>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="marcadores">
+  <h2>Marcadores tumorais <span class="badge b-full">Versão completa</span></h2>
+  <p class="ref">Algoritmo próprio CaVeSal® · Baseado em: Diretrizes CaVeSal® · ESMO 2018 · ESGO-ESMO-ESP 2024 · RCOG GTG 62 · ACOG PB 174 · Moore 2009</p>
+  <p>Insira CA-125, HE4 (calcula o ROMA), CEA, CA 19-9 e os marcadores germinativos e de cordões sexuais. Devolve a origem provável, os falsos positivos, o que pedir segundo a idade e quando encaminhar à ginecologia oncológica.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<div class="tab-divider" id="ejemplos"><h2>Exemplos e Simulador</h2><p>Para ver o que cada módulo faz e para treinar</p></div>
+<section>
+  <h2>Casos de exemplo</h2>
+  <p>Cada módulo tem um ou mais casos de exemplo. Na versão completa, o botão <b>Cargar ejemplo</b> (Carregar exemplo) preenche os campos e mostra o resultado. Na Demo, os módulos fechados mostram o caso de exemplo com seu resultado completo em modo somente leitura, para ver o que a versão completa faz antes de comprá-la.</p>
+  <h2>Simulador GYN</h2>
+  <p>O botão <b>Simulador</b> abre casos clínicos fictícios por área (adolescência, contracepção, fertilidade, endocrinologia, infecções, assoalho pélvico, climatério e oncologia). Cada resposta mostra seu fundamento e o link para a bibliografia. Também é livre na Demo.</p>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<div class="tab-divider" id="ecosistema"><h2>Academy, IA e Sobre</h2><p>O restante do ecossistema CaVeSal®</p></div>
+<section>
+  <h2>Academy e IA</h2>
+  <p>O <b>CaVeSal® Academy</b> reúne as diretrizes clínicas completas de todos os apps, incluindo as de ginecologia, endocrinologia e fertilidade. Está incluído com a versão completa: ao tocar em Academy no app, ele abre com seu acesso.</p>
+  <p>A <b>CaVeSal® IA</b> é a inteligência artificial profissional. É adquirida à parte. Do GYN (Demo ou versão completa) você envia o caso de qualquer tela e ela o analisa sozinha ao abrir. Além disso, busca nas fichas do GYN e nas diretrizes relacionadas do Prontuário Clínico.</p>
+</section>
+<section>
+  <h2>Sobre</h2>
+  <p>Mostra o ecossistema de apps (este na versão completa e os demais em Demo), o QR para convidar suas pacientes para o CaVeSal® Mamá e o CaVeSal® Mujer, os tutoriais, a autoria clínica, as bases clínicas com sua bibliografia e o aviso legal.</p>
+  <figure class="fig"><img src="img/manual/10-acerca.jpg" alt="Pantalla Acerca"><figcaption>Tela Acerca (Sobre)</figcaption></figure>
+  <a class="back-top" href="#top">↑ Voltar ao conteúdo</a>
+</section>
+
+<section id="legal">
+  <h2>Aviso legal e contato</h2>
+  <p>O CaVeSal® GYN é uma ferramenta de apoio à decisão clínica dirigida exclusivamente a profissionais de saúde. Não diagnostica nem substitui o julgamento clínico. A menção a ASRM, ESHRE, ATA, OMS, FIGO e outras instituições tem fins de atribuição bibliográfica; nenhuma patrocina, endossa ou certifica o CaVeSal®.</p>
+  <p>O software, o design, os textos e a lógica estão protegidos pela Lei N.º 1328/1998 do Paraguai e pela Convenção de Berna.</p>
+  <p>Contato: <a href="mailto:drverasalerno@gmail.com">drverasalerno@gmail.com</a></p>
+  <div class="ctas"><a class="cta dark" href="index.html">Abrir CaVeSal® GYN</a><a class="cta line" href="acerca.html">Sobre</a></div>
+  <p class="updated">Atualizado: novembro de 2026 · © 2026 CaVeSal® · Dr. Carlos Vera Salerno</p>
+</section>
+</main>
+</body>
+</html>
