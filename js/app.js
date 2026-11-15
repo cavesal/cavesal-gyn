@@ -189,7 +189,10 @@
       '<p><a href="mailto:drverasalerno@gmail.com">' + esc(L.contacto) + '</a> · <a href="https://cavesal.app/terminos.html" target="_blank" rel="noopener">Términos</a> · <a href="https://cavesal.app/privacidad.html" target="_blank" rel="noopener">Privacidad</a></p>' +
       '<p class="copy">' + esc(L.copyright) + '</p>';
 
-    var KEY = 'cavesal_legal_accept', VERSION = '1.1';
+    /* Clave propia de GYN y por versión: las apps CaVeSal® comparten el dominio cavesal.app,
+       y con la clave común el aviso no aparecía si ya se había aceptado en otra app o en la otra versión. */
+    var MODO = /\/full\//.test(location.pathname) ? 'full' : (/\/demo\//.test(location.pathname) ? 'demo' : 'inicio');
+    var KEY = 'cavesal_gyn_legal_accept_' + MODO, VERSION = '1.1';
     var ok = false;
     try { var raw = JSON.parse(localStorage.getItem(KEY) || 'null'); ok = raw && raw.version === VERSION; } catch (e) {}
     var ov = $('cavesal-legal-overlay'), chk = $('cavesal-legal-checkbox'), btn = $('cavesal-legal-accept');
