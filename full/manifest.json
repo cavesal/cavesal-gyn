@@ -2,7 +2,7 @@
   "name": "CaVeSal® GYN",
   "short_name": "CaVeSal GYN",
   "description": "Calculadora gineco-endocrinológica para el profesional — CaVeSal®",
-  "id": "./",
+  "id": "/cavesal-gyn/full/",
   "start_url": "./",
   "scope": "../",
   "display": "standalone",
