@@ -30,7 +30,8 @@
     if (ENTRADA === 'demo') return false;
     if (/[?&]demo=1/.test(location.search)) return false;
     if (!REQUIERE_LICENCIA) return true;
-    return claveGuardada();
+    // NUEVO (2026-11-18) — plan anual vencido (más de 7 días): vuelve a la Demo.
+    return claveGuardada() && !(w.CVSPlan && w.CVSPlan.bloqueada(LICENSE_STORAGE_KEY));
   }
   function abiertaEnDemo(id) { return ABIERTAS_DEMO.indexOf(id) >= 0; }
   function activada() { ocultarGate(); w.dispatchEvent(new Event('gyn:licencia')); }
@@ -41,7 +42,9 @@
     var m = {
       ya_usada: 'Esta clave ya fue activada en otro dispositivo. Cada clave es válida para un solo dispositivo. Si ya la habías activado en este equipo, usá el formulario de abajo para pedir la reactivación.',
       no_es_producto_gyn: 'Esta clave es para otra app de CaVeSal®, no para CaVeSal® GYN. Activala en la app que corresponde.',
-      no_existe: 'Esa clave no existe. Revisá que la copiaste correctamente (sin espacios extra).'
+      no_existe: 'Esa clave no existe. Revisá que la copiaste correctamente (sin espacios extra).',
+      vencida: 'Esta clave es de un plan anual que ya venció. Renovala en cavesal.app/comprar.html con la misma clave y volvé a activarla.',
+      actualizar_app: 'Actualizá la app (cerrala y volvé a abrirla con internet) para activar esta clave anual.'
     };
     err.textContent = m[tipo] || 'Ocurrió un error al validar. Intentá nuevamente en unos segundos.';
     err.hidden = false;
@@ -53,17 +56,25 @@
     if (!clave) { mostrarError('no_existe'); return; }
     err.hidden = true; btn.disabled = true; btn.textContent = 'Validando...';
     w.CVSLic.paramsDisp()
-      .then(function (pd) { return fetch(LICENSE_API + '?clave=' + encodeURIComponent(clave) + '&accion=activar&producto=' + PRODUCTO + pd); })
+      .then(function (pd) { return fetch(LICENSE_API + '?clave=' + encodeURIComponent(clave) + '&accion=activar&lic=2&producto=' + PRODUCTO + pd); })
       .then(function (r) { return r.json(); })
       .then(function (data) {
-        if (data.valido) { w.CVSLic.guardar(LICENSE_STORAGE_KEY, clave); activada(); }
+        if (data.valido) { w.CVSLic.guardar(LICENSE_STORAGE_KEY, clave); if (w.CVSPlan) w.CVSPlan.guardar(LICENSE_STORAGE_KEY, data); activada(); planAnual(); }
         else mostrarError(data.mensaje);
       })
       .catch(function () { mostrarError('error'); });
   }
 
+  // NUEVO (2026-11-18) — avisos del plan anual (js/cvs-plan.js). Las claves de por vida no ven nada.
+  function planAnual() {
+    if (!w.CVSPlan || ENTRADA === 'demo') return;
+    w.CVSPlan.iniciar({ api: LICENSE_API, producto: PRODUCTO, lic: LICENSE_STORAGE_KEY, lang: 'es', demo: null,
+      alCambiar: function () { w.dispatchEvent(new Event('gyn:licencia')); } });
+  }
+
   function iniciar() {
     ocultarGate();
+    planAnual();
     d.getElementById('lg_cerrar').addEventListener('click', ocultarGate);
     w.CVSLic.montarFormulario('lg_reactivar', { api: LICENSE_API, producto: PRODUCTO, claveInputId: 'lg_input', lang: 'es' });
     d.getElementById('lg_btn').addEventListener('click', validarClave);
