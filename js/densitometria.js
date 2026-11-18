@@ -30,7 +30,27 @@
       else { r.clase = 'Normal'; r.color = 'verde'; }
       var region = tmin === d.tCol ? 'columna lumbar' : (tmin === d.tCue ? 'cuello femoral' : 'cadera total');
       r.filas.push(['T-score más bajo', String(tmin).replace('.', ',') + ' en ' + region + ': define el diagnóstico (ISCD: el valor más bajo de las regiones, no el promedio)', r.color]);
+      // NUEVO (2026-11-18): clasificación de cada región y discordancia columna-cadera.
+      var cls = function (v) { return v <= -2.5 ? ['osteoporosis', 'rojo'] : (v < -1 ? ['osteopenia', 'ambar'] : ['normal', 'verde']); };
+      [['Columna lumbar', d.tCol], ['Cuello femoral', d.tCue], ['Cadera total', d.tCad]].forEach(function (g) {
+        if (g[1] === null) return; var k = cls(g[1]);
+        r.filas.push([g[0], 'T-score ' + String(g[1]).replace('.', ',') + ': ' + k[0], k[1]]);
+      });
+      var caderas = [d.tCue, d.tCad].filter(function (x) { return x !== null; });
+      if (d.tCol !== null && caderas.length) {
+        var cmin = Math.min.apply(null, caderas), dif = Math.abs(d.tCol - cmin);
+        if (dif > 1) {
+          r.filas.push(['Diferencia columna-cadera', String(Math.round(dif * 10) / 10).replace('.', ',') + ' desvíos (más de 1)', 'naranja']);
+          r.conducta.push(d.tCol > cmin
+            ? 'Columna más alta que la cadera por más de 1 desvío: revisar el informe; artrosis, osteofitos, fracturas vertebrales o calcificación aórtica pueden elevar falsamente la columna (ISCD: excluir las vértebras afectadas). Decidir con la región más baja.'
+            : 'Columna más baja que la cadera por más de 1 desvío: confirmar que la medición de columna sea válida (ISCD: al menos 2 vértebras evaluables) y decidir con la región más baja.');
+        }
+      }
       r.filas.push(['Referencia', 'T-score: desvíos estándar respecto de la mujer adulta joven (blanca, 20 a 29 años, NHANES III). Z-score: respecto de la misma edad y sexo.', 'neutro']);
+    }
+    if (d.z !== null) {
+      r.filas.push(['Z-score', String(d.z).replace('.', ','), d.z <= -2 ? 'naranja' : 'verde']);
+      if (d.z <= -2) r.conducta.push('Z-score de -2,0 o menos en la posmenopausia: densidad por debajo de lo esperado para la edad; buscar causa secundaria (vitamina D, calcio, PTH, TSH, función renal y hepática, celiaquía, glucocorticoides, mieloma).');
     }
     var fx = d.fxCad || d.fxVert, frax = (d.fraxM !== null && d.fraxM >= 20) || (d.fraxC !== null && d.fraxC >= 3);
     if (fx && r.clase !== 'Osteoporosis') { r.clase = 'Osteoporosis (por fractura de cadera o vértebra por fragilidad)'; r.color = 'rojo'; }
@@ -64,7 +84,7 @@
     var tx = function (id, t) { return '<label class="campo"><span>' + t + '</span><input id="' + id + '" type="text" inputmode="decimal" placeholder="ej. -2,1"></label>'; };
     cont.innerHTML =
       c.grupo('Datos', '<div class="grid2">' + c.campo('dx-edad', 'Edad', 'años', '1') + c.sel('dx-post', [['si', 'Posmenopausia'], ['no', 'Premenopausia']], 'Estado menopáusico') + '</div>') +
-      c.grupo('Densitometría (DXA)', '<div class="grid2">' + tx('dx-tcol', 'T-score columna lumbar') + tx('dx-tcue', 'T-score cuello femoral') + tx('dx-tcad', 'T-score cadera total') + tx('dx-z', 'Z-score (premenopausia)') + '</div>') +
+      c.grupo('Densitometría (DXA)', '<div class="grid2">' + tx('dx-tcol', 'T-score columna lumbar') + tx('dx-tcue', 'T-score cuello femoral') + tx('dx-tcad', 'T-score cadera total') + tx('dx-z', 'Z-score') + '</div>') +
       c.grupo('Fracturas y FRAX', c.chk('dx-fc', 'Fractura de cadera por fragilidad') + c.chk('dx-fv', 'Fractura vertebral (clínica o morfométrica)') + c.chk('dx-fr', 'Fractura en los últimos 12 meses') + c.chk('dx-fm', 'Fracturas múltiples') +
         '<div class="grid2">' + c.campo('dx-fxm', 'FRAX fractura mayor a 10 años', '%', '0.1') + c.campo('dx-fxc', 'FRAX cadera a 10 años', '%', '0.1') + '</div>') +
       c.grupo('Fármacos', c.chk('dx-gc', 'Glucocorticoides crónicos') + c.chk('dx-ia', 'Inhibidores de aromatasa')) +
