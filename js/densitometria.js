@@ -28,7 +28,9 @@
       if (tmin <= -2.5) { r.clase = 'Osteoporosis'; r.color = 'rojo'; }
       else if (tmin < -1) { r.clase = 'Osteopenia (baja masa ósea)'; r.color = 'ambar'; }
       else { r.clase = 'Normal'; r.color = 'verde'; }
-      r.filas.push(['T-score más bajo', String(tmin).replace('.', ',') + ' (columna, cuello femoral o cadera total)', r.color]);
+      var region = tmin === d.tCol ? 'columna lumbar' : (tmin === d.tCue ? 'cuello femoral' : 'cadera total');
+      r.filas.push(['T-score más bajo', String(tmin).replace('.', ',') + ' en ' + region + ': define el diagnóstico (ISCD: el valor más bajo de las regiones, no el promedio)', r.color]);
+      r.filas.push(['Referencia', 'T-score: desvíos estándar respecto de la mujer adulta joven (blanca, 20 a 29 años, NHANES III). Z-score: respecto de la misma edad y sexo.', 'neutro']);
     }
     var fx = d.fxCad || d.fxVert, frax = (d.fraxM !== null && d.fraxM >= 20) || (d.fraxC !== null && d.fraxC >= 3);
     if (fx && r.clase !== 'Osteoporosis') { r.clase = 'Osteoporosis (por fractura de cadera o vértebra por fragilidad)'; r.color = 'rojo'; }
@@ -39,7 +41,12 @@
     }
     var muyAlto = d.fxReciente || d.fxMult || (tmin !== null && tmin < -3) || (d.fraxM !== null && d.fraxM > 30) || (d.fraxC !== null && d.fraxC > 4.5) || (d.gc && fx);
     if (tratar) {
-      r.conducta.push(muyAlto ? 'Muy alto riesgo de fractura (AACE 2020): considerar primero un anabólico (teriparatida, abaloparatida o romosozumab) y luego un antirresortivo; derivar a metabolismo óseo.' : 'Indicación de tratamiento farmacológico: bisfosfonato oral o intravenoso como primera línea; denosumab como alternativa (no suspender sin pasar a bisfosfonato).');
+      r.conducta.push(muyAlto ? 'Muy alto riesgo de fractura (AACE 2020): considerar primero un anabólico (teriparatida, abaloparatida o romosozumab) y luego un antirresortivo; derivar a metabolismo óseo.' : 'Indicación de tratamiento farmacológico: primera línea alendronato, risedronato o ácido zoledrónico, que reducen fracturas vertebrales, no vertebrales y de cadera; denosumab como alternativa (no suspender sin pasar a bisfosfonato).');
+      // NUEVO (2026-11-18): ibandronato solo tiene eficacia vertebral demostrada (Endocrine Society 2019, AACE 2020, BHOF 2022).
+      var riesgoCadera = d.fxCad || (d.tCue !== null && d.tCue <= -2.5) || (d.tCad !== null && d.tCad <= -2.5) || (d.fraxC !== null && d.fraxC >= 3);
+      r.conducta.push(riesgoCadera
+        ? 'Riesgo en cadera: no usar ibandronato. Aumenta la DMO de columna en forma similar al alendronato, pero solo demostró reducir fracturas vertebrales, no de cadera ni no vertebrales.'
+        : 'Ibandronato: solo demostró reducir fracturas vertebrales (no de cadera ni no vertebrales); es alternativa únicamente cuando el riesgo es de columna.');
       r.conducta.push('Antes de tratar: calcio, 25-OH vitamina D, creatinina, fosfatasa alcalina; corregir la deficiencia de vitamina D. Control dental antes de bisfosfonato intravenoso o denosumab.');
       if (d.edad !== null && d.edad < 60) r.conducta.push('Menor de 60 años o menos de 10 años de menopausia con síntomas vasomotores: la THM previene fracturas y es una opción (ver la Calculadora de THM).');
     } else if (r.clase && r.clase.indexOf('Osteopenia') === 0) r.conducta.push('Osteopenia sin criterio de tratamiento: calcio dietario, vitamina D, ejercicio con carga y de equilibrio, evitar tabaco y alcohol, prevención de caídas.');
@@ -62,7 +69,7 @@
         '<div class="grid2">' + c.campo('dx-fxm', 'FRAX fractura mayor a 10 años', '%', '0.1') + c.campo('dx-fxc', 'FRAX cadera a 10 años', '%', '0.1') + '</div>') +
       c.grupo('Fármacos', c.chk('dx-gc', 'Glucocorticoides crónicos') + c.chk('dx-ia', 'Inhibidores de aromatasa')) +
       '<div id="dx-o" class="resultados" aria-live="polite"></div>' +
-      '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: OMS 1994 (definición densitométrica) · ISCD Official Positions 2023 · BHOF Clinician\'s Guide 2022 · AACE/ACE 2020 · USPSTF 2025 · The Menopause Society 2022 (THM)</p>' +
+      '<p class="etiqueta">Algoritmo propio CaVeSal® · Basado en: OMS 1994 (definición densitométrica) · ISCD Official Positions 2023 · BHOF Clinician\'s Guide 2022 · AACE/ACE 2020 · Endocrine Society 2019/2020 · USPSTF 2025 · The Menopause Society 2022 (THM)</p>' +
       '<p class="orientativa">' + T.app.orientativa + '</p>';
     var L = c.lector(cont), q = function (s) { return cont.querySelector(s); }, vs = function (id) { return sn(L.v(id)); };
     function act() {

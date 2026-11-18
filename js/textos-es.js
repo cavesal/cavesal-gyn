@@ -533,7 +533,7 @@
       ostTto: {
         anabolico: 'Riesgo muy alto: primero un anabólico (teriparatida 20 µg/día SC o abaloparatida 80 µg/día SC hasta 2 años, o romosozumab 210 mg/mes SC por 12 meses, no si tuvo IAM o ACV en el último año) y después un antirresortivo (AACE 2020).',
         thmPrimera: 'Menor de 60 años o menos de 10 años de menopausia, con síntomas y sin contraindicación: la THM previene todo tipo de fracturas y es opción de primera línea (Endocrine Society 2019, NOGG 2022). Si se suspende, pasar a otro tratamiento.',
-        bifosfonato: 'Primera línea: alendronato 70 mg/semana o risedronato 35 mg/semana VO, o ácido zoledrónico 5 mg IV una vez al año.',
+        bifosfonato: 'Primera línea: alendronato 70 mg/semana o risedronato 35 mg/semana VO, o ácido zoledrónico 5 mg IV una vez al año; reducen fracturas vertebrales, no vertebrales y de cadera. Ibandronato 150 mg/mes VO solo demostró reducir fracturas vertebrales: no usarlo si el riesgo es de cadera (Endocrine Society 2019, AACE 2020).',
         pausa: 'Reevaluar a los 5 años (oral) o 3 años (IV): con riesgo bajo o moderado, pausa de hasta 5 años; con riesgo alto, continuar (Endocrine Society 2019).',
         denosumabAlt: 'Denosumab 60 mg SC cada 6 meses: alternativa inicial, o si el bifosfonato no se tolera, está contraindicado o falla.',
         renal: 'Depuración menor de 35 mL/min: evitar bifosfonatos; denosumab 60 mg SC cada 6 meses con calcio y vitamina D adecuados y control de la calcemia (riesgo de hipocalcemia).',
